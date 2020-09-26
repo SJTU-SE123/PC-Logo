@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/run.png</file>
+        <file>image/debug.png</file>
+        <file>image/build.png</file>
+        <file>image/crawling.gif</file>
+        <file>logo.ico</file>
+        <file>image/logo.png</file>
+        <file>image/littlelogo.png</file>
+    </qresource>
+</RCC>
