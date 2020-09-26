@@ -1,2 +1,2 @@
-# PC-Logo
-This is a PC Logo application, which is also a course project of SE123, SJTU.
+# PC-Logo-ui-demo
+A naive ui-demo of PC-Logo application.
