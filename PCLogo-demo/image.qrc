@@ -7,5 +7,6 @@
         <file>logo.ico</file>
         <file>image/logo.png</file>
         <file>image/littlelogo.png</file>
+        <file>image/logojpg.jpg</file>
     </qresource>
 </RCC>
