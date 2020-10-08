@@ -12,8 +12,7 @@
     * 由菜单栏（上方）、工具栏（左侧）、画布、代码编辑区组成。
     * 目前工具栏只有三个图标，都是从QT界面上截的。
     * 画布由canvas类实现。
-    * 目前LocalMode类的代码编辑区是单独的一个CodeEditor类对象。
-    * 目前NetMode类的代码编辑区是在CodeEditor类外套上了TabWidget类实现的，以适应查看联网用户代码的需求。
+    * 目前LocalMode、NetMode类的代码编辑区都是在CodeEditor类外套上了TabWidget类实现的，但有所不同；LocalMode类是为了多开文件，NetMode类则是为了查看联网用户代码。
 * Canvas类
     * 继承自QWidget，没怎么写过。
     * 被调用且设置样式后将会出现小海龟。目前这一功能是靠重载paintEvent函数实现的。
