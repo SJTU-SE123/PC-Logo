@@ -40,15 +40,25 @@ void LocalMode::initForm(){
     ui->mainToolBar->addWidget(buildButton);
 
     welcome = new QLabel(this);
+    mask = new QLabel(this);
     canvas = new Canvas(this);
-    editor = new CodeEditor(this);
+    tabEditor = new QTabWidget(this);
 
-    welcome->setGeometry(810, 55, 380, 20);
-    canvas->setGeometry(38, 60, 720, 815);
-    editor->setGeometry(795, 80, 390, 795);
+    welcome->setGeometry(50, 45, 380, 20);
+    mask->setGeometry(38, 25, 1162, 15);
+    canvas->setGeometry(470, 50, 720, 825);
+    tabEditor->setGeometry(38, 70, 390, 805);
+
+    editor = new CodeEditor();
+    editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
+    tabEditor->addTab(editor, "未命名1");
+    editor = new CodeEditor();
+    editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
+    tabEditor->addTab(editor, "未命名2");
 
     welcome->setText("欢迎来到PCLogo的世界，请在下框中输入指令吧OvO");
     welcome->setStyleSheet("font-family: Microsoft Yahei; font-size: 15px;");
+    mask->setStyleSheet("background-color: #404142;");
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
-    editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
+    tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
 }

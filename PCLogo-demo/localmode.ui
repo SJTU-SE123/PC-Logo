@@ -32,6 +32,8 @@
     <addaction name="action_3"/>
     <addaction name="action_4"/>
     <addaction name="action_5"/>
+    <addaction name="separator"/>
+    <addaction name="action_11"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -47,8 +49,18 @@
     </property>
     <addaction name="action_9"/>
    </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>程序</string>
+    </property>
+    <addaction name="action_12"/>
+    <addaction name="action_13"/>
+    <addaction name="action_14"/>
+    <addaction name="action_15"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
+   <addaction name="menu_4"/>
    <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -106,6 +118,31 @@
   <action name="action_9">
    <property name="text">
     <string>帮助文档</string>
+   </property>
+  </action>
+  <action name="action_11">
+   <property name="text">
+    <string>上传至社区</string>
+   </property>
+  </action>
+  <action name="action_12">
+   <property name="text">
+    <string>运行</string>
+   </property>
+  </action>
+  <action name="action_13">
+   <property name="text">
+    <string>子程序表</string>
+   </property>
+  </action>
+  <action name="action_14">
+   <property name="text">
+    <string>调试</string>
+   </property>
+  </action>
+  <action name="action_15">
+   <property name="text">
+    <string>构建</string>
    </property>
   </action>
  </widget>

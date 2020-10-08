@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QLabel>
+#include <QTabWidget>
 #include "codeeditor.h"
 #include <QToolButton>
 #include "canvas.h"
@@ -23,8 +24,9 @@ public:
 private:
     Ui::LocalMode *ui;
     Canvas *canvas;
+    QTabWidget *tabEditor;
     CodeEditor *editor;
-    QLabel *welcome;
+    QLabel *welcome, *mask;
     QToolButton *runButton, *debugButton, *buildButton;
 
 private slots:

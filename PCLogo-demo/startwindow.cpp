@@ -47,5 +47,5 @@ void StartWindow::on_NetMode_clicked()
 
 void StartWindow::on_Exit_clicked()
 {
-    this->close();
+    qApp->closeAllWindows();
 }

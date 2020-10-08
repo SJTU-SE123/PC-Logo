@@ -40,11 +40,13 @@ void NetMode::initForm(){
     buildButton->setFixedSize(30, 30);
     ui->mainToolBar->addWidget(buildButton);
 
+    mask = new QLabel(this);
     canvas = new Canvas(this);
     tabEditor = new QTabWidget(this);
 
-    canvas->setGeometry(38, 60, 720, 815);
-    tabEditor->setGeometry(795, 60, 390, 815);
+    mask->setGeometry(38, 25, 1162, 15);
+    canvas->setGeometry(470, 50, 720, 825);
+    tabEditor->setGeometry(38, 50, 390, 825);
 
     localEditor = new CodeEditor();
     localEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
@@ -53,6 +55,7 @@ void NetMode::initForm(){
     netEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
     tabEditor->addTab(netEditor, "网络用户");
 
+    mask->setStyleSheet("background-color: #404142;");
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
     tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
 }

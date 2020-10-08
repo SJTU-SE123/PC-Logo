@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTabWidget>
+#include <QLabel>
 #include "codeeditor.h"
 #include <QToolButton>
 #include "canvas.h"
@@ -23,6 +24,7 @@ private:
     Ui::NetMode *ui;
     Canvas *canvas;
     QTabWidget *tabEditor;
+    QLabel *mask;
     CodeEditor *localEditor, *netEditor;
     QToolButton *runButton, *debugButton, *buildButton;
 
