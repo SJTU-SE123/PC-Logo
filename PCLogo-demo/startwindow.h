@@ -20,14 +20,15 @@ public:
 
 private slots:
     void on_LocalMode_clicked();
-
     void on_NetMode_clicked();
-
     void on_Exit_clicked();
+    void on_otherButton_clicked();
+    void onTaskBoxContextMenuEvent();
 
 private:
     Ui::StartWindow *ui;
     QMainWindow *logoWindow;
+    QWidget *t;
     QMovie *gif;
     QLabel *gifPlayer;
 };
