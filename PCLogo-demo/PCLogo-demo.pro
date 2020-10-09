@@ -28,9 +28,12 @@ SOURCES += \
         canvas.cpp \
         codeeditor.cpp \
         localmode.cpp \
+        login.cpp \
         main.cpp \
         netmode.cpp \
-        startwindow.cpp
+        register.cpp \
+        startwindow.cpp \
+        userinfo.cpp
 
 HEADERS += \
         canvas.h \
@@ -38,13 +41,19 @@ HEADERS += \
         head.h \
         linenumberarea.h \
         localmode.h \
+        login.h \
         netmode.h \
-        startwindow.h
+        register.h \
+        startwindow.h \
+        userinfo.h
 
 FORMS += \
         localmode.ui \
+        login.ui \
         netmode.ui \
-        startwindow.ui
+        register.ui \
+        startwindow.ui \
+        userinfo.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
