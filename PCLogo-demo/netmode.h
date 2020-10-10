@@ -27,9 +27,11 @@ private:
     QLabel *mask;
     CodeEditor *localEditor, *netEditor;
     QToolButton *runButton, *debugButton, *buildButton;
+    QWidget *netConnection;
 
 private slots:
     void initForm();
+    void connect();
 };
 
 #endif // NETMODE_H

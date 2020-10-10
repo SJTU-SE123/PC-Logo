@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
         canvas.cpp \
         codeeditor.cpp \
+        connect.cpp \
         localmode.cpp \
         login.cpp \
         main.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 HEADERS += \
         canvas.h \
         codeeditor.h \
+        connect.h \
         head.h \
         linenumberarea.h \
         localmode.h \
@@ -48,6 +50,7 @@ HEADERS += \
         userinfo.h
 
 FORMS += \
+        connect.ui \
         localmode.ui \
         login.ui \
         netmode.ui \
