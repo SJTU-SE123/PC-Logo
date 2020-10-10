@@ -23,6 +23,7 @@ StartWindow::StartWindow(QWidget *parent) :
     this->setWindowTitle("PC Logo 开始");
     logoWindow = nullptr;
     t = nullptr;
+//    ui->LocalMode->setStyleSheet("border-image: url(:/image/crawling.gif)");
 }
 
 StartWindow::~StartWindow()

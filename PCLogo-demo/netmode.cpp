@@ -2,6 +2,7 @@
 #include "ui_netmode.h"
 #include <QToolButton>
 #include "codeeditor.h"
+#include "connect.h"
 
 NetMode::NetMode(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +12,7 @@ NetMode::NetMode(QWidget *parent) :
     this->setWindowTitle("PC Logo 联网");
     this->palette();
     initForm();
+    connect();
 }
 
 NetMode::~NetMode()
@@ -58,4 +60,9 @@ void NetMode::initForm(){
     mask->setStyleSheet("background-color: #404142;");
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
     tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
+}
+
+void NetMode::connect(){
+    netConnection = new Connect();
+    netConnection->show();
 }

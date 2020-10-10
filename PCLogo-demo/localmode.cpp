@@ -62,3 +62,4 @@ void LocalMode::initForm(){
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
     tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
 }
+
