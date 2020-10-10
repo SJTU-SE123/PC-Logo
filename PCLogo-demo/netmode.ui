@@ -58,10 +58,18 @@
     <addaction name="action_14"/>
     <addaction name="action_15"/>
    </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>联网模式</string>
+    </property>
+    <addaction name="action_10"/>
+    <addaction name="action_16"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_4"/>
    <addaction name="menu_3"/>
+   <addaction name="menu_5"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="mainToolBar">
@@ -146,6 +154,16 @@
   <action name="action_15">
    <property name="text">
     <string>构建</string>
+   </property>
+  </action>
+  <action name="action_10">
+   <property name="text">
+    <string>双人单龟</string>
+   </property>
+  </action>
+  <action name="action_16">
+   <property name="text">
+    <string>双人双龟</string>
    </property>
   </action>
  </widget>

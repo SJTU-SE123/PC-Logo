@@ -14,6 +14,7 @@ StartWindow::StartWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->otherButton->setStyleSheet("border: 0px;");
+    this->setPalette(QColor(153, 144, 135));
     gif = new QMovie(":/image/crawling.gif");
     gifPlayer = new QLabel(this);
     gifPlayer->setMovie(gif);

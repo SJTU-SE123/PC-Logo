@@ -29,12 +29,13 @@ void Canvas::activate(){
 }
 
 void Canvas::paintExample(){
-    QPainter painter(this);
-    painter.setPen(QPen(Qt::black, 1));
-    painter.drawLine(x, y, x, y-50);
-    y -= 50;
-    update();
-    theLogo->setGeometry(x-15, y-15, 30, 30);
+//    QPainter painter(this);
+//    painter.setPen(QPen(Qt::black, 1));
+//    painter.drawLine(x, y, x, y-50);
+//    y -= 50;
+//    update();
+//    theLogo->setGeometry(x-15, y-15, 30, 30);
+
 //    QPainter painter(this);
 //    theLogo = new QPixmap(":/image/littlelogo.png");
 //    painter.drawPixmap(x-16, y-16, 32, 32, *theLogo);
