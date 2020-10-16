@@ -2,12 +2,14 @@
 一个简单的界面原型。
 ## 对各个class的简短介绍。
 * StartWindow类
-    * 1张gif图和4个按钮。图标已经配置好了。
-    * “帮助文档”的功能尚未实现。
-    * 按下“单机运行”将打开一个LocalMode类的新窗口。
-    * 按下“联机运行”将打开一个NetMode类的新窗口。
-    * 按下“退出程序”将会关闭本窗口。
-* LocalMode类和NetMode类
+    * 按下“选择模式”将打开一个ModeSelect类的新窗口。
+    * “查看帮助”的功能尚未实现。
+    * 按下“退出程序”将会关闭所有窗口。
+* ModeSelect类
+    * 按下“单机运行”将会打开一个LocalMode类的新窗口。
+    * 按下“联网运行”将会打开一个NetMode类的新窗口。
+    * “新手教程”的功能尚未实现。
+* LocalMode类、NetMode类
     * 将被设计为运行PC-Logo主要逻辑的窗口。
     * 由菜单栏（上方）、工具栏（左侧）、画布、代码编辑区组成。
     * 目前工具栏只有三个图标，都是从QT界面上截的。
@@ -20,3 +22,9 @@
     * 大部分代码是参考[官网示例](https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html)的。
     * CodeEditor类继承了QPlainText类，用作代码编辑区。
     * LineNumberArea类被用于显示行号。
+* Login类、Register类、UserInfo类
+    * 非常原始的登陆、注册、查看用户信息界面。
+    * 有待之后改进。
+* Connect类
+    * 设计用来选择联网用户。非常原始。
+    * 有待之后改进。
