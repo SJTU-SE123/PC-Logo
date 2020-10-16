@@ -2,8 +2,7 @@
 #define STARTWINDOW_H
 
 #include <QWidget>
-#include <QMainWindow>
-#include <QMovie>
+//#include <QMovie>
 #include <QLabel>
 
 namespace Ui {
@@ -19,16 +18,14 @@ public:
     ~StartWindow();
 
 private slots:
-    void on_LocalMode_clicked();
-    void on_NetMode_clicked();
+    void on_ModeSelect_clicked();
     void on_Exit_clicked();
     void on_otherButton_clicked();
     void onTaskBoxContextMenuEvent();
 
 private:
     Ui::StartWindow *ui;
-    QMainWindow *logoWindow;
-    QWidget *t;
+    QWidget *t, *nextWidget;
     QMovie *gif;
     QLabel *gifPlayer;
 };

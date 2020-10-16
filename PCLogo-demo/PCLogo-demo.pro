@@ -31,6 +31,7 @@ SOURCES += \
         localmode.cpp \
         login.cpp \
         main.cpp \
+        modeselect.cpp \
         netmode.cpp \
         register.cpp \
         startwindow.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
         linenumberarea.h \
         localmode.h \
         login.h \
+        modeselect.h \
         netmode.h \
         register.h \
         startwindow.h \
@@ -53,6 +55,7 @@ FORMS += \
         connect.ui \
         localmode.ui \
         login.ui \
+        modeselect.ui \
         netmode.ui \
         register.ui \
         startwindow.ui \

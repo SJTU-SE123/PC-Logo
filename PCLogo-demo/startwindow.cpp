@@ -1,11 +1,11 @@
 #include "startwindow.h"
 #include "ui_startwindow.h"
-#include "localmode.h"
-#include "netmode.h"
 #include <QMenu>
 #include "register.h"
 #include "login.h"
 #include "userinfo.h"
+#include "modeselect.h"
+
 //#include <QDebug>
 
 StartWindow::StartWindow(QWidget *parent) :
@@ -14,17 +14,23 @@ StartWindow::StartWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->otherButton->setStyleSheet("border: 0px;");
-    this->setPalette(QColor(153, 144, 135));
-    gif = new QMovie(":/image/crawling.gif");
-    gifPlayer = new QLabel(this);
-    gifPlayer->setMovie(gif);
-    gif->start();
-    gifPlayer->setGeometry(30, 10, 340, 130);
+
+//    gif = new QMovie(":/image/crawling.gif");
+//    gifPlayer = new QLabel(this);
+//    gifPlayer->setMovie(gif);
+//    gif->start();
+//    gifPlayer->setGeometry(30, 10, 340, 130);
 
     this->setWindowTitle("PC Logo 开始");
-    logoWindow = nullptr;
+    nextWidget = nullptr;
     t = nullptr;
-//    ui->LocalMode->setStyleSheet("border-image: url(:/image/crawling.gif)");
+    QPalette palette;
+    QPixmap pixmap(":/image/startwindow.png");
+    palette.setBrush(QPalette::Window, QBrush(pixmap));
+    this->setPalette(palette);
+    ui->ModeSelect->setStyleSheet("background-image: url(:/image/toselectmode.png);");
+    ui->Help->setStyleSheet("background-image: url(:/image/help.png);");
+    ui->Exit->setStyleSheet("background-image: url(:/image/exit.png);");
 }
 
 StartWindow::~StartWindow()
@@ -32,26 +38,14 @@ StartWindow::~StartWindow()
     delete ui;
 }
 
-void StartWindow::on_LocalMode_clicked()
+void StartWindow::on_ModeSelect_clicked()
 {
-    if (logoWindow != nullptr) {
-        delete logoWindow;
-        logoWindow = nullptr;
+    if (nextWidget != nullptr){
+        delete nextWidget;
+        nextWidget = nullptr;
     }
-    logoWindow = new LocalMode();
-    logoWindow->show();
-//    this->hide();
-}
-
-void StartWindow::on_NetMode_clicked()
-{
-    if (logoWindow != nullptr) {
-        delete logoWindow;
-        logoWindow = nullptr;
-    }
-    logoWindow = new NetMode();
-    logoWindow->show();
-//    this->hide();
+    nextWidget = new ModeSelect();
+    nextWidget->show();
 }
 
 void StartWindow::on_Exit_clicked()
