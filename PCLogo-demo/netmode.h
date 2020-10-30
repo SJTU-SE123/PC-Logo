@@ -5,7 +5,7 @@
 #include <QTabWidget>
 #include <QLabel>
 #include "codeeditor.h"
-#include <QToolButton>
+#include <QPushButton>
 #include "canvas.h"
 
 namespace Ui {
@@ -24,9 +24,8 @@ private:
     Ui::NetMode *ui;
     Canvas *canvas;
     QTabWidget *tabEditor;
-    QLabel *mask;
     CodeEditor *localEditor, *netEditor;
-    QToolButton *runButton, *debugButton, *buildButton;
+    QPushButton *runAllButton, *runLineButton;
     QWidget *netConnection;
 
 private slots:

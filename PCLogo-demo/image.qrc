@@ -16,5 +16,7 @@
         <file>image/tutorial.png</file>
         <file>image/toselectmode.png</file>
         <file>image/selectmode.png</file>
+        <file>image/runall.png</file>
+        <file>image/runline.png</file>
     </qresource>
 </RCC>

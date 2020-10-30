@@ -6,7 +6,7 @@
 #include <QLabel>
 #include <QTabWidget>
 #include "codeeditor.h"
-#include <QToolButton>
+#include <QPushButton>
 #include "canvas.h"
 
 namespace Ui {
@@ -26,8 +26,7 @@ private:
     Canvas *canvas;
     QTabWidget *tabEditor;
     CodeEditor *editor;
-    QLabel *welcome, *mask;
-    QToolButton *runButton, *debugButton, *buildButton;
+    QPushButton *runAllButton, *runLineButton;
 
 private slots:
     void initForm();

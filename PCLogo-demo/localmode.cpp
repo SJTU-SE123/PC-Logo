@@ -1,4 +1,4 @@
-#include "localmode.h"
+ #include "localmode.h"
 #include "ui_localmode.h"
 #include <QToolButton>
 
@@ -14,40 +14,62 @@ LocalMode::LocalMode(QWidget *parent) :
 LocalMode::~LocalMode()
 {
     delete ui;
-    delete welcome;
     delete canvas;
     delete editor;
 }
 
 
 void LocalMode::initForm(){
-    this->setFixedSize(1200, 900);
-    this->setStyleSheet("QWidget:window {background-color: #eeeeee;}");
-    ui->mainToolBar->setStyleSheet("background-color: #404142;");
-    ui->statusbar->setStyleSheet("background-color: #404142;");
+    this->setFixedSize(1200, 800);
+    this->setPalette(QColor("#d7f0ff"));
+    this->setStyleSheet("QWidget:window {background-color: #d7f0ff;}"
+                        "QMenu {background-color: white; border: 1px solid white;}"
+                        "QMenu::item {background-color: transparent; padding:8px 32px; margin:0px 8px; border-bottom:1px solid #DBDBDB;}"
+                        "QTabWidget::pane{"
+                        "   border-top: 1px solid #E5E5E5; "
+                        "   border-left: 1px solid #E5E5E5; "
+                        "   position: absolute;"
+                        "   font-size: 14px;"
+                        "   background-color: #FFFFFF;"
+                        "}"
+                        "QTabBar::tab {"
+                        "   border: 1px solid black;"
+                        "   border-bottom-color: #FFFFFF;"
+                        "   border-top-left-radius: 4px;"
+                        "   border-top-right-radius: 4px;"
+                        "   min-width: 100px;"
+                        "   padding: 2px;"
+                        "   font-size: 18px;"
+                        "   font-family: Microsoft Yahei;"
+                        "   background-color: #FFFFFF;"
+                        "   border-bottom: 2px solid gray;"
+                        "   color: gray;"
+                        "}"
+                        "QTabBar::tab:selected, QTabBar::tab:hover{background-color:#FFFFFF;}"
+                        "QTabBar::tab:selected {color: #2080F7; border-bottom: 2px solid #2080F7; font-weight: bold; background-color:#FFFFFF;}"
+                        "QTabWidget::tab-bar {"
+                        "   border-top: 2px solid #E5E5E5;"
+                        "   border-bottom: 2px solid #E5E5E5;"
+                        "   border-left:1px solid #E5E5E5;"
+                        "   alignment: left;"
+                        "   font-size: 14px;"
+                        "   background-color:#FFFFFF;"
+                        "}");
+    ui->statusbar->setStyleSheet("background-color: #d7f0ff;");
 
-    runButton = new QToolButton();
-    runButton->setIcon(QIcon(":/image/run.png"));
-    runButton->setFixedSize(30, 30);
-    ui->mainToolBar->addWidget(runButton);
-    debugButton = new QToolButton();
-    debugButton->setIcon(QIcon(":/image/debug.png"));
-    debugButton->setFixedSize(30, 30);
-    ui->mainToolBar->addWidget(debugButton);
-    buildButton = new QToolButton();
-    buildButton->setIcon(QIcon(":/image/build.png"));
-    buildButton->setFixedSize(30, 30);
-    ui->mainToolBar->addWidget(buildButton);
+    runAllButton = new QPushButton(this);
+    runAllButton->setGeometry(1030, 35, 110, 30);
+    runAllButton->setStyleSheet("background-image: url(:/image/runall.png)");
+    runLineButton = new QPushButton(this);
+    runLineButton->setGeometry(900, 35, 110, 30);
+    runLineButton->setStyleSheet("background-image: url(:/image/runline.png)");
 
-    welcome = new QLabel(this);
-    mask = new QLabel(this);
     canvas = new Canvas(this);
     tabEditor = new QTabWidget(this);
-
-    welcome->setGeometry(50, 45, 380, 20);
-    mask->setGeometry(38, 25, 1162, 15);
-    canvas->setGeometry(470, 50, 720, 825);
-    tabEditor->setGeometry(38, 70, 390, 805);
+    canvas->setGeometry(450, 70, 720, 715);
+    tabEditor->setGeometry(30, 50, 390, 735);
+    canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
+    tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
 
     editor = new CodeEditor();
     editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
@@ -55,11 +77,5 @@ void LocalMode::initForm(){
     editor = new CodeEditor();
     editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
     tabEditor->addTab(editor, "未命名2");
-
-    welcome->setText("欢迎来到PCLogo的世界，请在下框中输入指令吧OvO");
-    welcome->setStyleSheet("font-family: Microsoft Yahei; font-size: 15px;");
-    mask->setStyleSheet("background-color: #404142;");
-    canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
-    tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
 }
 
