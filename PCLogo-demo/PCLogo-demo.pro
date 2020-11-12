@@ -35,7 +35,9 @@ SOURCES += \
         netmode.cpp \
         register.cpp \
         startwindow.cpp \
-        userinfo.cpp
+        userinfo.cpp \
+    lineinterpreter.cpp \
+    command.cpp
 
 HEADERS += \
         canvas.h \
@@ -49,7 +51,9 @@ HEADERS += \
         netmode.h \
         register.h \
         startwindow.h \
-        userinfo.h
+        userinfo.h \
+    lineinterpreter.h \
+    command.h
 
 FORMS += \
         connect.ui \

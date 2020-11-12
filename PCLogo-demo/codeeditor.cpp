@@ -2,6 +2,7 @@
 #include "codeeditor.h"
 #include <QPainter>
 #include <QTextBlock>
+#include <QDebug>
 
 CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {

@@ -1,6 +1,8 @@
  #include "localmode.h"
 #include "ui_localmode.h"
 #include <QToolButton>
+#include <QDebug>
+#include "command.h"
 
 LocalMode::LocalMode(QWidget *parent) :
     QMainWindow(parent),
@@ -77,5 +79,13 @@ void LocalMode::initForm(){
     editor = new CodeEditor();
     editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
     tabEditor->addTab(editor, "未命名2");
+
+    connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseLine()));
+}
+
+void LocalMode::parseLine() {
+    QString str = this->editor->toPlainText();
+    command* cmd = this->lineInterpreter->parseLine(str);
+    this->canvas->paintExample();
 }
 

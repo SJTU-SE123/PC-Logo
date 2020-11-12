@@ -8,6 +8,7 @@
 #include "codeeditor.h"
 #include <QPushButton>
 #include "canvas.h"
+#include "lineinterpreter.h"
 
 namespace Ui {
 class LocalMode;
@@ -27,9 +28,11 @@ private:
     QTabWidget *tabEditor;
     CodeEditor *editor;
     QPushButton *runAllButton, *runLineButton;
+    LineInterpreter *lineInterpreter;
 
 private slots:
     void initForm();
+    void parseLine();
 };
 
 #endif // LOCALMODE_H
