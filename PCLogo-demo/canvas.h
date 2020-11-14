@@ -4,14 +4,16 @@
 #include <QWidget>
 #include <QPainter>
 #include <QLabel>
+#include "command.h"
 
 class Canvas : public QWidget
 {
     Q_OBJECT
 public:
     explicit Canvas(QWidget *parent = nullptr);
-    void activate();
-    void paintExample();
+    //id activate();
+    void paintLine(int distance);
+    void parseCommand(command* cmd);
 
 signals:
 
@@ -20,9 +22,10 @@ public slots:
 
 private:
     QLabel *theLogo;
-//    QPixmap *theLogo;
-    int x, y;
-    float theta;
+    qreal turtleX, turtleY;
+    qreal theta;
+    QList<QLineF> lineList;
+    QList<QPair<QPointF, QPoint>> ovalList;
 };
 
 #endif // STAGE_H

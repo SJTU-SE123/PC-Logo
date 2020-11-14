@@ -17,6 +17,9 @@ private:
    command* next;
 
 public:
+   cmdType getType() {return type;}
+   int getDistance() {return u.distance;}
+   command* getNext() {return next;}
    command(cmdType type, int x, command* next);
    command(cmdType type, int x, int y, command* next);
    command(cmdType type, int times, command* content, command* next);

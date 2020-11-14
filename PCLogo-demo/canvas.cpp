@@ -1,9 +1,16 @@
 #include "canvas.h"
 #include <QPainter>
 #include <QStyleOption>
+#include <QDebug>
+#include <QtMath>
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
+    turtleX = turtleY = 325;
+    theta = 0;
+    theLogo = new QLabel(this);
+    theLogo->setStyleSheet("border: 0px");
+    update();
 }
 
 void Canvas::paintEvent(QPaintEvent*)
@@ -12,31 +19,34 @@ void Canvas::paintEvent(QPaintEvent*)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-    activate();
-    paintExample();
-}
-
-void Canvas::activate(){
-    x = (this->geometry().width()) / 2;
-    y = (this->geometry().height()) / 2;
-    theta = 0;
-    theLogo = new QLabel(this);
-    theLogo->setPixmap(QPixmap(":/image/littlelogo.png"));
-    theLogo->setGeometry(x-15, y-15, 30, 30);
-    theLogo->setStyleSheet("border: 0px");
-//    theLogo->setAttribute(Qt::WA_Tran slucentBackground);
+    for (auto line : lineList) {
+        p.drawLine(line);
+    }
+    for (auto oval : ovalList) {
+        p.drawEllipse(oval.first, oval.second.x(), oval.second.y());
+    }
+    QMatrix leftmatrix;
+    leftmatrix.rotate(theta);
+    theLogo->setPixmap(QPixmap(":/image/littlelogo.png").transformed(leftmatrix,Qt::SmoothTransformation));
+    theLogo->setGeometry(turtleX, turtleY, 30, 30);
     theLogo->show();
 }
 
-void Canvas::paintExample(){
-    QPainter painter(this);
-    painter.setPen(QPen(Qt::black, 1));
-    painter.drawLine(x, y, x, y-50);
-    y -= 50;
+void Canvas::paintLine(int distance){
+    qreal newTurtleX = turtleX + qCos(theta) * distance;
+    qreal newTurtleY = turtleY + qSin(theta) * distance;
+    lineList.append(QLineF(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY)));
+    turtleX = newTurtleX;
+    turtleY = newTurtleY;
     update();
-    theLogo->setGeometry(x-15, y-15, 30, 30);
-
-//    QPainter painter(this);
-//    theLogo = new QPixmap(":/image/littlelogo.png");
-//    painter.drawPixmap(x-16, y-16, 32, 32, *theLogo);
 }
+
+void Canvas::parseCommand(command *cmd) {
+    while(cmd) {
+        if (cmd->getType() == STRAIGHTMOVE) {
+            paintLine(cmd->getDistance());
+        }
+        cmd = cmd->getNext();
+    }
+}
+

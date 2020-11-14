@@ -86,6 +86,6 @@ void LocalMode::initForm(){
 void LocalMode::parseLine() {
     QString str = this->editor->toPlainText();
     command* cmd = this->lineInterpreter->parseLine(str);
-    this->canvas->paintExample();
+    this->canvas->paintLine(10);
 }
 
