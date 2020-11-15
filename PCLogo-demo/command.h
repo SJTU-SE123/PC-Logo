@@ -19,6 +19,12 @@ private:
 public:
    cmdType getType() {return type;}
    int getDistance() {return u.distance;}
+   int getColor() {return u.color;}
+   int getAngle() {return u.angle;}
+   int getTimes() {return u.info.times;}
+   int getX() {return u.pos.x;}
+   int getY() {return u.pos.y;}
+   command* getContent() {return u.info.content;}
    command* getNext() {return next;}
    command(cmdType type, int x, command* next);
    command(cmdType type, int x, int y, command* next);

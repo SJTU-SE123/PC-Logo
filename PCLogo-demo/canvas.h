@@ -14,6 +14,9 @@ public:
     //id activate();
     void paintLine(int distance);
     void parseCommand(command* cmd);
+    void setAngle(int angle);
+    void paintOval(int x,int y);
+    void setPos(int x,int y);
 
 signals:
 
