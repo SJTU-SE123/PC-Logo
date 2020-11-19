@@ -34,7 +34,7 @@ void Canvas::paintEvent(QPaintEvent*)
 }
 
 void Canvas::paintLine(int distance){
-    qreal newTurtleX = turtleX + qCos(qDegreesToRadians(theta)) * distance;
+    qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance;
     qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
     lineList.append(QLineF(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY)));
     turtleX = newTurtleX;
