@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/run.png</file>
+        <file>image/debug.png</file>
+        <file>image/build.png</file>
+        <file>image/crawling.gif</file>
+        <file>logo.ico</file>
+        <file>image/logo.png</file>
+        <file>image/littlelogo.png</file>
+        <file>image/logojpg.jpg</file>
+        <file>image/startwindow.png</file>
+        <file>image/exit.png</file>
+        <file>image/help.png</file>
+        <file>image/localmode.png</file>
+        <file>image/netmode.png</file>
+        <file>image/tutorial.png</file>
+        <file>image/toselectmode.png</file>
+        <file>image/selectmode.png</file>
+        <file>image/runall.png</file>
+        <file>image/runline.png</file>
+    </qresource>
+</RCC>
