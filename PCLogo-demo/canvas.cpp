@@ -7,10 +7,11 @@
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
-    turtleX = turtleY = 325;
+    turtleX = turtleY = 340;
     theta = 90;
     theLogo = new QLabel(this);
-    theLogo->setStyleSheet("border: 0px");
+    theLogo->setStyleSheet("border: 0px;");
+    theLogo->setAttribute(Qt::WA_TranslucentBackground, false);
     update();
 }
 
@@ -29,12 +30,12 @@ void Canvas::paintEvent(QPaintEvent*)
     QMatrix leftmatrix;
     leftmatrix.rotate(theta - 90);
     theLogo->setPixmap(QPixmap(":/image/littlelogo.png").transformed(leftmatrix,Qt::SmoothTransformation));
-    theLogo->setGeometry(turtleX, turtleY, 30, 30);
+    theLogo->setGeometry(turtleX-20, turtleY-20, 40, 40);
     theLogo->show();
 }
 
 void Canvas::paintLine(int distance){
-    qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance;
+    qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
     qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
     lineList.append(QLineF(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY)));
     turtleX = newTurtleX;

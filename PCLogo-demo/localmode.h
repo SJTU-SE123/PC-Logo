@@ -5,8 +5,8 @@
 #include <QWidget>
 #include <QLabel>
 #include <QTabWidget>
-#include "codeeditor.h"
 #include <QPushButton>
+#include "codeeditor.h"
 #include "canvas.h"
 #include "lineinterpreter.h"
 #include "speech/audio.h"

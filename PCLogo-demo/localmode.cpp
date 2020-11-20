@@ -63,15 +63,14 @@ void LocalMode::initForm(){
     ui->statusbar->setStyleSheet("background-color: #d7f0ff;");
 
     runAllButton = new QPushButton(this);
-    runAllButton->setGeometry(1030, 35, 110, 30);
+    runAllButton->setGeometry(1030, 35, 110, 31);
     runAllButton->setStyleSheet("background-image: url(:/image/runall.png)");
     runLineButton = new QPushButton(this);
-    runLineButton->setGeometry(900, 35, 110, 30);
+    runLineButton->setGeometry(900, 35, 110, 31);
     runLineButton->setStyleSheet("background-image: url(:/image/runline.png)");
     speechButton = new QPushButton(this);
-    speechButton->setGeometry(770, 35, 110, 30);
-    speechButton->setText("语音输入");
-//    runLineButton->setStyleSheet("background-image: url(:/image/runline.png)");
+    speechButton->setGeometry(770, 35, 110, 31);
+    speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
 
     canvas = new Canvas(this);
     tabEditor = new QTabWidget(this);
@@ -95,7 +94,7 @@ void LocalMode::parseLine() {
 }
 
 void LocalMode::speechStart(){
-    speechButton->setText("松开识别");
+    speechButton->setStyleSheet("background-image: url(:/image/speech-on.png)");
     //开始录音
     audio = new Audio;
     audio->startAudio("E:\\audio.pcm");
@@ -105,11 +104,10 @@ void LocalMode::speechEnd(){
     //停止录音
     audio->stopAudio();
     //修改按钮文字
-    speechButton->setText("正在识别");
+    speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
     //开始识别
     Speech m_speech;
     QString text =  m_speech.speechIdentify("E:\\audio.pcm");
+    qDebug() << text;
     this->editor->appendPlainText(text.left(text.size() - 1));
-
-    speechButton->setText("语音识别");
 }
