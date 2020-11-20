@@ -1,6 +1,6 @@
 <template>
   <el-form :ref="form" :model="form">
-    <el-form-item label=""用户名/邮箱/手机号">
+    <el-form-item label="用户名/邮箱/手机号">
       <el-input v-model="form.username" aria-placeholder="用户名/邮箱/手机号" />
     </el-form-item>
     <el-form-item label="密码">
@@ -42,8 +42,8 @@ export default {
                 .post(
                     'http://192.168.1.110:8080/login',
                     {
-                        username: this.username,
-                        password: this.password
+                        username: this.form.username,
+                        password: this.form.password
                     }
                 )
                 .then(

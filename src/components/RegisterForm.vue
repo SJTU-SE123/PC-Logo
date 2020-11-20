@@ -40,9 +40,9 @@ export default {
                 .post(
                 'http://192.168.1.110:8080/user/register',
                 {
-                    username: this.username,
-                    password: this.password,
-                    mailAddr: this.mail_tel
+                    username: this.form.username,
+                    password: this.form.password,
+                    mailAddr: this.form.mail_tel
                 })
                 .then(
                     (data) => {
