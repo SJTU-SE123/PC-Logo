@@ -1,10 +1,10 @@
 <template>
   <el-form :ref="form" :model="form">
-    <el-form-item>
+    <el-form-item label=""用户名/邮箱/手机号">
       <el-input v-model="form.username" aria-placeholder="用户名/邮箱/手机号" />
     </el-form-item>
-    <el-form-item>
-      <el-input v-model="form.password" aria-placeholder="密码" />
+    <el-form-item label="密码">
+      <el-input v-model="form.password" aria-placeholder="密码" show-password />
     </el-form-item>
     <el-form-item>
       <el-checkbox v-model="form.checked">记住我</el-checkbox>
@@ -40,7 +40,7 @@ export default {
         login() {
             return this.$axios
                 .post(
-                    'http://localhost:8080/login',
+                    'http://192.168.1.110:8080/login',
                     {
                         username: this.username,
                         password: this.password

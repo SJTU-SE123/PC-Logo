@@ -1,13 +1,13 @@
 <template>
   <el-form ref="form" v-model="form">
-    <el-form-item>
+    <el-form-item label="用户名">
       <el-input v-model="form.username" aria-placeholder="用户名" />
     </el-form-item>
-    <el-form-item>
+    <el-form-item label="邮箱/手机号">
       <el-input v-model="form.mail_tel" aria-placeholder="邮箱/手机号" />
     </el-form-item>
-    <el-form-item>
-      <el-input v-model="form.password" aria-placeholder="密码" />
+    <el-form-item label="密码">
+      <el-input v-model="form.password" aria-placeholder="密码" show-password />
     </el-form-item>
     <el-form-item>
       <el-checkbox v-model="form.checked">我已阅读并同意用户须知</el-checkbox>
@@ -32,9 +32,13 @@ export default {
     },
     methods: {
         register() {
+            if (!this.form.checked) {
+                this.$message.error('请勾选 我已阅读并同意用户须知')
+                return
+            }
             return this.$axios
                 .post(
-                'http://localhost:8080/user/register',
+                'http://192.168.1.110:8080/user/register',
                 {
                     username: this.username,
                     password: this.password,
