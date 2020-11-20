@@ -34,7 +34,7 @@ export default {
         register() {
             return this.$axios
                 .post(
-                '',
+                'http://localhost:8080/user/register',
                 {
                     username: this.username,
                     password: this.password,

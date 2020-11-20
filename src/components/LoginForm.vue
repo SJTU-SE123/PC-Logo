@@ -40,7 +40,7 @@ export default {
         login() {
             return this.$axios
                 .post(
-                    '',
+                    'http://localhost:8080/login',
                     {
                         username: this.username,
                         password: this.password
