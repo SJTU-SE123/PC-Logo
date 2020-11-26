@@ -37,7 +37,9 @@ SOURCES += \
         startwindow.cpp \
         userinfo.cpp \
     lineinterpreter.cpp \
-    command.cpp
+    command.cpp \
+    chat.cpp \
+    advancedchat.cpp
 
 HEADERS += \
         canvas.h \
@@ -53,17 +55,21 @@ HEADERS += \
         startwindow.h \
         userinfo.h \
     lineinterpreter.h \
-    command.h
+    command.h \
+    chat.h \
+    advancedchat.h
 
 FORMS += \
         connect.ui \
         localmode.ui \
         login.ui \
         modeselect.ui \
-        netmode.ui \
         register.ui \
         startwindow.ui \
-        userinfo.ui
+        userinfo.ui \
+    chat.ui \
+    netmode.ui \
+    advancedchat.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -74,3 +80,6 @@ RESOURCES += \
     image.qrc
 
 RC_ICONS = logo.ico
+
+DISTFILES += \
+    .gitignore

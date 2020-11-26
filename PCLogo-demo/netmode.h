@@ -22,15 +22,6 @@ public:
 
 private:
     Ui::NetMode *ui;
-    Canvas *canvas;
-    QTabWidget *tabEditor;
-    CodeEditor *localEditor, *netEditor;
-    QPushButton *runAllButton, *runLineButton;
-    QWidget *netConnection;
-
-private slots:
-    void initForm();
-    void connect();
 };
 
 #endif // NETMODE_H
