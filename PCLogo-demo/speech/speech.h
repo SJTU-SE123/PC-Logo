@@ -2,7 +2,6 @@
 #define SPEECH_H
 
 #include <QObject>
-#include <http.h>
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
@@ -10,6 +9,7 @@
 #include <QHostInfo>
 #include <QFile>
 #include <QMessageBox>
+#include "http.h"
 
 //获取access_token相关
 const QString baiduTokenUrl = "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=%1&client_secret=%2&";
