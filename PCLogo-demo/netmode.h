@@ -14,8 +14,10 @@
 #include <QProcess>
 #include <QColorDialog>
 #include <QTextCharFormat>
+#include <QModelIndex>
 #include "canvas.h"
 #include "codeeditor.h"
+#include "chat.h"
 
 class QUdpSocket;
 enum MessageType {NewParticipant,ParticipantLeft};
@@ -36,6 +38,7 @@ private:
     Ui::NetMode *ui;
     QUdpSocket *udpSocket;
     qint16 port;
+    Chat *privateChat;
 
 protected:
     void newParticipant(QString userName, QString localHostName,QString ipAddress);
@@ -46,7 +49,7 @@ protected:
 
 private slots:
     void processPendingDatagrams();
-
+    void on_tableWidget_doubleClicked(QModelIndex index);
 };
 
 #endif // NETMODE_H

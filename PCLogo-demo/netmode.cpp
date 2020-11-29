@@ -111,4 +111,10 @@ void NetMode::processPendingDatagrams() {
     }
 }
 
+void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
+    privateChat = new Chat(ui->tableWidget->item(index.row(),1)->text(), //接收主机名
+                   ui->tableWidget->item(index.row(),2)->text()) ;//接收用户IP
+    privateChat->show();
+}
+
 
