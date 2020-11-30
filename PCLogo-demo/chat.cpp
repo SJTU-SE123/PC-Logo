@@ -27,12 +27,49 @@ QString Chat::getIp() {
        if(address.protocol() == QAbstractSocket::IPv4Protocol) //我们使用IPv4地址
             return address.toString();
     }
-    return 0;
+    return nullptr;
+}
+
+QString Chat::getUsername() {
+    QStringList envVariables;
+    envVariables << "USERNAME.*" << "USER.*" << "USERDOMAIN.*"
+                 << "HOSTNAME.*" << "DOMAINNAME.*";
+    QStringList environment = QProcess::systemEnvironment();
+    foreach (QString string, envVariables) {
+        int index = environment.indexOf(QRegExp(string));
+        if (index != -1) {
+            QStringList stringList = environment.at(index).split('=');
+            if (stringList.size() == 2) {
+                return stringList.at(1);
+            }
+        }
+    }
+    return nullptr;
 }
 
 void Chat::processPendingDatagrams() {
     while(chatUdp->hasPendingDatagrams()) {
+       QByteArray datagram;
+       datagram.resize(chatUdp->pendingDatagramSize());
+       chatUdp->readDatagram(datagram.data(),datagram.size());
+       QDataStream in(&datagram,QIODevice::ReadOnly);
+       int messageType;
+       in >> messageType;
+       QString userName,localHostName,ipAddress,messagestr;
+       QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+       switch(messageType) {
+           case Message: {
+               in >>userName >>localHostName >>ipAddress >>messagestr;
+               ui->textBrowser->setTextColor(Qt::red);
+               ui->textBrowser->setCurrentFont(QFont("Times New Roman",12));
+               ui->textBrowser->append("[ " +localHostName+" ] "+ time);//与主机名聊天中
+               ui->textBrowser->append(messagestr);
+               this->draw(messagestr);
+           }
+           case Exit: {
 
+           }
+       }
     }
 }
 
@@ -47,9 +84,35 @@ void Chat::on_sendButton_clicked() {
     qDebug() << msg;
     ui->textEdit->clear();
     ui->textEdit->setFocus();
+    this->sendMessage(Message);
+    this->draw(msg);
     return;
+}
+
+void Chat::sendMessage(MessageType type) {
+    QByteArray data;
+    QDataStream out(&data,QIODevice::WriteOnly);
+    QString localHostName = QHostInfo::localHostName();
+    QString address = getIp();
+    out << type << getUsername() << localHostName;
+    switch(type) {
+        case Message: {
+            QString msg = ui->textEdit->toPlainText();
+            out << address << msg;
+            //ui->textBrowser->verticalScrollBar()->setValue(ui->textBrowser->verticalScrollBar()->maximum());
+        }
+        case Exit: {
+
+        }
+    }
+    chatUdp->writeDatagram(data,data.length(), QHostAddress(oppUserIp), 45456);
 }
 
 void Chat::on_exitButton_clicked() {
 
+}
+
+void Chat::draw(QString str) {
+    command* cmd = this->lineInterpreter->parseLine(str);
+    this->canvas->parseCommand(cmd);
 }

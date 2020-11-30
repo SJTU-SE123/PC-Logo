@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>810</width>
     <height>600</height>
    </rect>
   </property>
@@ -18,76 +18,11 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>440</y>
+      <y>410</y>
       <width>390</width>
       <height>153</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QFontComboBox" name="fontComboBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>410</y>
-      <width>213</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>410</y>
-      <width>69</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>9</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>10</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>11</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>12</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>13</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>14</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>15</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>16</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>17</string>
-     </property>
-    </item>
    </widget>
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
@@ -96,6 +31,65 @@
       <y>10</y>
       <width>390</width>
       <height>390</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>570</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>运行</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>570</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>退出</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>575</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>B用户</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="textBrowser_2">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>10</y>
+      <width>390</width>
+      <height>390</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit_2">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>410</y>
+      <width>390</width>
+      <height>153</height>
      </rect>
     </property>
    </widget>

@@ -16,6 +16,13 @@
 #include <QTextCharFormat>
 #include "canvas.h"
 #include "codeeditor.h"
+#include "lineinterpreter.h"
+
+enum MessageType
+{
+    Message,
+    Exit
+};
 
 namespace Ui {
 class Chat;
@@ -29,6 +36,10 @@ public:
     Chat(QString oppUserName, QString oppUserIp);
     ~Chat();
     QString getIp();
+    QString getUsername();
+    void sendMessage(MessageType type);
+    void draw(QString str);
+
 
 private:
     Ui::Chat *ui;
@@ -36,6 +47,7 @@ private:
     QString oppUserName, oppUserIp;
     QUdpSocket *chatUdp;
     qint32 chatPort;
+    LineInterpreter *lineInterpreter;
 
 private slots:
     void processPendingDatagrams();
