@@ -8,6 +8,12 @@ TEMPLATE = app
 
 include(../PCLogo-demo.pri)
 
-SOURCES +=  tst_test.cpp
+SOURCES +=  \
+    main.cpp \
+    testlineinterpreter.cpp
 
 INCLUDEPATH += ../
+
+HEADERS += \
+    testlineinterpreter.h \
+    testrunner.h
