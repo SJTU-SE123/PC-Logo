@@ -10,10 +10,12 @@ include(../PCLogo-demo.pri)
 
 SOURCES +=  \
     main.cpp \
-    testlineinterpreter.cpp
+    testlineinterpreter.cpp \
+    teststartwindow.cpp
 
 INCLUDEPATH += ../
 
 HEADERS += \
     testlineinterpreter.h \
-    testrunner.h
+    testrunner.h \
+    teststartwindow.h

@@ -16,6 +16,7 @@ class StartWindow : public QWidget
 public:
     explicit StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
+    QWidget *getNextWidget() {return this->nextWidget;}
 
 private slots:
     void on_ModeSelect_clicked();

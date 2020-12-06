@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QTimer>
-#include <QCoreApplication>
+#include <QApplication>
 #include <QtTest>
 
 /*
@@ -34,7 +34,7 @@ public:
 
     bool runTests(int argc, char * argv[])
     {
-        QCoreApplication app(argc, argv);
+        QApplication app(argc, argv);
         QTimer::singleShot(0, this, SLOT(run()));
         app.exec();
 
@@ -45,7 +45,7 @@ private slots:
     void run()
     {
         doRunTests();
-        QCoreApplication::instance()->quit();
+        QApplication::instance()->quit();
     }
 
 private:
@@ -57,7 +57,7 @@ private:
         //    run all test classes (with logging):         "TestSuite.exe"
         //    print all test classes:                      "TestSuite.exe -classes"
         //    run one test class with QtTest parameters:   "TestSuite.exe testClass [options] [testfunctions[:testdata]]...
-        if (QCoreApplication::arguments().size() > 1 && QCoreApplication::arguments()[1] == "-help")
+        if (QApplication::arguments().size() > 1 && QApplication::arguments()[1] == "-help")
         {
             qDebug() << "Usage:";
             qDebug().noquote() << "run all test classes (with logging):\t\t" << qAppName();
@@ -72,28 +72,28 @@ private:
             QStringList arguments;
             QString testName = test->metaObject()->className();
 
-            if (QCoreApplication::arguments().size() > 1)
+            if (QApplication::arguments().size() > 1)
             {
-                if (QCoreApplication::arguments()[1] == "-classes")
+                if (QApplication::arguments()[1] == "-classes")
                 {
                     // only print test classes
                     qDebug().noquote() << testName;
                     continue;
                 }
                 else
-                if (QCoreApplication::arguments()[1] != testName)
+                if (QApplication::arguments()[1] != testName)
                 {
                     continue;
                 }
                 else
                 {
-                    arguments = QCoreApplication::arguments();
+                    arguments = QApplication::arguments();
                     arguments.removeAt(1);
                 }
             }
             else
             {
-                arguments.append(QCoreApplication::arguments()[0]);
+                arguments.append(QApplication::arguments()[0]);
                 // log to console
                 arguments.append("-o"); arguments.append("-,txt");
                 // log to file as TXT
