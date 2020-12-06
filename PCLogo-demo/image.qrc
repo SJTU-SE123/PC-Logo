@@ -20,5 +20,6 @@
         <file>image/runline.png</file>
         <file>image/speech-off.png</file>
         <file>image/speech-on.png</file>
+        <file>image/bkgimg.png</file>
     </qresource>
 </RCC>

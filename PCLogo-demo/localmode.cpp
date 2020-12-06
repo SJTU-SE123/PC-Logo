@@ -1,8 +1,8 @@
- #include "localmode.h"
+#include "localmode.h"
 #include "ui_localmode.h"
-#include <QToolButton>
 #include <QDebug>
 #include "command.h"
+#include <QTextBlock>
 
 LocalMode::LocalMode(QWidget *parent) :
     QMainWindow(parent),
@@ -11,9 +11,17 @@ LocalMode::LocalMode(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 本地");
     this->initForm();
-    connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseLine()));
-    connect(speechButton, SIGNAL(pressed()), this, SLOT(speechStart()));
-    connect(speechButton, SIGNAL(released()), this, SLOT(speechEnd()));
+    connect(runAllButton, SIGNAL(clicked()), this, SLOT(parseAll()));       //运行程序按钮
+    connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseLine()));     //单步运行按钮
+    connect(speechButton, SIGNAL(pressed()), this, SLOT(speechStart()));    //点击语音输入按钮
+    connect(speechButton, SIGNAL(released()), this, SLOT(speechEnd()));     //松开语音输入按钮
+    connect(ui->action_open, SIGNAL(triggered()), this, SLOT(openFile()));  //打开文件
+    connect(ui->action_new, SIGNAL(triggered()), this, SLOT(newTab()));     //新建标签页
+    connect(ui->action_save, SIGNAL(triggered()), this, SLOT(saveFile()));  //保存文件
+    connect(ui->action_save_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));     //文件另存为
+    connect(ui->action_exit, SIGNAL(triggered()), this, SLOT(close()));     //关闭窗口
+    connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseLine()));     //运行
+    connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
 }
 
 LocalMode::~LocalMode()
@@ -23,14 +31,17 @@ LocalMode::~LocalMode()
     delete editor;
 }
 
-
+/**
+ * 对界面进行设置。
+ */
 void LocalMode::initForm(){
     this->setFixedSize(1200, 800);
     this->setPalette(QColor("#d7f0ff"));
-    this->setStyleSheet("QWidget:window {background-color: #d7f0ff;}"
+    this->setStyleSheet("QWidget:window {background-image: url(:/image/bkgimg.png);}"
                         "QMenu {background-color: white; border: 1px solid white;}"
-                        "QMenu::item {background-color: transparent; padding:8px 32px; margin:0px 8px; border-bottom:1px solid #DBDBDB;}"
-                        "QTabWidget::pane{"
+                        "QMenu::item {background-color: transparent; padding:6px 30px; margin:0px 8px;}"
+                        "QMenu::item:selected {background-color:#BDBDBD;}"
+                        "QTabWidget::pane {"
                         "   border-top: 1px solid #E5E5E5; "
                         "   border-left: 1px solid #E5E5E5; "
                         "   position: absolute;"
@@ -72,27 +83,63 @@ void LocalMode::initForm(){
     speechButton->setGeometry(770, 35, 110, 31);
     speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
 
-    canvas = new Canvas(this);
     tabEditor = new QTabWidget(this);
-    canvas->setGeometry(450, 70, 720, 715);
-    tabEditor->setGeometry(30, 50, 390, 735);
-    canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
+    tabEditor->setGeometry(30, 40, 390, 700);
     tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
+    tabEditor->setTabsClosable(true);
+    //用图形效果设置透明度。setOpacity()的参数为透明度，范围是0~1。
+    tabEditor_opacity = new QGraphicsOpacityEffect();
+    tabEditor->setGraphicsEffect(tabEditor_opacity);
+    tabEditor_opacity->setOpacity(OPACITY);
 
-    editor = new CodeEditor();
-    editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
-    tabEditor->addTab(editor, "未命名1");
-//    editor = new CodeEditor();
-//    editor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
-//    tabEditor->addTab(editor, "未命名2");
+    canvas = new Canvas(this);
+    canvas->setGeometry(450, 70, 720, 515);
+    canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
+    canvas_opacity = new QGraphicsOpacityEffect();
+    canvas->setGraphicsEffect(canvas_opacity);
+    canvas_opacity->setOpacity(OPACITY);
+
+    cmdLine = new QPlainTextEdit(this);
+    cmdLine->setGeometry(450, 600, 720, 170);
+    cmdLine->appendPlainText("这里将会是是命令行，暂时还没实现。");
+    cmdLine_opacity = new QGraphicsOpacityEffect();
+    cmdLine->setGraphicsEffect(cmdLine_opacity);
+    cmdLine_opacity->setOpacity(OPACITY);
+
+    reset_editor();
 }
 
-void LocalMode::parseLine() {
+/**
+ * 使editor指针指向当前显示的标签页。
+ */
+void LocalMode::reset_editor(){
+    editor = static_cast<CodeEditor*>(tabEditor->currentWidget());
+}
+
+/**
+ * 运行当前打开的标签页中的程序。
+ */
+void LocalMode::parseAll(){
+    reset_editor();
     QString str = this->editor->toPlainText();
     command* cmd = this->lineInterpreter->parseLine(str);
     this->canvas->parseCommand(cmd);
 }
 
+/**
+ * 暂时为运行当前光标所在的行。
+ */
+void LocalMode::parseLine() {
+    reset_editor();
+    QTextCursor cursor = this->editor->textCursor();
+    QString str = cursor.block().text();
+    command* cmd = this->lineInterpreter->parseLine(str);
+    this->canvas->parseCommand(cmd);
+}
+
+/**
+ * 按下“语音识别”按钮，文字变蓝后开始录音。
+ */
 void LocalMode::speechStart(){
     speechButton->setStyleSheet("background-image: url(:/image/speech-on.png)");
     //开始录音
@@ -100,14 +147,108 @@ void LocalMode::speechStart(){
     audio->startAudio("E:\\audio.pcm");
 }
 
+/**
+ * 松开“语音识别”按钮，停止录音，按钮变灰。
+ * !!!!!!mac用户注意，这里的E:\\audio.pcm请更换为mac上能用的路径。之后会改的（在改了在改了
+ */
 void LocalMode::speechEnd(){
-    //停止录音
-    audio->stopAudio();
-    //修改按钮文字
+    audio->stopAudio();             //停止录音
+    reset_editor();
+    if (editor == nullptr) return;  //没有标签页时，不读入。
+
     speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
-    //开始识别
     Speech m_speech;
-    QString text =  m_speech.speechIdentify("E:\\audio.pcm");
-    qDebug() << text;
-    this->editor->appendPlainText(text.left(text.size() - 1));
+    QString text =  m_speech.speechIdentify("E:\\audio.pcm");   //进行识别
+//    qDebug() << text;
+    editor->appendPlainText(text.left(text.size() - 1));
+}
+
+/**
+ * 打开文件到新标签。文件内容必须是英文（暂时）。
+ */
+void LocalMode::openFile(){
+    editor = new CodeEditor();
+    QFileDialog *qfd = new QFileDialog();
+    qfd->show();
+    editor->fileName = qfd->getOpenFileName();
+    qfd->close();
+    delete qfd;
+    if (editor->fileName.isEmpty()){
+        delete editor;
+        reset_editor();
+        return;
+    }
+
+    QFile file(editor->fileName);
+    if (!file.open(QIODevice::ReadOnly)){
+        delete editor;
+        reset_editor();
+        return;
+    }
+    QTextStream in(&file);
+    editor->clear();
+    while (!in.atEnd()){
+        QString line = in.readLine();
+        editor->appendPlainText(line);
+    }
+    file.close();
+    tabEditor->addTab(editor, editor->fileName.mid(editor->fileName.lastIndexOf('/')+1));
+    reset_editor();
+}
+
+/**
+ * 新建标签
+ */
+void LocalMode::newTab(){
+    editor = new CodeEditor();
+    tabEditor->addTab(editor, "未命名"+QString::number(tabEditor->count()+1));
+    reset_editor();
+}
+
+/**
+ * 按叉关闭标签。
+ */
+void LocalMode::removeTab(int n){
+    editor = static_cast<CodeEditor*>(tabEditor->widget(n));
+    tabEditor->removeTab(n);
+    delete editor;
+    reset_editor();
+}
+
+/**
+ * 保存当前标签页到文件。
+ */
+void LocalMode::saveFile(){
+    reset_editor();
+    if (editor == nullptr) return;  //没有标签页时，不做动作。
+
+    if (editor->fileName.isEmpty()) saveFileAs();   //未命名文件的保存，等价于另存为
+    else {
+        QFile file(editor->fileName);
+        if (!file.open(QIODevice::WriteOnly)) return;
+        QTextStream out(&file);
+        out << editor->toPlainText();
+        file.close();
+    }
+}
+
+/**
+ * 另存为，或保存未命名标签页到文件。
+ */
+void LocalMode::saveFileAs(){
+    reset_editor();
+    if (editor == nullptr) return;  //没有标签页时，不做动作。
+
+    QFileDialog *qfd = new QFileDialog();
+    qfd->show();
+    editor->fileName = qfd->getSaveFileName();
+    qfd->close();
+    if (editor->fileName.isEmpty()) return;
+
+    tabEditor->setTabText(tabEditor->currentIndex(), editor->fileName.mid(editor->fileName.lastIndexOf('/')+1));
+    QFile file(editor->fileName);
+    if (!file.open(QIODevice::WriteOnly)) return;
+    QTextStream out(&file);
+    out << editor->toPlainText();
+    file.close();
 }
