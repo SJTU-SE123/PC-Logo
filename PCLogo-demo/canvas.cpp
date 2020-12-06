@@ -7,11 +7,12 @@
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent)
 {
-    turtleX = turtleY = 340;
+    turtleX = 360;
+    turtleY = 360;
     theta = 90;
     theLogo = new QLabel(this);
     theLogo->setStyleSheet("border: 0px;");
-    theLogo->setAttribute(Qt::WA_TranslucentBackground, false);
+    theLogo->setAttribute(Qt::WA_TranslucentBackground, true);
     update();
 }
 
@@ -30,7 +31,7 @@ void Canvas::paintEvent(QPaintEvent*)
     QMatrix leftmatrix;
     leftmatrix.rotate(theta - 90);
     theLogo->setPixmap(QPixmap(":/image/littlelogo.png").transformed(leftmatrix,Qt::SmoothTransformation));
-    theLogo->setGeometry(turtleX-20, turtleY-20, 40, 40);
+    theLogo->setGeometry(turtleX-15, turtleY-15, 30, 30);
     theLogo->show();
 }
 

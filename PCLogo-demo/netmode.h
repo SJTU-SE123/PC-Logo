@@ -4,8 +4,9 @@
 #include <QMainWindow>
 #include <QTabWidget>
 #include <QLabel>
-#include "codeeditor.h"
 #include <QPushButton>
+#include <QGraphicsOpacityEffect>
+#include "codeeditor.h"
 #include "canvas.h"
 
 namespace Ui {
@@ -27,6 +28,8 @@ private:
     CodeEditor *localEditor, *netEditor;
     QPushButton *runAllButton, *runLineButton;
     QWidget *netConnection;
+    QGraphicsOpacityEffect *tabEditor_opacity, *canvas_opacity;
+    const double OPACITY = 0.8;
 
 private slots:
     void initForm();

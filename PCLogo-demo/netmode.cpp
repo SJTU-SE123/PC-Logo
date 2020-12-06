@@ -26,10 +26,11 @@ NetMode::~NetMode()
 void NetMode::initForm(){
     this->setFixedSize(1200, 800);
     this->setPalette(QColor("#d7f0ff"));
-    this->setStyleSheet("QWidget:window {background-color: #d7f0ff;}"
+    this->setStyleSheet("QWidget:window {background-image: url(:/image/bkgimg.png);}"
                         "QMenu {background-color: white; border: 1px solid white;}"
-                        "QMenu::item {background-color: transparent; padding:8px 32px; margin:0px 8px; border-bottom:1px solid #DBDBDB;}"
-                        "QTabWidget::pane{"
+                        "QMenu::item {background-color: transparent; padding:6px 30px; margin:0px 8px;}"
+                        "QMenu::item:selected {background-color:#BDBDBD;}"
+                        "QTabWidget::pane {"
                         "   border-top: 1px solid #E5E5E5; "
                         "   border-left: 1px solid #E5E5E5; "
                         "   position: absolute;"
@@ -69,11 +70,18 @@ void NetMode::initForm(){
     runLineButton->setStyleSheet("background-image: url(:/image/runline.png)");
 
     canvas = new Canvas(this);
-    tabEditor = new QTabWidget(this);
     canvas->setGeometry(450, 70, 720, 715);
-    tabEditor->setGeometry(30, 50, 390, 735);
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
+    canvas_opacity = new QGraphicsOpacityEffect();
+    canvas->setGraphicsEffect(canvas_opacity);
+    canvas_opacity->setOpacity(OPACITY);
+
+    tabEditor = new QTabWidget(this);
+    tabEditor->setGeometry(30, 50, 390, 735);
     tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
+    tabEditor_opacity = new QGraphicsOpacityEffect();
+    tabEditor->setGraphicsEffect(tabEditor_opacity);
+    tabEditor_opacity->setOpacity(OPACITY);
 
     localEditor = new CodeEditor();
     localEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
