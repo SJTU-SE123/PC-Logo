@@ -25,52 +25,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES += \
-        canvas.cpp \
-        codeeditor.cpp \
-        connect.cpp \
-        localmode.cpp \
-        login.cpp \
-        main.cpp \
-        modeselect.cpp \
-        netmode.cpp \
-        register.cpp \
-    speech/audio.cpp \
-    speech/http.cpp \
-    speech/speech.cpp \
-        startwindow.cpp \
-        userinfo.cpp \
-    lineinterpreter.cpp \
-    command.cpp
+include(PCLogo-demo.pri)
 
-HEADERS += \
-        canvas.h \
-        codeeditor.h \
-        connect.h \
-        head.h \
-        linenumberarea.h \
-        localmode.h \
-        login.h \
-        modeselect.h \
-        netmode.h \
-        register.h \
-    speech/audio.h \
-    speech/http.h \
-    speech/speech.h \
-        startwindow.h \
-        userinfo.h \
-    lineinterpreter.h \
-    command.h
-
-FORMS += \
-        connect.ui \
-        localmode.ui \
-        login.ui \
-        modeselect.ui \
-        netmode.ui \
-        register.ui \
-        startwindow.ui \
-        userinfo.ui
+SOURCES += ./main/main.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -81,3 +38,6 @@ RESOURCES += \
     image.qrc
 
 RC_ICONS = logo.ico
+
+DISTFILES += \
+    PCLogo-demo.pri
