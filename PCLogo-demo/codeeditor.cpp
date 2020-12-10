@@ -7,6 +7,7 @@
 CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
     lineNumberArea = new LineNumberArea(this);
+    lastBreakPoint = 0;
 
     connect(this, &CodeEditor::blockCountChanged, this, &CodeEditor::updateLineNumberAreaWidth);
     connect(this, &CodeEditor::updateRequest, this, &CodeEditor::updateLineNumberArea);
@@ -24,7 +25,8 @@ int CodeEditor::lineNumberAreaWidth()
         max /= 10;
         ++digits;
     }
-
+    digits = digits >= 2 ? digits : 2;
+    digits++;
     int space = 3 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
 
     return space;
@@ -84,11 +86,37 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     while (block.isValid() && top <= event->rect().bottom()) {
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(blockNumber + 1);
+            int h = bottom - top;
+            if (breakPoints.contains(blockNumber)){
+                painter.setBrush(QColor(255,0,0));
+                painter.drawEllipse(0, top + h/4, h/2, h/2);
+            }
             painter.setPen(Qt::black);
-            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
-                             Qt::AlignRight, number);
+            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight, number);
         }
 
+        block = block.next();
+        top = bottom;
+        bottom = top + qRound(blockBoundingRect(block).height());
+        ++blockNumber;
+    }
+}
+
+/**
+ * 根据鼠标点击位置，添加或删除断点。
+ */
+void CodeEditor::changeBreakPoints(QMouseEvent *event){
+    QTextBlock block = firstVisibleBlock();
+    int blockNumber = block.blockNumber();
+    int top = qRound(blockBoundingGeometry(block).translated(contentOffset()).top());
+    int bottom = top + qRound(blockBoundingRect(block).height());
+    while (block.isValid() && top <= event->y()) {
+        if (block.isVisible() && bottom >= event->y()) {    //找到被点击的行标
+            if (breakPoints.contains(blockNumber)) breakPoints.removeAll(blockNumber);
+            else breakPoints.append(blockNumber);
+            lineNumberArea->update();
+            return;
+        }
         block = block.next();
         top = bottom;
         bottom = top + qRound(blockBoundingRect(block).height());
