@@ -130,19 +130,28 @@ void LocalMode::parseAll(){
 
     while (cursor.block().blockNumber() < this->editor->blockCount()-1) {   //最后一行之前
         if (cursor.block().blockNumber() != this->editor->lastBreakPoint
-                && this->editor->breakPoints.contains(cursor.block().blockNumber())) {
+                && this->editor->breakPoints.contains(cursor.block().blockNumber())) {  //如果遇到断点
             this->editor->lastBreakPoint = cursor.block().blockNumber();
             command* cmd = this->lineInterpreter->parseLine(str);
             this->canvas->parseCommand(cmd);
             return;
         }
-
         str += cursor.block().text() + "\n";
         cursor.movePosition(QTextCursor::Down);
         this->editor->setTextCursor(cursor);
     }
 
-    str += cursor.block().text() + "\n";    //最后一行
+    //最后一行
+    if (cursor.block().blockNumber() != this->editor->lastBreakPoint
+            && this->editor->breakPoints.contains(cursor.block().blockNumber())) {
+        this->editor->lastBreakPoint = cursor.block().blockNumber();
+        command* cmd = this->lineInterpreter->parseLine(str);
+        this->canvas->parseCommand(cmd);
+        return;
+    }
+    str += cursor.block().text() + "\n";
+    qDebug() << str;
+
     command* cmd = this->lineInterpreter->parseLine(str);
     this->canvas->parseCommand(cmd);
     this->editor->lastBreakPoint = 0;
