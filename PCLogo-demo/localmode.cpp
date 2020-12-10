@@ -118,16 +118,38 @@ void LocalMode::reset_editor(){
 
 /**
  * 运行当前打开的标签页中的程序。
+ * 碰到断点会停下。（第一行除外
  */
 void LocalMode::parseAll(){
     reset_editor();
-    QString str = this->editor->toPlainText();
+    QString str = "";
+    QTextCursor cursor = this->editor->textCursor();
+    cursor.movePosition(QTextCursor::Start);
+    for (int i = 0; i < this->editor->lastBreakPoint; i++) cursor.movePosition(QTextCursor::Down);
+    this->editor->setTextCursor(cursor);
+
+    while (cursor.block().blockNumber() < this->editor->blockCount()-1) {   //最后一行之前
+        if (cursor.block().blockNumber() != this->editor->lastBreakPoint
+                && this->editor->breakPoints.contains(cursor.block().blockNumber())) {
+            this->editor->lastBreakPoint = cursor.block().blockNumber();
+            command* cmd = this->lineInterpreter->parseLine(str);
+            this->canvas->parseCommand(cmd);
+            return;
+        }
+
+        str += cursor.block().text() + "\n";
+        cursor.movePosition(QTextCursor::Down);
+        this->editor->setTextCursor(cursor);
+    }
+
+    str += cursor.block().text() + "\n";    //最后一行
     command* cmd = this->lineInterpreter->parseLine(str);
     this->canvas->parseCommand(cmd);
+    this->editor->lastBreakPoint = 0;
 }
 
 /**
- * 暂时为运行当前光标所在的行。
+ * 运行当前光标所在的行,然后将光标置于下一行行首。
  */
 void LocalMode::parseLine() {
     reset_editor();
@@ -135,6 +157,8 @@ void LocalMode::parseLine() {
     QString str = cursor.block().text();
     command* cmd = this->lineInterpreter->parseLine(str);
     this->canvas->parseCommand(cmd);
+    cursor.movePosition(QTextCursor::Down);
+    this->editor->setTextCursor(cursor);
 }
 
 /**
@@ -149,7 +173,6 @@ void LocalMode::speechStart(){
 
 /**
  * 松开“语音识别”按钮，停止录音，按钮变灰。
- * !!!!!!mac用户注意，这里的E:\\audio.pcm请更换为mac上能用的路径。之后会改的（在改了在改了
  */
 void LocalMode::speechEnd(){
     audio->stopAudio();             //停止录音
