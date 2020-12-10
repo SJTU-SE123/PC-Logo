@@ -84,7 +84,7 @@ void LocalMode::initForm(){
     speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
 
     tabEditor = new QTabWidget(this);
-    tabEditor->setGeometry(30, 40, 390, 700);
+    tabEditor->setGeometry(30, 40, 390, 730);
     tabEditor->setStyleSheet("background-color: white; font-family: Microsoft Yahei; font-size: 18px;");
     tabEditor->setTabsClosable(true);
     //用图形效果设置透明度。setOpacity()的参数为透明度，范围是0~1。
@@ -144,7 +144,7 @@ void LocalMode::speechStart(){
     speechButton->setStyleSheet("background-image: url(:/image/speech-on.png)");
     //开始录音
     audio = new Audio;
-    audio->startAudio("E:\\audio.pcm");
+    audio->startAudio("audio.pcm");
 }
 
 /**
@@ -158,7 +158,7 @@ void LocalMode::speechEnd(){
 
     speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
     Speech m_speech;
-    QString text =  m_speech.speechIdentify("E:\\audio.pcm");   //进行识别
+    QString text =  m_speech.speechIdentify("audio.pcm");   //进行识别
 //    qDebug() << text;
     editor->appendPlainText(text.left(text.size() - 1));
 }
