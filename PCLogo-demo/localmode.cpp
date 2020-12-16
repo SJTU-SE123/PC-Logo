@@ -11,6 +11,7 @@ LocalMode::LocalMode(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 本地");
     this->initForm();
+    this->lineInterpreter = new LineInterpreter();
     connect(runAllButton, SIGNAL(clicked()), this, SLOT(parseAll()));       //运行程序按钮
     connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseLine()));     //单步运行按钮
     connect(speechButton, SIGNAL(pressed()), this, SLOT(speechStart()));    //点击语音输入按钮
@@ -150,7 +151,7 @@ void LocalMode::parseAll(){
         return;
     }
     str += cursor.block().text() + "\n";
-    qDebug() << str;
+//    qDebug() << str;
 
     command* cmd = this->lineInterpreter->parseLine(str);
     this->canvas->parseCommand(cmd);
