@@ -1,7 +1,9 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-typedef enum {SETPC, SETBG, SETXY, SETANGLE, STRAIGHTMOVE, OVALMOVE, REPEAT} cmdType;
+#include "procedure.h"
+
+typedef enum {SETPC, SETBG, SETXY, SETANGLE, STRAIGHTMOVE, OVALMOVE, REPEAT, PROCEDURE} cmdType;
 
 class command
 {
@@ -13,6 +15,7 @@ private:
        int angle;
        int distance;
        struct {int times; command* content;} info;
+       command* body;   //FOR PROCEDURE
    }u;
    command* next;
 
@@ -25,10 +28,12 @@ public:
    int getX() {return u.pos.x;}
    int getY() {return u.pos.y;}
    command* getContent() {return u.info.content;}
+   command* getBody() {return u.body;}
    command* getNext() {return next;}
    command(cmdType type, int x, command* next);
    command(cmdType type, int x, int y, command* next);
    command(cmdType type, int times, command* content, command* next);
+   command(cmdType type, command* body, command* next);
 };
 
 #endif // COMMAND_H

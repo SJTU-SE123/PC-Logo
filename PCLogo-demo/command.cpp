@@ -17,3 +17,9 @@ command::command(cmdType type, int times, command* content, command* next) {
     this->u.info.content = content;
     this->next = next;
 }
+
+command::command(cmdType type, command* body, command* next){
+    this->type = type;
+    this->u.body = body;
+    this->next = next;
+}

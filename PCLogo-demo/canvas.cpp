@@ -77,6 +77,8 @@ void Canvas::parseCommand(command *cmd) {
             for (int i=0; i<times; i++) {
                 parseCommand(cmd->getContent());
             }
+        } else if (cmd->getType() == PROCEDURE){
+            parseCommand(cmd->getBody());
         }
         cmd = cmd->getNext();
     }
