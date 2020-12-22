@@ -31,6 +31,8 @@ StartWindow::StartWindow(QWidget *parent) :
     ui->ModeSelect->setStyleSheet("background-image: url(:/image/toselectmode.png);");
     ui->Help->setStyleSheet("background-image: url(:/image/help.png);");
     ui->Exit->setStyleSheet("background-image: url(:/image/exit.png);");
+
+
 }
 
 StartWindow::~StartWindow()

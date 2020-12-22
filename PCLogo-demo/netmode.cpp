@@ -6,18 +6,20 @@
 #include <QtCore/QDebug>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonValue>
+#include <QJsonArray>
 
-NetMode::NetMode(QWidget *parent) :
+NetMode::NetMode(QString username, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::NetMode)
 {
     ui->setupUi(this);
-    this->m_url = "ws://localhost:8080/online/a";
+    this->username = username;
+    this->m_url = "ws://localhost:8080/online/" + this->username;
     this->m_debug = true;
     connect(&m_webSocket, &QWebSocket::connected, this, &NetMode::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &NetMode::closed);
     m_webSocket.open(QUrl(m_url));
-
 
 //    udpSocket = new QUdpSocket(this);
 //    port = 45454;
@@ -25,6 +27,15 @@ NetMode::NetMode(QWidget *parent) :
 //    connect(udpSocket,SIGNAL(readyRead()),this,SLOT(processPendingDatagrams()));
 //    newParticipant(getUserName(), QHostInfo::localHostName(), getIP());
 //    sendMessage(NewParticipant);
+}
+
+void NetMode::paintEvent(QPaintEvent*) {
+    // update 好像是重绘 所以不用清空
+    for (auto user : this->users) {
+        QTableWidgetItem *up = new QTableWidgetItem(user);
+        ui->tableWidget->insertRow(0);
+        ui->tableWidget->setItem(0,0,up);
+    }
 }
 
 void NetMode::onConnected() {
@@ -37,12 +48,21 @@ void NetMode::onTextMessageReceived(QString message) {
     QJsonDocument jsonDocument = QJsonDocument::fromJson(message.toLocal8Bit().data());
     QJsonObject jsonObject = jsonDocument.object();
     for (QJsonObject::Iterator it = jsonObject.begin(); it != jsonObject.end(); it++) {
-        QString key = it.key();
-        QJsonValue value = it.value();
-        if (m_debug) qDebug() << "key: " << key << ", value: " << it.value() << endl;
-        if (key == "onlineUsers") {
-            //QJsonArray users = toArray(value);
+        if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << endl;
+
+        // 更新在线用户列表
+        if (it.key() == "onlineUsers") {
+            QJsonArray users = it.value().toArray();
+            QList<QString> usernames;
+            for (QJsonArray::Iterator user = users.begin(); user != users.end(); user++) {
+                QString username = (*user).toString();
+                usernames.append(username);
+            }
+            this->users = usernames;
+            update();
         }
+
+        //
     }
 }
 

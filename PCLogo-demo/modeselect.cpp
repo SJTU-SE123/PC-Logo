@@ -40,7 +40,7 @@ void ModeSelect::on_NetMode_clicked()
         delete logoWindow;
         logoWindow = nullptr;
     }
-    logoWindow = new NetMode();
+    logoWindow = new NetMode(NULL);
     logoWindow->show();
 }
 

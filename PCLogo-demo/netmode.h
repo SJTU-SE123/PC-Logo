@@ -19,6 +19,7 @@
 #include "canvas.h"
 #include "codeeditor.h"
 #include "chat.h"
+#include "login.h"
 
 namespace Ui {
 class NetMode;
@@ -29,7 +30,7 @@ class NetMode : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit NetMode(QWidget *parent = nullptr);
+    explicit NetMode(QString username, QWidget *parent = nullptr);
     ~NetMode();
 
 private:
@@ -37,14 +38,17 @@ private:
     QWebSocket m_webSocket;
     QUrl m_url;
     bool m_debug;
+    QList<QString> users;
 //    QUdpSocket *udpSocket;
 //    qint16 port;
 //    Chat *privateChat;
+    QString username;
 
 signals:
     void closed();
 
 private slots:
+    void paintEvent(QPaintEvent*) override;
     void onConnected();
     void onTextMessageReceived(QString message);
 
