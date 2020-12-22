@@ -15,12 +15,10 @@
 #include <QColorDialog>
 #include <QTextCharFormat>
 #include <QModelIndex>
+#include <QtWebSockets/QWebSocket>
 #include "canvas.h"
 #include "codeeditor.h"
 #include "chat.h"
-
-class QUdpSocket;
-enum MessageType {NewParticipant,ParticipantLeft};
 
 namespace Ui {
 class NetMode;
@@ -36,20 +34,30 @@ public:
 
 private:
     Ui::NetMode *ui;
-    QUdpSocket *udpSocket;
-    qint16 port;
-    Chat *privateChat;
+    QWebSocket m_webSocket;
+    QUrl m_url;
+    bool m_debug;
+//    QUdpSocket *udpSocket;
+//    qint16 port;
+//    Chat *privateChat;
 
-protected:
-    void newParticipant(QString userName, QString localHostName,QString ipAddress);
-    void participantLeft(QString localHostName);
-    void sendMessage(MessageType type);
-    QString getIP();
-    QString getUserName();
+signals:
+    void closed();
 
 private slots:
-    void processPendingDatagrams();
-    void on_tableWidget_doubleClicked(QModelIndex index);
+    void onConnected();
+    void onTextMessageReceived(QString message);
+
+// protected:
+//    void newParticipant(QString userName, QString localHostName,QString ipAddress);
+//    void participantLeft(QString localHostName);
+//    void sendMessage(MessageType type);
+//    QString getIP();
+//    QString getUserName();
+
+// private slots:
+//    void processPendingDatagrams();
+//    void on_tableWidget_doubleClicked(QModelIndex index);
 };
 
 #endif // NETMODE_H

@@ -20,6 +20,8 @@
 
 enum MessageType
 {
+    NewParticipant,
+    ParticipantLeft,
     Message,
     Exit
 };
