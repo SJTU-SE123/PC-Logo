@@ -31,16 +31,6 @@
       <string>用户名</string>
      </property>
     </column>
-    <column>
-     <property name="text">
-      <string>主机名</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>IP地址</string>
-     </property>
-    </column>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

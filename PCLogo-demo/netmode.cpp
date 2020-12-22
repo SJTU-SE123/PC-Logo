@@ -4,6 +4,8 @@
 #include "codeeditor.h"
 #include "connect.h"
 #include <QtCore/QDebug>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 NetMode::NetMode(QWidget *parent) :
     QMainWindow(parent),
@@ -28,12 +30,20 @@ NetMode::NetMode(QWidget *parent) :
 void NetMode::onConnected() {
     if (m_debug) qDebug() << "WebSocket connected";
     connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &NetMode::onTextMessageReceived);
-    // m_webSocket.sendTextMessage(QStringLiteral("Hello, world!"));
 }
 
 void NetMode::onTextMessageReceived(QString message) {
     if (m_debug) qDebug() << "Message received:" << message;
-    m_webSocket.close();
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(message.toLocal8Bit().data());
+    QJsonObject jsonObject = jsonDocument.object();
+    for (QJsonObject::Iterator it = jsonObject.begin(); it != jsonObject.end(); it++) {
+        QString key = it.key();
+        QJsonValue value = it.value();
+        if (m_debug) qDebug() << "key: " << key << ", value: " << it.value() << endl;
+        if (key == "onlineUsers") {
+            //QJsonArray users = toArray(value);
+        }
+    }
 }
 
 
