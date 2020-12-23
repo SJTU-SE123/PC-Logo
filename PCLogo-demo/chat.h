@@ -37,6 +37,9 @@ public:
     QString getIp();
     QString getUsername();
     void draw(QString str);
+    void sendMsg(QJsonObject msg);
+    void appendMsg(QString fromUser, QString text, QString time);
+    void setPartner(QString fromUser);
 
 signals:
     void sendMessage(QString msg);

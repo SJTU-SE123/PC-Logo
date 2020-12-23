@@ -25,7 +25,7 @@ NetMode::NetMode(QString username, QWidget *parent) :
 }
 
 void NetMode::onSendMessage(QString msg) {
-
+    m_webSocket.sendTextMessage(msg);
 }
 
 void NetMode::paintEvent(QPaintEvent*) {
@@ -52,7 +52,7 @@ void NetMode::onTextMessageReceived(QString message) {
         QJsonObject::Iterator it = jsonObject.begin();
         if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << endl;
 
-        // 更新在线用户列表
+        // 客户端接受到更新在线用户列表信息
         if (it.key() == "onlineUsers") {
             QJsonArray users = it.value().toArray();
             QList<QString> usernames;
@@ -64,7 +64,7 @@ void NetMode::onTextMessageReceived(QString message) {
             update();
         }
 
-        // 用户连接请求 若当前正在和别人聊天 直接忽略。 否则弹窗。
+        // 客户端接收到用户连接请求 若当前正在和别人聊天 直接忽略。 否则弹窗。
         else if (it.key() == "fromUser") {
             if (this->partner != nullptr) return;
             QString fromUser = it.value().toString();
@@ -73,6 +73,8 @@ void NetMode::onTextMessageReceived(QString message) {
                 case QMessageBox::Yes: {
                     QJsonObject msg {{"toUser", fromUser}, {"status", "accept"}};
                     sendMsg(msg);
+                    this->partner = fromUser;
+                    chat->setPartner(fromUser);
                     chat->show();
                     break;
                 }
@@ -86,6 +88,7 @@ void NetMode::onTextMessageReceived(QString message) {
             }
         } else assert(0);
     } else if (msgCnt == 2) {
+        // 客户端收到对方对联机请求的回应
         QJsonObject::Iterator it = jsonObject.begin();
         assert(it.key() == "fromUser");
         QString fromUser = it.value().toString();
@@ -93,12 +96,23 @@ void NetMode::onTextMessageReceived(QString message) {
         assert(it.key() == "status");
         QString status = it.value().toString();
         if (status == "accept") {
+            this->partner = fromUser;
+            chat->setPartner(fromUser);
             chat->show();
         }
     } else if (msgCnt == 3) {
-        for (QJsonObject::Iterator it = jsonObject.begin(); it != jsonObject.end(); it++) {
-
-        }
+        // 客户端之间通信，接收消息
+        QJsonObject::Iterator it = jsonObject.begin();
+        assert(it.key() == "fromUser");
+        QString fromUser = it.value().toString();
+        it++;
+        assert(it.key() == "message");
+        QString text = it.value().toString();
+        it++;
+        assert(it.key() == "timestamp");
+        QString time = it.value().toString();
+        if (this->partner != fromUser) return;
+        this->chat->appendMsg(fromUser, text, time);
     } else assert(0);
 }
 
