@@ -51,6 +51,7 @@ private slots:
     void paintEvent(QPaintEvent*) override;
     void onConnected();
     void onTextMessageReceived(QString message);
+    void on_tableWidget_doubleClicked(QModelIndex index);
 
 // protected:
 //    void newParticipant(QString userName, QString localHostName,QString ipAddress);

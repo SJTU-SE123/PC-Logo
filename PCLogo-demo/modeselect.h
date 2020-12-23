@@ -13,7 +13,7 @@ class ModeSelect : public QWidget
     Q_OBJECT
 
 public:
-    explicit ModeSelect(QWidget *parent = nullptr);
+    explicit ModeSelect(QString username, QWidget *parent = nullptr);
     ~ModeSelect();
 
 private slots:
@@ -24,7 +24,7 @@ private slots:
 private:
     Ui::ModeSelect *ui;
     QMainWindow *logoWindow;
-
+    QString username;
 };
 
 #endif // MODESELECT_H

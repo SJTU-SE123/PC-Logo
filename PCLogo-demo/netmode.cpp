@@ -30,7 +30,8 @@ NetMode::NetMode(QString username, QWidget *parent) :
 }
 
 void NetMode::paintEvent(QPaintEvent*) {
-    // update 好像是重绘 所以不用清空
+    int rowCount = ui->tableWidget->rowCount();
+    for (int i=0; i<rowCount; i++) ui->tableWidget->removeRow(0);
     for (auto user : this->users) {
         QTableWidgetItem *up = new QTableWidgetItem(user);
         ui->tableWidget->insertRow(0);
@@ -66,6 +67,11 @@ void NetMode::onTextMessageReceived(QString message) {
     }
 }
 
+void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
+    QString toUser = ui->tableWidget->item(index.row(),0)->text();
+    if (m_debug) qDebug() << "toUser: " << toUser << endl;
+
+}
 
 NetMode::~NetMode() {
     delete ui;
@@ -165,10 +171,6 @@ NetMode::~NetMode() {
 //    }
 //}
 
-//void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
-//    privateChat = new Chat(ui->tableWidget->item(index.row(),1)->text(), //接收主机名
-//                   ui->tableWidget->item(index.row(),2)->text()) ;//接收用户IP
-//    privateChat->show();
-//}
+
 
 

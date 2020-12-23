@@ -25,4 +25,5 @@ void Login::on_pushButton_clicked()
     QString password = ui->lineEdit_2->text();
     // 登录逻辑还没写。。。
     UserLogin(username);
+    close();
 }
