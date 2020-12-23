@@ -32,6 +32,7 @@ class NetMode : public QMainWindow
 public:
     explicit NetMode(QString username, QWidget *parent = nullptr);
     ~NetMode();
+    void sendMsg(QJsonObject msg);
 
 private:
     Ui::NetMode *ui;
@@ -39,10 +40,9 @@ private:
     QUrl m_url;
     bool m_debug;
     QList<QString> users;
-//    QUdpSocket *udpSocket;
-//    qint16 port;
-//    Chat *privateChat;
     QString username;
+    QString partner;
+    Chat *chat;
 
 signals:
     void closed();
@@ -52,17 +52,7 @@ private slots:
     void onConnected();
     void onTextMessageReceived(QString message);
     void on_tableWidget_doubleClicked(QModelIndex index);
-
-// protected:
-//    void newParticipant(QString userName, QString localHostName,QString ipAddress);
-//    void participantLeft(QString localHostName);
-//    void sendMessage(MessageType type);
-//    QString getIP();
-//    QString getUserName();
-
-// private slots:
-//    void processPendingDatagrams();
-//    void on_tableWidget_doubleClicked(QModelIndex index);
+    void onSendMessage(QString msg);
 };
 
 #endif // NETMODE_H

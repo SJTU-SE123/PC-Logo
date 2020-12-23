@@ -19,14 +19,13 @@ NetMode::NetMode(QString username, QWidget *parent) :
     this->m_debug = true;
     connect(&m_webSocket, &QWebSocket::connected, this, &NetMode::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &NetMode::closed);
+    this->chat = new Chat();
+    connect(chat, &Chat::sendMessage, this, &NetMode::onSendMessage);
     m_webSocket.open(QUrl(m_url));
+}
 
-//    udpSocket = new QUdpSocket(this);
-//    port = 45454;
-//    udpSocket->bind(port,QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
-//    connect(udpSocket,SIGNAL(readyRead()),this,SLOT(processPendingDatagrams()));
-//    newParticipant(getUserName(), QHostInfo::localHostName(), getIP());
-//    sendMessage(NewParticipant);
+void NetMode::onSendMessage(QString msg) {
+
 }
 
 void NetMode::paintEvent(QPaintEvent*) {
@@ -48,7 +47,9 @@ void NetMode::onTextMessageReceived(QString message) {
     if (m_debug) qDebug() << "Message received:" << message;
     QJsonDocument jsonDocument = QJsonDocument::fromJson(message.toLocal8Bit().data());
     QJsonObject jsonObject = jsonDocument.object();
-    for (QJsonObject::Iterator it = jsonObject.begin(); it != jsonObject.end(); it++) {
+    int msgCnt = jsonObject.size();
+    if (msgCnt == 1){
+        QJsonObject::Iterator it = jsonObject.begin();
         if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << endl;
 
         // 更新在线用户列表
@@ -63,113 +64,62 @@ void NetMode::onTextMessageReceived(QString message) {
             update();
         }
 
-        //
-    }
+        // 用户连接请求 若当前正在和别人聊天 直接忽略。 否则弹窗。
+        else if (it.key() == "fromUser") {
+            if (this->partner != nullptr) return;
+            QString fromUser = it.value().toString();
+            QMessageBox:: StandardButton result= QMessageBox::information(this, "确认", "是否接受" + fromUser + "的连接请求",QMessageBox::Yes|QMessageBox::No);
+            switch (result) {
+                case QMessageBox::Yes: {
+                    QJsonObject msg {{"toUser", fromUser}, {"status", "accept"}};
+                    sendMsg(msg);
+                    chat->show();
+                    break;
+                }
+                case QMessageBox::No: {
+                    QJsonObject msg {{"toUser", fromUser}, {"status", "reject"}};
+                    sendMsg(msg);
+                    break;
+                }
+                default:
+                    break;
+            }
+        } else assert(0);
+    } else if (msgCnt == 2) {
+        QJsonObject::Iterator it = jsonObject.begin();
+        assert(it.key() == "fromUser");
+        QString fromUser = it.value().toString();
+        it++;
+        assert(it.key() == "status");
+        QString status = it.value().toString();
+        if (status == "accept") {
+            chat->show();
+        }
+    } else if (msgCnt == 3) {
+        for (QJsonObject::Iterator it = jsonObject.begin(); it != jsonObject.end(); it++) {
+
+        }
+    } else assert(0);
+}
+
+void NetMode::sendMsg(QJsonObject msg) {
+    QJsonDocument doc(msg);
+    QString str(doc.toJson(QJsonDocument::Compact));
+    m_webSocket.sendTextMessage(str);
 }
 
 void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
     QString toUser = ui->tableWidget->item(index.row(),0)->text();
     if (m_debug) qDebug() << "toUser: " << toUser << endl;
-
+    if (toUser == this->username) return;
+    QJsonObject msg {{"toUser", toUser}};
+    sendMsg(msg);
 }
 
 NetMode::~NetMode() {
     delete ui;
 }
 
-//QString NetMode::getIP() {
-//    QList<QHostAddress>list = QNetworkInterface::allAddresses();
-//    foreach(QHostAddress address,list) {
-//        if(address.protocol() == QAbstractSocket::IPv4Protocol)
-//            return address.toString();
-//    }
-//    return 0;
-//}
-
-//QString NetMode::getUserName() {
-//    QStringList envVariables;
-//    envVariables << "USERNAME.*" << "USER.*" << "USERDOMAIN.*"
-//                 << "HOSTNAME.*" << "DOMAINNAME.*";
-//    QStringList environment = QProcess::systemEnvironment();
-//    foreach(QString string,envVariables) {
-//        int index = environment.indexOf(QRegExp(string));
-//        if(index != -1) {
-//            QStringList stringList = environment.at(index).split('=');
-//            if(stringList.size() == 2) {
-//                return stringList.at(1);
-//            }
-//        }
-//    }
-//    return "unKnow";
-//}
-
-//void NetMode::sendMessage(MessageType type) {
-//    QByteArray data;
-//    QDataStream out(&data,QIODevice::WriteOnly);
-//    QString localHostName = QHostInfo::localHostName();
-//    QString address = getIP();
-//    out << type << getUserName() << localHostName;
-//    QString clientAddress;
-//    switch(type) {
-//        case NewParticipant: {
-//            out << address;
-//            break;
-//        }
-//        case ParticipantLeft:
-//            break;
-//    }
-//    udpSocket->writeDatagram(data,data.length(),QHostAddress::Broadcast,port);
-//}
-
-//void NetMode::newParticipant(QString userName, QString localHostName, QString ipAddress) {
-////    bool isEmpty = ui->tableWidget
-////            ->findItems(localHostName,Qt::MatchExactly).isEmpty();
-//    //if(isEmpty) {
-//        QTableWidgetItem *user = new QTableWidgetItem(userName);
-//        QTableWidgetItem *host = new QTableWidgetItem(localHostName);
-//        QTableWidgetItem *ip = new QTableWidgetItem(ipAddress);
-
-//        ui->tableWidget->insertRow(0);
-//        ui->tableWidget->setItem(0,0,user);
-//        ui->tableWidget->setItem(0,1,host);
-//        ui->tableWidget->setItem(0,2,ip);
-//        //sendMessage(NewParticipant);
-//    //}
-//}
-
-//void NetMode::participantLeft(QString localHostName)
-//{
-//    int rowNum = ui->tableWidget->findItems(localHostName, Qt::MatchExactly).first()->row();
-//    ui->tableWidget->removeRow(rowNum);
-//}
-
-//void NetMode::processPendingDatagrams() {
-//    while(udpSocket->hasPendingDatagrams()) {
-//        QByteArray datagram;
-//        datagram.resize(udpSocket->pendingDatagramSize());
-//        udpSocket->readDatagram(datagram.data(),datagram.size());
-//        QDataStream in(&datagram,QIODevice::ReadOnly);
-//        int messageType;
-//        in >> messageType;
-//        QString clientAddress,fileName;
-//        QString userName,localHostName,ipAddress,message;
-//        QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-//        switch(messageType) {
-//            case NewParticipant:
-//                in >> userName >> localHostName >> ipAddress;
-//                qDebug() << userName;
-//                qDebug() << getUserName();
-//                if (userName == getUserName()) continue;
-//                newParticipant(userName,localHostName,ipAddress);
-//                sendMessage(NewParticipant);
-//                break;
-
-//            case ParticipantLeft:
-//                in >> userName >> localHostName;
-//                participantLeft(localHostName);
-//        }
-//    }
-//}
 
 
 
