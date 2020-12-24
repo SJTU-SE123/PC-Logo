@@ -32,7 +32,7 @@ class Chat : public QMainWindow
     Q_OBJECT
 
 public:
-    Chat();
+    Chat(QString username);
     ~Chat();
     QString getIp();
     QString getUsername();
@@ -50,6 +50,7 @@ private:
     LineInterpreter *lineInterpreter;
     QWebSocket m_webSocket;
     QString partner;
+    QString username;
 
 private slots:
     void on_sendButton_clicked();

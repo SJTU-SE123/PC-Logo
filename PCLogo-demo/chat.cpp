@@ -2,7 +2,7 @@
 #include "ui_chat.h"
 #include <QToolButton>
 
-Chat::Chat() :
+Chat::Chat(QString username) :
     ui(new Ui::Chat) {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 联网");
@@ -10,7 +10,7 @@ Chat::Chat() :
     canvas->setGeometry(420, 10, 370, 460);
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
     canvas->setPos(185, 230);
-    this->partner = partner;
+    this->username = username;
 }
 
 Chat::~Chat() {}
@@ -44,7 +44,7 @@ void Chat::on_sendButton_clicked() {
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     ui->textBrowser->setTextColor(Qt::blue);
     ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
-    ui->textBrowser->append("[ " + this->partner +" ] "+ time);
+    ui->textBrowser->append("[ " + this->username +" ] "+ time);
     QString text = ui->textEdit->toPlainText();
     ui->textBrowser->append(text);
     QJsonObject msg{{"toUser", this->partner}, {"message", text}};

@@ -19,7 +19,7 @@ NetMode::NetMode(QString username, QWidget *parent) :
     this->m_debug = true;
     connect(&m_webSocket, &QWebSocket::connected, this, &NetMode::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &NetMode::closed);
-    this->chat = new Chat();
+    this->chat = new Chat(this->username);
     connect(chat, &Chat::sendMessage, this, &NetMode::onSendMessage);
     m_webSocket.open(QUrl(m_url));
 }
