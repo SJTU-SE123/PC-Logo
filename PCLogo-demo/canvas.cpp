@@ -113,4 +113,5 @@ void Canvas::clearCanvas()
 {
     this->lineList.clear();
     this->ovalList.clear();
+    update();
 }
