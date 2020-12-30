@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LocalMode</class>
+ <widget class="QMainWindow" name="LocalMode">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_file">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action_new"/>
+    <addaction name="action_open"/>
+    <addaction name="action_save"/>
+    <addaction name="action_save_as"/>
+    <addaction name="action_exit"/>
+    <addaction name="separator"/>
+    <addaction name="action_upload"/>
+   </widget>
+   <widget class="QMenu" name="menu_edit">
+    <property name="title">
+     <string>编辑</string>
+    </property>
+    <addaction name="action_copy"/>
+    <addaction name="action_cut"/>
+    <addaction name="action_paste"/>
+   </widget>
+   <widget class="QMenu" name="menu_help">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+    <addaction name="action_help"/>
+   </widget>
+   <widget class="QMenu" name="menu_program">
+    <property name="title">
+     <string>程序</string>
+    </property>
+    <addaction name="action_run"/>
+    <addaction name="action_procedures"/>
+    <addaction name="action_debug"/>
+   </widget>
+   <addaction name="menu_file"/>
+   <addaction name="menu_edit"/>
+   <addaction name="menu_program"/>
+   <addaction name="menu_help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_new">
+   <property name="text">
+    <string>新建</string>
+   </property>
+  </action>
+  <action name="action_open">
+   <property name="text">
+    <string>打开</string>
+   </property>
+  </action>
+  <action name="action_save">
+   <property name="text">
+    <string>保存</string>
+   </property>
+  </action>
+  <action name="action_save_as">
+   <property name="text">
+    <string>另存为</string>
+   </property>
+  </action>
+  <action name="action_exit">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="action_copy">
+   <property name="text">
+    <string>复制</string>
+   </property>
+  </action>
+  <action name="action_cut">
+   <property name="text">
+    <string>剪切</string>
+   </property>
+  </action>
+  <action name="action_paste">
+   <property name="text">
+    <string>粘贴</string>
+   </property>
+  </action>
+  <action name="action_help">
+   <property name="text">
+    <string>帮助文档</string>
+   </property>
+  </action>
+  <action name="action_upload">
+   <property name="text">
+    <string>上传至社区</string>
+   </property>
+  </action>
+  <action name="action_run">
+   <property name="text">
+    <string>运行</string>
+   </property>
+  </action>
+  <action name="action_procedures">
+   <property name="text">
+    <string>子程序表</string>
+   </property>
+  </action>
+  <action name="action_debug">
+   <property name="text">
+    <string>调试</string>
+   </property>
+  </action>
+  <action name="action_build">
+   <property name="text">
+    <string>构建</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
