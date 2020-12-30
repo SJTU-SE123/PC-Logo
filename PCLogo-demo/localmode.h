@@ -18,6 +18,8 @@ namespace Ui {
 class LocalMode;
 }
 
+extern QString reminder;
+extern int lineNumber;
 class LocalMode : public QMainWindow
 {
     Q_OBJECT
@@ -50,6 +52,7 @@ private slots:
     void removeTab(int n);
     void saveFile();
     void saveFileAs();
+    void closeWindow();
 };
 
 #endif // LOCALMODE_H

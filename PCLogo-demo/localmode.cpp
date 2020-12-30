@@ -4,6 +4,8 @@
 #include "command.h"
 #include <QTextBlock>
 
+QString reminder = "";
+int lineNumber = 1;
 LocalMode::LocalMode(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LocalMode)
@@ -11,7 +13,6 @@ LocalMode::LocalMode(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 本地");
     this->initForm();
-    this->lineInterpreter = new LineInterpreter();
     connect(runAllButton, SIGNAL(clicked()), this, SLOT(parseAll()));       //运行程序按钮
     connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseLine()));     //单步运行按钮
     connect(speechButton, SIGNAL(pressed()), this, SLOT(speechStart()));    //点击语音输入按钮
@@ -20,7 +21,7 @@ LocalMode::LocalMode(QWidget *parent) :
     connect(ui->action_new, SIGNAL(triggered()), this, SLOT(newTab()));     //新建标签页
     connect(ui->action_save, SIGNAL(triggered()), this, SLOT(saveFile()));  //保存文件
     connect(ui->action_save_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));     //文件另存为
-    connect(ui->action_exit, SIGNAL(triggered()), this, SLOT(close()));     //关闭窗口
+    connect(ui->action_exit, SIGNAL(triggered()), this, SLOT(closeWindow()));     //关闭窗口
     connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseLine()));     //运行
     connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
 }
@@ -123,39 +124,137 @@ void LocalMode::reset_editor(){
  */
 void LocalMode::parseAll(){
     reset_editor();
-    QString str = "";
-    QTextCursor cursor = this->editor->textCursor();
-    cursor.movePosition(QTextCursor::Start);
-    for (int i = 0; i < this->editor->lastBreakPoint; i++) cursor.movePosition(QTextCursor::Down);
-    this->editor->setTextCursor(cursor);
+    if(!editor)return;
 
-    while (cursor.block().blockNumber() < this->editor->blockCount()-1) {   //最后一行之前
-        if (cursor.block().blockNumber() != this->editor->lastBreakPoint
-                && this->editor->breakPoints.contains(cursor.block().blockNumber())) {  //如果遇到断点
-            this->editor->lastBreakPoint = cursor.block().blockNumber();
-            command* cmd = this->lineInterpreter->parseLine(str);
-            this->canvas->parseCommand(cmd);
+    QString str = this->editor->toPlainText();
+     //    str.remove(QRegExp("^ +\\s*"));//去掉前面的空格
+    qDebug()<<str;
+    if(str[0] == " " || str[0] == '\n'){
+
+        QMessageBox::information(this,"错误","运行代码片段不能以空格和空行开头，请检查代码是否符合格式","确定");
             return;
         }
-        str += cursor.block().text() + "\n";
-        cursor.movePosition(QTextCursor::Down);
+        str = "";
+        QTextCursor cursor = this->editor->textCursor();
+        cursor.movePosition(QTextCursor::Start);
+        for (int i = 0; i < this->editor->lastBreakPoint; i++) cursor.movePosition(QTextCursor::Down);
         this->editor->setTextCursor(cursor);
-    }
+        lineNumber = cursor.block().blockNumber();
 
-    //最后一行
-    if (cursor.block().blockNumber() != this->editor->lastBreakPoint
-            && this->editor->breakPoints.contains(cursor.block().blockNumber())) {
-        this->editor->lastBreakPoint = cursor.block().blockNumber();
+        while (cursor.block().blockNumber() < this->editor->blockCount()-1) {   //最后一行之前
+            if (cursor.block().blockNumber() != this->editor->lastBreakPoint
+                    && this->editor->breakPoints.contains(cursor.block().blockNumber())) {  //如果遇到断点
+                this->editor->lastBreakPoint = cursor.block().blockNumber();
+                command* cmd = this->lineInterpreter->parseLine(str);
+                qDebug()<<"step1";
+                if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
+                qDebug()<<"step2";
+                if(reminder != ""){
+                    reminder += "（错误发生在第";
+                    QString LN = QString::number(lineNumber+1, 10);
+                    reminder += LN;
+                    reminder += "行）";
+                    QString error_message = reminder;
+                    QMessageBox::information(this,"错误",error_message,"确定");
+                    reminder = "";
+                    return;
+                }else{
+                    qDebug()<<"step3";
+                    if(cmd == nullptr){
+                        qDebug()<<"step4";
+                                return;
+                            }
+                    this->canvas->parseCommand(cmd);
+                    return;
+                }
+//                this->canvas->parseCommand(cmd);
+//                return;
+            }
+            str += cursor.block().text() + "\n";
+            cursor.movePosition(QTextCursor::Down);
+            this->editor->setTextCursor(cursor);
+        }
+
+        //最后一行
+        if (cursor.block().blockNumber() != this->editor->lastBreakPoint
+                && this->editor->breakPoints.contains(cursor.block().blockNumber())) {
+            this->editor->lastBreakPoint = cursor.block().blockNumber();
+
+            command* cmd = this->lineInterpreter->parseLine(str);
+            qDebug()<<"step5";
+            if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
+                if(reminder != ""){
+                    reminder += "（错误发生在第";
+                    QString LN = QString::number(lineNumber+1, 10);
+                    reminder += LN;
+                    reminder += "行）";
+                    QString error_message = reminder;
+                    QMessageBox::information(this,"错误",error_message,"确定");
+                    reminder = "";
+                }else{
+                    if(cmd == nullptr){
+                        qDebug()<<"step6";
+                        return;
+                    }
+                    this->canvas->parseCommand(cmd);
+                    return;
+                }
+        }
+        str += cursor.block().text() + "\n";
+
         command* cmd = this->lineInterpreter->parseLine(str);
-        this->canvas->parseCommand(cmd);
-        return;
-    }
-    str += cursor.block().text() + "\n";
-//    qDebug() << str;
 
-    command* cmd = this->lineInterpreter->parseLine(str);
-    this->canvas->parseCommand(cmd);
-    this->editor->lastBreakPoint = 0;
+        if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
+        if(reminder != ""){
+            reminder += "（错误发生在第";
+            QString LN = QString::number(lineNumber+1, 10);
+            reminder += LN;
+            reminder += "行）";
+            QString error_message = reminder;
+            QMessageBox::information(this,"错误",error_message,"确定");
+            reminder = "";
+        }else{
+            if(cmd == nullptr){
+                qDebug()<<"step7";
+                this->editor->lastBreakPoint = 0;
+                return;
+            }
+            this->canvas->parseCommand(cmd);
+            this->editor->lastBreakPoint = 0;
+        }
+//        this->canvas->parseCommand(cmd);
+        this->editor->lastBreakPoint = 0;
+
+
+    //分界线
+
+
+//    QString str = this->editor->toPlainText();
+// //    str.remove(QRegExp("^ +\\s*"));//去掉前面的空格
+//if(str[0] == " "){
+//        QMessageBox::information(this,"错误","全部运行指令要求代码片段不能以空格和空行开头，请检查代码是否符合格式","确定");
+//    }else{
+//        str.remove(QRegExp("\\s* +$"));//去掉后面的空格
+//        qDebug()<<str;
+//        command* cmd = this->lineInterpreter->parseLine(str);
+//        if(reminder.at(reminder.size() - 1) == "）")reminder = "";
+//            if(reminder != ""){
+//                reminder += "（错误发生在第";
+//                QString LN = QString::number(lineNumber, 10);
+//                reminder += LN;
+//                reminder += "行）";
+//                QString error_message = reminder;
+//                QMessageBox::information(this,"错误",error_message,"确定");
+//                reminder = "";
+//            }else{
+//                this->canvas->parseCommand(cmd);
+
+//            }
+//    }
+    
+
+    
+
 }
 
 /**
@@ -165,10 +264,20 @@ void LocalMode::parseLine() {
     reset_editor();
     QTextCursor cursor = this->editor->textCursor();
     QString str = cursor.block().text();
+    str.remove(QRegExp("^ +\\s*"));
+    qDebug()<<str;
     command* cmd = this->lineInterpreter->parseLine(str);
-    this->canvas->parseCommand(cmd);
-    cursor.movePosition(QTextCursor::Down);
-    this->editor->setTextCursor(cursor);
+    if(reminder.at(reminder.size() - 1) == "）")reminder = "";
+        if(reminder != ""){
+            QString error_message = "当前光标所在行 " + reminder;
+            QMessageBox::information(this,"错误",error_message,"确定");
+            reminder = "";
+        }else{
+            this->canvas->parseCommand(cmd);
+            cursor.movePosition(QTextCursor::Down);
+            this->editor->setTextCursor(cursor);
+        }
+    
 }
 
 /**
@@ -187,7 +296,10 @@ void LocalMode::speechStart(){
 void LocalMode::speechEnd(){
     audio->stopAudio();             //停止录音
     reset_editor();
-    if (editor == nullptr) return;  //没有标签页时，不读入。
+    if (editor == nullptr){
+        QMessageBox::information(this,"无效操作","当前没有打开的标签页，无法进行语音输入","确定");
+        return;  //没有标签页时，不读入。
+    }
 
     speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
     Speech m_speech;
@@ -242,10 +354,27 @@ void LocalMode::newTab(){
  * 按叉关闭标签。
  */
 void LocalMode::removeTab(int n){
-    editor = static_cast<CodeEditor*>(tabEditor->widget(n));
-    tabEditor->removeTab(n);
-    delete editor;
-    reset_editor();
+    QMessageBox messageBox(QMessageBox::NoIcon,
+                                   "退出", "你确定要关闭该文件吗? ps:请先确认文件是否保存！",
+                                   QMessageBox::No | QMessageBox::Yes , NULL);
+            int result=messageBox.exec();
+
+
+            switch (result)
+            {
+            case QMessageBox::Yes:
+                qDebug()<<"Yes";
+                editor = static_cast<CodeEditor*>(tabEditor->widget(n));
+                tabEditor->removeTab(n);
+                delete editor;
+                reset_editor();
+                break;
+            case QMessageBox::No:
+                qDebug()<<"NO";
+                break;
+            default:
+                break;
+            }
 }
 
 /**
@@ -253,7 +382,10 @@ void LocalMode::removeTab(int n){
  */
 void LocalMode::saveFile(){
     reset_editor();
-    if (editor == nullptr) return;  //没有标签页时，不做动作。
+    if (editor == nullptr){
+            QMessageBox::information(this,"非法操作","当前没有打开的标签页，无法保存","确定");
+            return;  //没有标签页时，不做动作。
+        }
 
     if (editor->fileName.isEmpty()) saveFileAs();   //未命名文件的保存，等价于另存为
     else {
@@ -270,7 +402,10 @@ void LocalMode::saveFile(){
  */
 void LocalMode::saveFileAs(){
     reset_editor();
-    if (editor == nullptr) return;  //没有标签页时，不做动作。
+    if (editor == nullptr){
+            QMessageBox::information(this,"非法操作","当前没有打开的标签页，无法保存","确定");
+            return;  //没有标签页时，不做动作。
+        }
 
     QFileDialog *qfd = new QFileDialog();
     qfd->show();
@@ -284,4 +419,24 @@ void LocalMode::saveFileAs(){
     QTextStream out(&file);
     out << editor->toPlainText();
     file.close();
+}
+
+void LocalMode::closeWindow(){
+    QMessageBox messageBox(QMessageBox::NoIcon,
+                               "退出", "你确定要退出吗? ps:请先确认文件是否保存！",
+                               QMessageBox::No | QMessageBox::Yes , NULL);
+        int result=messageBox.exec();
+
+        switch (result)
+        {
+        case QMessageBox::Yes:
+            qDebug()<<"Yes";
+            close();
+            break;
+        case QMessageBox::No:
+            qDebug()<<"NO";
+            break;
+        default:
+            break;
+        }
 }
