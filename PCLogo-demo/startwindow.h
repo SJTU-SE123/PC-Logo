@@ -4,7 +4,7 @@
 #include <QWidget>
 //#include <QMovie>
 #include <QLabel>
-#include <login.h>
+#include "login.h"
 
 namespace Ui {
 class StartWindow;
@@ -17,6 +17,7 @@ class StartWindow : public QWidget
 public:
     explicit StartWindow(QWidget *parent = nullptr);
     ~StartWindow();
+    QWidget *getNextWidget() {return this->nextWidget;}
 
 private slots:
     void on_ModeSelect_clicked();

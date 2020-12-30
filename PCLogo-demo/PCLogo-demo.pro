@@ -4,9 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network websockets
+QT       += core gui websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += multimedia
 
 TARGET = PCLogo-demo
 TEMPLATE = app
@@ -24,52 +25,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES += \
-        canvas.cpp \
-        codeeditor.cpp \
-        connect.cpp \
-        localmode.cpp \
-        login.cpp \
-        main.cpp \
-        modeselect.cpp \
-        netmode.cpp \
-        register.cpp \
-        startwindow.cpp \
-        userinfo.cpp \
-    lineinterpreter.cpp \
-    command.cpp \
-    chat.cpp \
-    advancedchat.cpp
+include(PCLogo-demo.pri)
 
-HEADERS += \
-        canvas.h \
-        codeeditor.h \
-        connect.h \
-        head.h \
-        linenumberarea.h \
-        localmode.h \
-        login.h \
-        modeselect.h \
-        netmode.h \
-        register.h \
-        startwindow.h \
-        userinfo.h \
-    lineinterpreter.h \
-    command.h \
-    chat.h \
-    advancedchat.h
-
-FORMS += \
-        connect.ui \
-        localmode.ui \
-        login.ui \
-        modeselect.ui \
-        register.ui \
-        startwindow.ui \
-        userinfo.ui \
-    chat.ui \
-    netmode.ui \
-    advancedchat.ui
+SOURCES += ./main/main.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -82,4 +40,4 @@ RESOURCES += \
 RC_ICONS = logo.ico
 
 DISTFILES += \
-    .gitignore
+    PCLogo-demo.pri

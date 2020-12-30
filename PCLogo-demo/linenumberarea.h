@@ -19,7 +19,10 @@ protected:
     {
         codeEditor->lineNumberAreaPaintEvent(event);
     }
-
+    void mouseReleaseEvent(QMouseEvent *event) override
+    {
+        codeEditor->changeBreakPoints(event);
+    }
 private:
     CodeEditor *codeEditor;
 };

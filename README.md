@@ -1,30 +1,21 @@
-# PC-Logo-ui-demo
-一个简单的界面原型。
-## 对各个class的简短介绍。
-* StartWindow类
-    * 按下“选择模式”将打开一个ModeSelect类的新窗口。
-    * “查看帮助”的功能尚未实现。
-    * 按下“退出程序”将会关闭所有窗口。
-* ModeSelect类
-    * 按下“单机运行”将会打开一个LocalMode类的新窗口。
-    * 按下“联网运行”将会打开一个NetMode类的新窗口。
-    * “新手教程”的功能尚未实现。
-* LocalMode类、NetMode类
-    * 将被设计为运行PC-Logo主要逻辑的窗口。
-    * 由菜单栏（上方）、工具栏（左侧）、画布、代码编辑区组成。
-    * 目前工具栏只有三个图标，都是从QT界面上截的。
-    * 画布由canvas类实现。
-    * 目前LocalMode、NetMode类的代码编辑区都是在CodeEditor类外套上了TabWidget类实现的，但有所不同；LocalMode类是为了多开文件，NetMode类则是为了查看联网用户代码。
-* Canvas类
-    * 继承自QWidget，没怎么写过。
-    * 被调用且设置样式后将会出现小海龟。目前这一功能是靠重载paintEvent函数实现的。
-* CodeEditor类和LineNumberArea类
-    * 大部分代码是参考[官网示例](https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html)的。
-    * CodeEditor类继承了QPlainText类，用作代码编辑区。
-    * LineNumberArea类被用于显示行号。
-* Login类、Register类、UserInfo类
-    * 非常原始的登陆、注册、查看用户信息界面。
-    * 有待之后改进。
-* Connect类
-    * 设计用来选择联网用户。非常原始。
-    * 有待之后改进。
+# PCLogo
+
+这是本项目进行开发过程中的主要分支，如需新增功能，请在本分支基础上新建分支进行修改，完成后通过
+Pull Request合并进本分支。目前本分支已被保护，无法直接push.
+
+
+## 运行
+
+通过QtCreator打开`PCLogo-demo/PCLogo-demp.pro`文件可打开本项目，之后可在QtCreator中直接运行。
+
+注意：**在开发过程中，请不要将`*.pro.user`这样的与用户配置相关的文件上传至本分支——这类文件由用户本地的QtCreator创建并配置，各用户配置不同**。如果你使用git，这些用户配置文件在版本控制系统中会被自动忽略。
+
+## 测试
+
+通过QtCreator打开`PCLogo-demo/PCLogo-test/PCLogo-test.pro`文件可打开测试项目，之后可在QtCreator中运行所有测试。
+
+测试中提供了两个十分简单的demo，即TestLineInterpreter类和TestStartWindow类，分别代表普通类和GUI类的测试，以供参考。
+
+注意：**测试方法必须声明为`private slots`**.
+
+新建测试类后，需要在测试项目`main.cpp`中调用`tr.addTest(Your_new_test_class)`方法以加载你的新测试类。
