@@ -23,16 +23,14 @@ void Canvas::paintEvent(QPaintEvent*)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-    if (this->isPenDown) {
-        for (auto line : lineList) {
-            p.setPen(line.second);
-            p.drawLine(line.first);
-        }
-        for (auto oval : ovalList) {
-            p.setPen(oval.second);
-            QPair<QPointF, QPoint> o = oval.first;
-            p.drawEllipse(o.first, o.second.x(), o.second.y());
-        }
+    for (auto line : lineList) {
+        p.setPen(line.second);
+        p.drawLine(line.first);
+    }
+    for (auto oval : ovalList) {
+        p.setPen(oval.second);
+        QPair<QPointF, QPoint> o = oval.first;
+        p.drawEllipse(o.first, o.second.x(), o.second.y());
     }
     QMatrix leftmatrix;
     leftmatrix.rotate(theta - 90);
@@ -42,13 +40,15 @@ void Canvas::paintEvent(QPaintEvent*)
 }
 
 void Canvas::paintLine(int distance){
-    qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
-    qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
-    QLineF newLine(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY));
-    QPair<QLineF, QColor> pair(newLine, this->nextColor);
-    lineList.append(pair);
-    turtleX = newTurtleX;
-    turtleY = newTurtleY;
+    if (this->isPenDown) {
+        qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
+        qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
+        QLineF newLine(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY));
+        QPair<QLineF, QColor> pair(newLine, this->nextColor);
+        lineList.append(pair);
+        turtleX = newTurtleX;
+        turtleY = newTurtleY;
+    }
     update();
 }
 
@@ -58,9 +58,11 @@ void Canvas::setAngle(int angle) {
 }
 
 void Canvas::paintOval(int x, int y) {
-    QPair<QPointF, QPoint> oval(QPointF(turtleX, turtleY), QPoint(x, y));
-    QPair<QPair<QPointF, QPoint>, QColor> pair(oval, this->nextColor);
-    ovalList.append(pair);
+    if (this->isPenDown) {
+        QPair<QPointF, QPoint> oval(QPointF(turtleX, turtleY), QPoint(x, y));
+        QPair<QPair<QPointF, QPoint>, QColor> pair(oval, this->nextColor);
+        ovalList.append(pair);
+    }
     update();
 }
 
@@ -113,4 +115,5 @@ void Canvas::clearCanvas()
 {
     this->lineList.clear();
     this->ovalList.clear();
+    update();
 }
