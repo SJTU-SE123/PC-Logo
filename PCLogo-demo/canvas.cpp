@@ -6,7 +6,10 @@
 #include <QTime>
 #include <QRgb>
 
-Canvas::Canvas(QWidget *parent) : QWidget(parent), nextColor(QColor(Qt::black))
+Canvas::Canvas(QWidget *parent)
+    : QWidget(parent), nextColor(QColor(Qt::black)),
+      defaultBgColor(Qt::GlobalColor::white),
+      defaultPenColor(Qt::GlobalColor::black)
 {
     turtleX = 360;
     turtleY = 360;
@@ -40,15 +43,15 @@ void Canvas::paintEvent(QPaintEvent*)
 }
 
 void Canvas::paintLine(int distance){
+    qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
+    qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
     if (this->isPenDown) {
-        qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
-        qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
         QLineF newLine(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY));
         QPair<QLineF, QColor> pair(newLine, this->nextColor);
         lineList.append(pair);
-        turtleX = newTurtleX;
-        turtleY = newTurtleY;
     }
+    turtleX = newTurtleX;
+    turtleY = newTurtleY;
     update();
 }
 
@@ -91,10 +94,7 @@ void Canvas::parseCommand(command *cmd) {
         } else if (cmd->getType() == SETPC) {
             this->setPenColor(QColor(QRgb(cmd->getColor())));
         } else if (cmd->getType() == SETBG) {
-            QString styleSheet("background-color: ");
-            styleSheet.append(QColor(QRgb(cmd->getColor())).name());
-            styleSheet.append(";");
-            this->setStyleSheet(styleSheet);
+            this->setBackground(QColor(QRgb(cmd->getColor())));
         } else if (cmd->getType() == CLEAN) {
             this->clearCanvas();
         } else if (cmd->getType() == PU) {
@@ -111,9 +111,19 @@ void Canvas::setPenColor(QColor c)
     this->nextColor = c;
 }
 
+void Canvas::setBackground(QColor bgc)
+{
+    QString styleSheet("background-color: ");
+    styleSheet.append(bgc.name());
+    styleSheet.append(";");
+    this->setStyleSheet(styleSheet);
+}
+
 void Canvas::clearCanvas()
 {
     this->lineList.clear();
     this->ovalList.clear();
+    this->setBackground(this->defaultBgColor);
+    this->setPenColor(this->defaultPenColor);
     update();
 }

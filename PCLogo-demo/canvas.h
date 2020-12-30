@@ -17,9 +17,8 @@ public:
     void setAngle(int angle);
     void paintOval(int x,int y);
     void setPos(int x,int y);
-
     void setPenColor(QColor c);
-    void setBackground();
+    void setBackground(QColor bgc);
     void clearCanvas();
     void penUp() { this->isPenDown = false; }
     void penDown() { this->isPenDown = true; }
@@ -38,6 +37,9 @@ private:
 
     QColor nextColor;
     bool isPenDown;
+
+    QColor defaultBgColor;
+    QColor defaultPenColor;
 };
 
 #endif // STAGE_H
