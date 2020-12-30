@@ -18,6 +18,12 @@ public:
     void paintOval(int x,int y);
     void setPos(int x,int y);
 
+    void setPenColor(QColor c);
+    void setBackground();
+    void clearCanvas();
+    void penUp() { this->isPenDown = false; }
+    void penDown() { this->isPenDown = true; }
+
 signals:
 
 public slots:
@@ -27,8 +33,11 @@ private:
     QLabel *theLogo;
     qreal turtleX, turtleY;
     qreal theta;
-    QList<QLineF> lineList;
-    QList<QPair<QPointF, QPoint>> ovalList;
+    QList<QPair<QLineF, QColor>> lineList;
+    QList<QPair<QPair<QPointF, QPoint>, QColor>> ovalList;
+
+    QColor nextColor;
+    bool isPenDown;
 };
 
 #endif // STAGE_H

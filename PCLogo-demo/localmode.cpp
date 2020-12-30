@@ -24,6 +24,7 @@ LocalMode::LocalMode(QWidget *parent) :
     connect(ui->action_exit, SIGNAL(triggered()), this, SLOT(closeWindow()));     //关闭窗口
     connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseLine()));     //运行
     connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
+    connect(this->cmdLine, &CmdLine::sendNewLine, this, &LocalMode::receiveNewLine);  // receive new line from cmd-line
 }
 
 LocalMode::~LocalMode()
@@ -101,9 +102,9 @@ void LocalMode::initForm(){
     canvas->setGraphicsEffect(canvas_opacity);
     canvas_opacity->setOpacity(OPACITY);
 
-    cmdLine = new QPlainTextEdit(this);
+    cmdLine = new CmdLine(this);  // new QPlainTextEdit(this);
     cmdLine->setGeometry(450, 600, 720, 170);
-    cmdLine->appendPlainText("这里将会是是命令行，暂时还没实现。");
+    // cmdLine->appendPlainText("这里将会是是命令行，暂时还没实现。");
     cmdLine_opacity = new QGraphicsOpacityEffect();
     cmdLine->setGraphicsEffect(cmdLine_opacity);
     cmdLine_opacity->setOpacity(OPACITY);
@@ -421,10 +422,16 @@ void LocalMode::saveFileAs(){
     file.close();
 }
 
-void LocalMode::closeWindow(){
+void LocalMode::receiveNewLine(QString newLine)
+{
+    command* cmd = this->lineInterpreter->parseLine(newLine);
+    this->canvas->parseCommand(cmd);
+}
+
+void LocalMode::closeWindow() {
     QMessageBox messageBox(QMessageBox::NoIcon,
                                "退出", "你确定要退出吗? ps:请先确认文件是否保存！",
-                               QMessageBox::No | QMessageBox::Yes , NULL);
+                               QMessageBox::No | QMessageBox::Yes, nullptr);
         int result=messageBox.exec();
 
         switch (result)

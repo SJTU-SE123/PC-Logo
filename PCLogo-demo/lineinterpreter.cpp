@@ -89,6 +89,15 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end) {
             }
         }
         return new command(REPEAT, wordList[begin + 1].toInt(), parse(wordList, begin + 3, i - 1), parse(wordList, i + 1, end));
+    } else (wordList[begin] == "CLEAN") {
+        reminder = "清屏（CLEAN）";
+        return new command(CLEAN, 0, parse(wordList, begin+1, end));
+    } else (wordList[begin] == "PU") {
+        reminder = "提笔（PENUP）";
+        return new command(PU, 0, parse(wordList, begin+1, end));
+    } else (wordList[begin] == "PD") {
+        reminder = "落笔（PENDOWN）";
+        return new command(PD, 0, parse(wordList, begin+1, end));
     } else {
 
         if(reminder != ""){

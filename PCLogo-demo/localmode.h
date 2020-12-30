@@ -13,6 +13,7 @@
 #include "lineinterpreter.h"
 #include "speech/audio.h"
 #include "speech/speech.h"
+#include "cmdline.h"
 
 namespace Ui {
 class LocalMode;
@@ -26,13 +27,13 @@ class LocalMode : public QMainWindow
 
 public:
     explicit LocalMode(QWidget *parent = nullptr);
-    ~LocalMode();
+    ~LocalMode() override;
 
 private:
     Ui::LocalMode *ui;
     QTabWidget *tabEditor;
     Canvas *canvas;
-    QPlainTextEdit *cmdLine;
+    CmdLine *cmdLine;
     CodeEditor *editor;
     QPushButton *runAllButton, *runLineButton, *speechButton;
     LineInterpreter *lineInterpreter;
@@ -52,6 +53,9 @@ private slots:
     void removeTab(int n);
     void saveFile();
     void saveFileAs();
+
+public slots:
+    void receiveNewLine(QString newLine);
     void closeWindow();
 };
 
