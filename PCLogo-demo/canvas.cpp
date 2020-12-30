@@ -7,7 +7,7 @@
 #include <QRgb>
 
 Canvas::Canvas(QWidget *parent)
-    : QWidget(parent), nextColor(QColor(Qt::black)),
+    : QWidget(parent), nextColor(QColor(Qt::black)), isPenDown(true)
       defaultBgColor(Qt::GlobalColor::white),
       defaultPenColor(Qt::GlobalColor::black)
 {
