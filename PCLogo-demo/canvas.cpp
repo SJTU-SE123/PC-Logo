@@ -42,13 +42,15 @@ void Canvas::paintEvent(QPaintEvent*)
 }
 
 void Canvas::paintLine(int distance){
-    qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
-    qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
-    QLineF newLine(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY));
-    QPair<QLineF, QColor> pair(newLine, this->nextColor);
-    lineList.append(pair);
-    turtleX = newTurtleX;
-    turtleY = newTurtleY;
+    if (this->isPenDown) {
+        qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
+        qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
+        QLineF newLine(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY));
+        QPair<QLineF, QColor> pair(newLine, this->nextColor);
+        lineList.append(pair);
+        turtleX = newTurtleX;
+        turtleY = newTurtleY;
+    }
     update();
 }
 
@@ -58,9 +60,11 @@ void Canvas::setAngle(int angle) {
 }
 
 void Canvas::paintOval(int x, int y) {
-    QPair<QPointF, QPoint> oval(QPointF(turtleX, turtleY), QPoint(x, y));
-    QPair<QPair<QPointF, QPoint>, QColor> pair(oval, this->nextColor);
-    ovalList.append(pair);
+    if (this->isPenDown) {
+        QPair<QPointF, QPoint> oval(QPointF(turtleX, turtleY), QPoint(x, y));
+        QPair<QPair<QPointF, QPoint>, QColor> pair(oval, this->nextColor);
+        ovalList.append(pair);
+    }
     update();
 }
 
@@ -113,4 +117,5 @@ void Canvas::clearCanvas()
 {
     this->lineList.clear();
     this->ovalList.clear();
+    update();
 }

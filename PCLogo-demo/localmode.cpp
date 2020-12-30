@@ -14,7 +14,7 @@ LocalMode::LocalMode(QWidget *parent) :
     this->setWindowTitle("PC Logo 本地");
     this->initForm();
     connect(runAllButton, SIGNAL(clicked()), this, SLOT(parseAll()));       //运行程序按钮
-    connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseLine()));     //单步运行按钮
+    connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseCurrentLine()));     //单步运行按钮
     connect(speechButton, SIGNAL(pressed()), this, SLOT(speechStart()));    //点击语音输入按钮
     connect(speechButton, SIGNAL(released()), this, SLOT(speechEnd()));     //松开语音输入按钮
     connect(ui->action_open, SIGNAL(triggered()), this, SLOT(openFile()));  //打开文件
@@ -22,7 +22,7 @@ LocalMode::LocalMode(QWidget *parent) :
     connect(ui->action_save, SIGNAL(triggered()), this, SLOT(saveFile()));  //保存文件
     connect(ui->action_save_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));     //文件另存为
     connect(ui->action_exit, SIGNAL(triggered()), this, SLOT(closeWindow()));     //关闭窗口
-    connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseLine()));     //运行
+    connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseCurrentLine()));     //运行
     connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
     connect(this->cmdLine, &CmdLine::sendNewLine, this, &LocalMode::receiveNewLine);  // receive new line from cmd-line
 }
@@ -261,24 +261,38 @@ void LocalMode::parseAll(){
 /**
  * 运行当前光标所在的行,然后将光标置于下一行行首。
  */
-void LocalMode::parseLine() {
+void LocalMode::parseCurrentLine() {
     reset_editor();
     QTextCursor cursor = this->editor->textCursor();
     QString str = cursor.block().text();
     str.remove(QRegExp("^ +\\s*"));
     qDebug()<<str;
-    command* cmd = this->lineInterpreter->parseLine(str);
-    if(reminder.at(reminder.size() - 1) == "）")reminder = "";
-        if(reminder != ""){
-            QString error_message = "当前光标所在行 " + reminder;
-            QMessageBox::information(this,"错误",error_message,"确定");
-            reminder = "";
-        }else{
-            this->canvas->parseCommand(cmd);
-            cursor.movePosition(QTextCursor::Down);
-            this->editor->setTextCursor(cursor);
-        }
-    
+//    command* cmd = this->lineInterpreter->parseLine(str);
+//    if(reminder.at(reminder.size() - 1) == "）")reminder = "";
+//        if(reminder != ""){
+//            QString error_message = "当前光标所在行 " + reminder;
+//            QMessageBox::information(this,"错误",error_message,"确定");
+//            reminder = "";
+//        }else{
+//            this->canvas->parseCommand(cmd);
+//            cursor.movePosition(QTextCursor::Down);
+//            this->editor->setTextCursor(cursor);
+//        }
+    this->parseLine(str);
+}
+
+void LocalMode::parseLine(QString line)
+{
+    command *cmd = this->lineInterpreter->parseLine(line);
+    if (reminder.at(reminder.size() - 1) == "）")
+        reminder = "";
+    if (reminder != ""){
+        QString error_message = "当前行 " + reminder;
+        QMessageBox::information(this, "错误", error_message, "确定");
+        reminder = "";
+    } else {
+        this->canvas->parseCommand(cmd);
+    }
 }
 
 /**
@@ -357,7 +371,7 @@ void LocalMode::newTab(){
 void LocalMode::removeTab(int n){
     QMessageBox messageBox(QMessageBox::NoIcon,
                                    "退出", "你确定要关闭该文件吗? ps:请先确认文件是否保存！",
-                                   QMessageBox::No | QMessageBox::Yes , NULL);
+                                   QMessageBox::No | QMessageBox::Yes , nullptr);
             int result=messageBox.exec();
 
 
@@ -424,8 +438,7 @@ void LocalMode::saveFileAs(){
 
 void LocalMode::receiveNewLine(QString newLine)
 {
-    command* cmd = this->lineInterpreter->parseLine(newLine);
-    this->canvas->parseCommand(cmd);
+    this->parseLine(newLine);
 }
 
 void LocalMode::closeWindow() {

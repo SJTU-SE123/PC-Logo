@@ -133,8 +133,3 @@ void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
 NetMode::~NetMode() {
     delete ui;
 }
-
-
-
-
-

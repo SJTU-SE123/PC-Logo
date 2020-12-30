@@ -44,7 +44,8 @@ private:
     void reset_editor();   //使editor指向当前现实的标签
 
 private slots:
-    void parseLine();
+    void parseCurrentLine();
+    void parseLine(QString line);
     void parseAll();
     void speechStart();
     void speechEnd();
