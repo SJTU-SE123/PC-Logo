@@ -23,16 +23,14 @@ void Canvas::paintEvent(QPaintEvent*)
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-    if (this->isPenDown) {
-        for (auto line : lineList) {
-            p.setPen(line.second);
-            p.drawLine(line.first);
-        }
-        for (auto oval : ovalList) {
-            p.setPen(oval.second);
-            QPair<QPointF, QPoint> o = oval.first;
-            p.drawEllipse(o.first, o.second.x(), o.second.y());
-        }
+    for (auto line : lineList) {
+        p.setPen(line.second);
+        p.drawLine(line.first);
+    }
+    for (auto oval : ovalList) {
+        p.setPen(oval.second);
+        QPair<QPointF, QPoint> o = oval.first;
+        p.drawEllipse(o.first, o.second.x(), o.second.y());
     }
     QMatrix leftmatrix;
     leftmatrix.rotate(theta - 90);
