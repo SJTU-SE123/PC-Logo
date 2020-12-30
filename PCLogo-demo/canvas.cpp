@@ -40,15 +40,15 @@ void Canvas::paintEvent(QPaintEvent*)
 }
 
 void Canvas::paintLine(int distance){
+    qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
+    qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
     if (this->isPenDown) {
-        qreal newTurtleX = turtleX - qCos(qDegreesToRadians(theta)) * distance; //zzy:我不知道为什么是减，但是它画对了
-        qreal newTurtleY = turtleY - qSin(qDegreesToRadians(theta)) * distance;
         QLineF newLine(QPointF(turtleX, turtleY), QPointF(newTurtleX, newTurtleY));
         QPair<QLineF, QColor> pair(newLine, this->nextColor);
         lineList.append(pair);
-        turtleX = newTurtleX;
-        turtleY = newTurtleY;
     }
+    turtleX = newTurtleX;
+    turtleY = newTurtleY;
     update();
 }
 
