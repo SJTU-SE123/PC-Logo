@@ -31,6 +31,12 @@ StartWindow::StartWindow(QWidget *parent) :
     ui->ModeSelect->setStyleSheet("background-image: url(:/image/toselectmode.png);");
     ui->Help->setStyleSheet("background-image: url(:/image/help.png);");
     ui->Exit->setStyleSheet("background-image: url(:/image/exit.png);");
+    login = new Login();
+    connect(login, &Login::UserLogin, this, &StartWindow::onUserLogin);
+}
+
+void StartWindow::onUserLogin(QString username) {
+    this->username = username;
 }
 
 StartWindow::~StartWindow()
@@ -44,7 +50,7 @@ void StartWindow::on_ModeSelect_clicked()
         delete nextWidget;
         nextWidget = nullptr;
     }
-    nextWidget = new ModeSelect();
+    nextWidget = new ModeSelect(this->username);
     nextWidget->show();
 }
 
@@ -91,12 +97,12 @@ void StartWindow::onTaskBoxContextMenuEvent(){
             t->show();
             break;
         case 2:
-            if (t != nullptr){
-                delete t;
-                t = nullptr;
-            }
-            t = new Login();
-            t->show();
+//            if (t != nullptr){
+//                delete t;
+//                t = nullptr;
+//            }
+//            t = new Login();
+            login->show();
             break;
         case 3:
             if (t != nullptr){

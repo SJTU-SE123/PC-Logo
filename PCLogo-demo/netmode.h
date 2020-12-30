@@ -6,8 +6,10 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGraphicsOpacityEffect>
+#include <QtWebSockets>
 #include "codeeditor.h"
 #include "canvas.h"
+#include "chat.h"
 
 namespace Ui {
 class NetMode;
@@ -18,22 +20,29 @@ class NetMode : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit NetMode(QWidget *parent = nullptr);
+    explicit NetMode(QString username, QWidget *parent = nullptr);
     ~NetMode();
+    void sendMsg(QJsonObject msg);
 
 private:
     Ui::NetMode *ui;
-    Canvas *canvas;
-    QTabWidget *tabEditor;
-    CodeEditor *localEditor, *netEditor;
-    QPushButton *runAllButton, *runLineButton;
-    QWidget *netConnection;
-    QGraphicsOpacityEffect *tabEditor_opacity, *canvas_opacity;
-    const double OPACITY = 0.8;
+    QWebSocket m_webSocket;
+    QUrl m_url;
+    bool m_debug;
+    QList<QString> users;
+    QString username;
+    QString partner;
+    Chat *chat;
+
+signals:
+    void closed();
 
 private slots:
-    void initForm();
-    void connect();
+    void paintEvent(QPaintEvent*) override;
+    void onConnected();
+    void onTextMessageReceived(QString message);
+    void on_tableWidget_doubleClicked(QModelIndex index);
+    void onSendMessage(QString msg);
 };
 
 #endif // NETMODE_H
