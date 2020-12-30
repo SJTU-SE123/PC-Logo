@@ -30,58 +30,58 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end) {
         return parse(wordList, begin+1, end);
     }
     if (wordList[begin] == "" && lineNumber != 0){
-        qDebug()<<"reminder:  "<<reminder;
+        qDebug() << "reminder:  " << reminder;
         return parse(wordList, begin+1, end);
     }
-    if (wordList[begin] == "")return nullptr;
+    if (wordList[begin] == "") return nullptr;
     if (begin > end) return nullptr;
-    bool flag;
+    bool flag = true;
     if (wordList[begin] == "FD") {
         reminder = "前进（FD）";
-        wordList[begin + 1].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(STRAIGHTMOVE, wordList[begin + 1].toInt(), parse(wordList, begin+2, end));
+        int param = wordList[begin + 1].toInt(&flag);
+        if (!flag) reminder += " 指令参数错误,请重新输入";
+        return new command(STRAIGHTMOVE, param, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "BK") {
         reminder = "后退（BK）";
-        wordList[begin + 1].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(STRAIGHTMOVE, -wordList[begin + 1].toInt(), parse(wordList, begin+2, end));
+        int param = wordList[begin + 1].toInt(&flag);
+        if (!flag) reminder += " 指令参数错误,请重新输入";
+        return new command(STRAIGHTMOVE, -param, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "RT") {
         reminder = "左转（RT）";
-        wordList[begin + 1].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(SETANGLE, wordList[begin + 1].toInt(), parse(wordList, begin+2, end));
+        int param = wordList[begin + 1].toInt(&flag);
+        if (!flag) reminder += " 指令参数错误,请重新输入";
+        return new command(SETANGLE, param, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "LT") {
         reminder = "右转（LT）";
-        wordList[begin + 1].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(SETANGLE, -wordList[begin + 1].toInt(), parse(wordList, begin+2, end));
+        int param = wordList[begin + 1].toInt(&flag);
+        if (!flag) reminder += " 指令参数错误,请重新输入";
+        return new command(SETANGLE, -param, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "SETPC") {
         reminder = "设置画笔颜色（SETPC）";
-        wordList[begin + 1].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(SETPC, wordList[begin + 1].toInt(), parse(wordList, begin+2, end));
+        int color_16 = wordList[begin + 1].toInt(&flag, 16);
+        if (!flag) reminder += " 指令参数错误,请重新输入";
+        return new command(SETPC, color_16, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "SETBG") {
         reminder = "设置背景颜色（SETBG）";
-        wordList[begin + 1].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(SETBG, wordList[begin + 1].toInt(), parse(wordList, begin+2, end));
+        int color_16 = wordList[begin + 1].toInt(&flag, 16);
+        if (!flag) reminder += " 指令参数错误,请重新输入";
+        return new command(SETBG, color_16, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "SETXY") {
         reminder = "坐标定位（SETXY）";
-        wordList[begin + 1].toInt(&flag);
-        wordList[begin + 2].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(SETXY, wordList[begin + 1].toInt(), wordList[begin + 2].toInt(), parse(wordList, begin+3, end));
+        int x = wordList[begin + 1].toInt(&flag);
+        int y = wordList[begin + 2].toInt(&flag);
+        if (!flag) reminder += " 指令参数错误,请重新输入";
+        return new command(SETXY, x, y, parse(wordList, begin+3, end));
     } else if (wordList[begin] == "STAMPOVAL") {
         reminder = "画圆（STAMPOVAL）";
-        wordList[begin + 1].toInt(&flag);
-        wordList[begin + 2].toInt(&flag);
+        int a = wordList[begin + 1].toInt(&flag);
+        int b = wordList[begin + 2].toInt(&flag);
         if(!flag)reminder += " 指令参数错误,请重新输入";
-        return new command(OVALMOVE, wordList[begin + 1].toInt(), wordList[begin + 2].toInt(), parse(wordList, begin+3, end));
+        return new command(OVALMOVE, a, b, parse(wordList, begin+3, end));
     } else if (wordList[begin] == "REPEAT") {
         reminder = "重复命令（REPEAT）";
         int cnt = 0, i;
-        for (i=begin; i<=end; i++) {
+        for (i = begin; i <= end; i++) {
             if (wordList[i] == "[") ++cnt;
             else if (wordList[i] == "]") {
                 --cnt;
@@ -89,19 +89,19 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end) {
             }
         }
         return new command(REPEAT, wordList[begin + 1].toInt(), parse(wordList, begin + 3, i - 1), parse(wordList, i + 1, end));
-    } else if(wordList[begin] == "CLEAN") {
+    } else if (wordList[begin] == "CLEAN") {
         reminder = "清屏（CLEAN）";
         return new command(CLEAN, 0, parse(wordList, begin+1, end));
-    } else if(wordList[begin] == "PU") {
+    } else if (wordList[begin] == "PU") {
         reminder = "提笔（PENUP）";
         return new command(PU, 0, parse(wordList, begin+1, end));
-    } else if(wordList[begin] == "PD") {
+    } else if (wordList[begin] == "PD") {
         reminder = "落笔（PENDOWN）";
         return new command(PD, 0, parse(wordList, begin+1, end));
     } else {
-
-        if(reminder != ""){
-            if(reminder.at(reminder.size() - 1) == "）")reminder += " 指令参数错误,请重新输入！";
+        // error
+        if (reminder != "") {
+            if (reminder.at(reminder.size() - 1) == "）") reminder += " 指令参数错误,请重新输入！";
             return nullptr;
         }
         reminder = "未输入指令或输入指令无效,请重新输入";

@@ -42,7 +42,7 @@ void NewLine::keyPressEvent(QKeyEvent *ke)
         this->setCursorPosition(this->text().length());
         break;
     case Qt::Key::Key_Home:
-        this->setCursorPosition(0);
+        this->setCursorPosition(this->lineHeadMark.length());
         break;
     case Qt::Key::Key_Up:
         this->readCurrentCmd(-1);
