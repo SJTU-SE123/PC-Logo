@@ -8,7 +8,7 @@
 class LineInterpreter {
 public:
     command* parseLine(QString str);
-    command* parse(QStringList wordList, int begin, int end);
+    command* parse(QStringList wordList, int begin, int end, bool repeatFlag=true);
 
 private:
     QMap<QString, Procedure> procedures;
