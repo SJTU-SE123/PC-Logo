@@ -286,6 +286,10 @@ void LocalMode::parseCurrentLine() {
 void LocalMode::parseLine(QString line)
 {
     command *cmd = this->lineInterpreter->parseLine(line);
+    if (cmd == nullptr){
+        QMessageBox::information(this, "错误", "输入为空", "确定");
+        return;
+    }
     if (reminder.at(reminder.size() - 1) == "）")
         reminder = "";
     if (reminder != ""){
