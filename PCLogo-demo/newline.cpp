@@ -6,6 +6,7 @@ NewLine::NewLine(QWidget *parent)
     : QLineEdit(parent), currentCmdIndex(0), lineHeadMark(QString(">> "))
 {
     this->resetLine();
+    this->cmdHistory.append("");
 }
 
 void NewLine::resetLine()
@@ -13,30 +14,51 @@ void NewLine::resetLine()
     this->setText(this->lineHeadMark);
 }
 
-void NewLine::readCurrentCmd(int index)
+void NewLine::readCurrentCmd()
 {
-    if (this->currentCmdIndex + index < 0) return;
-    if (this->currentCmdIndex + index >= this->currentCmds.length())
-        return;
-    this->currentCmdIndex += index;
-    this->setText(this->lineHeadMark
-                  + QString(this->currentCmds.at(currentCmdIndex)));
+    this->setText(this->lineHeadMark + this->cmdHistory.at(currentCmdIndex));
 }
 
-QString NewLine::cleanText()
+void NewLine::writeCurrentCmd()
+{
+    QString cmd = this->pureCmd();
+    this->cmdHistory[this->currentCmdIndex] = cmd;
+}
+
+void NewLine::switchCurrentCmd(SwitchType st)
+{
+    if (st == REVERSE) {
+        if (this->currentCmdIndex - 1 < 0) return;
+        this->writeCurrentCmd();
+        this->currentCmdIndex -= 1;
+        this->readCurrentCmd();
+    }
+    else if (st == FORWARD) {
+        if (this->currentCmdIndex + 1 >= this->cmdHistory.length()) return;
+        this->writeCurrentCmd();
+        this->currentCmdIndex += 1;
+        this->readCurrentCmd();
+    }
+}
+
+QString NewLine::pureCmd()
 {
     return this->text().mid(this->lineHeadMark.length());
 }
 
+void NewLine::handleReturn() {
+    this->writeCurrentCmd();
+    emit this->sendNewLine(this->pureCmd());
+    this->cmdHistory.append("");
+    this->currentCmdIndex = this->cmdHistory.length() - 1;
+    this->resetLine();
+}
+
 void NewLine::keyPressEvent(QKeyEvent *ke)
 {
-    QString cmd;
     switch (ke->key()) {
     case Qt::Key::Key_Return:
-        cmd = this->cleanText();
-        this->currentCmds.push_back(cmd);
-        emit this->sendNewLine(cmd);
-        this->resetLine();
+        this->handleReturn();
         break;
     case Qt::Key::Key_End:
         this->setCursorPosition(this->text().length());
@@ -45,10 +67,10 @@ void NewLine::keyPressEvent(QKeyEvent *ke)
         this->setCursorPosition(this->lineHeadMark.length());
         break;
     case Qt::Key::Key_Up:
-        this->readCurrentCmd(-1);
+        this->switchCurrentCmd(REVERSE);
         break;
     case Qt::Key::Key_Down:
-        this->readCurrentCmd(1);
+        this->switchCurrentCmd(FORWARD);
         break;
     case Qt::Key::Key_Left:
     case Qt::Key::Key_Backspace:
@@ -60,9 +82,4 @@ void NewLine::keyPressEvent(QKeyEvent *ke)
     default:
         QLineEdit::keyPressEvent(ke);
     }
-}
-
-void NewLine::mousePressEvent(QMouseEvent *)
-{
-    // skip
 }
