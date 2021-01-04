@@ -8,3 +8,6 @@ HEADERS += \
 
 FORMS += \
         $$PWD/*.ui
+
+RESOURCES += \
+    $$PWD/image.qrc

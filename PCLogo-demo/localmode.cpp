@@ -263,6 +263,8 @@ void LocalMode::parseAll(){
  */
 void LocalMode::parseCurrentLine() {
     reset_editor();
+    if(!editor)return;
+
     QTextCursor cursor = this->editor->textCursor();
     QString str = cursor.block().text();
     str.remove(QRegExp("^ +\\s*"));
