@@ -7,6 +7,7 @@ CmdLine::CmdLine(QWidget *parent) : QTextBrowser(parent)
     this->setText(">> Command Line is Here");
     newline = new NewLine(this);
     connect(this->newline, &NewLine::sendNewLine, this, &CmdLine::receiveNewLine);
+    this->setViewportMargins(0, 0, 0, LINE_HEIGHT);
 }
 
 /**
@@ -20,5 +21,8 @@ void CmdLine::resizeEvent(QResizeEvent *event){
 void CmdLine::receiveNewLine(QString newLine)
 {
     this->append(QString(">> ").append(newLine));
-    emit this->sendNewLine(newLine);
+    if (newLine.length() == 0) {
+        return;
+    }
+    else emit this->sendNewLine(newLine);
 }

@@ -13,17 +13,22 @@ public:
     NewLine(QWidget *parent);
     void resetLine();
     void keyPressEvent(QKeyEvent *) override;
-    void mousePressEvent(QMouseEvent *) override;
-    QString cleanText();
+    // void mousePressEvent(QMouseEvent *) override;
+    QString pureCmd();
 
 signals:
     void sendNewLine(QString newLine);
 
 private:
-    QList<QString> currentCmds;
+    enum SwitchType { REVERSE = -1, FORWARD = 1 };
+    QList<QString> cmdHistory;
     int currentCmdIndex;
-    void readCurrentCmd(int index);
+    void readCurrentCmd();
+    void writeCurrentCmd();
+    void switchCurrentCmd(SwitchType st);
     QString lineHeadMark;
+
+    void handleReturn();
 };
 
 #endif // NEWLINE_H
