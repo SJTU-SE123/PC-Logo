@@ -3,7 +3,7 @@
 #include "localmode.h"
 #include "netmode.h"
 
-ModeSelect::ModeSelect(QWidget *parent) :
+ModeSelect::ModeSelect(QString username, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ModeSelect)
 {
@@ -17,6 +17,8 @@ ModeSelect::ModeSelect(QWidget *parent) :
     ui->LocalMode->setStyleSheet("background-image: url(:/image/localmode.png);");
     ui->NetMode->setStyleSheet("background-image: url(:/image/netmode.png);");
     ui->Tutorial->setStyleSheet("background-image: url(:/image/tutorial.png);");
+    this->setFixedSize(500, 500);
+    this->username = username;
 }
 
 ModeSelect::~ModeSelect()
@@ -40,7 +42,7 @@ void ModeSelect::on_NetMode_clicked()
         delete logoWindow;
         logoWindow = nullptr;
     }
-    logoWindow = new NetMode();
+    logoWindow = new NetMode(this->username);
     logoWindow->show();
 }
 

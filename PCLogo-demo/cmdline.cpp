@@ -1,5 +1,4 @@
 #include "cmdline.h"
-// #include <QDebug>
 
 CmdLine::CmdLine(QWidget *parent) : QTextBrowser(parent)
 {

@@ -263,6 +263,8 @@ void LocalMode::parseAll(){
  */
 void LocalMode::parseCurrentLine() {
     reset_editor();
+    if(!editor)return;
+
     QTextCursor cursor = this->editor->textCursor();
     QString str = cursor.block().text();
     str.remove(QRegExp("^ +\\s*"));
@@ -284,6 +286,10 @@ void LocalMode::parseCurrentLine() {
 void LocalMode::parseLine(QString line)
 {
     command *cmd = this->lineInterpreter->parseLine(line);
+    if (cmd == nullptr){
+        QMessageBox::information(this, "错误", "输入为空", "确定");
+        return;
+    }
     if (reminder.at(reminder.size() - 1) == "）")
         reminder = "";
     if (reminder != ""){

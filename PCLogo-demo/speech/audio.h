@@ -20,4 +20,3 @@ private:
     QFile *m_file;
 };
 #endif // AUDIO_H
-
