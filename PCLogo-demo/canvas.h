@@ -20,6 +20,7 @@ public:
     void setPenColor(QColor c);
     void setBackground(QColor bgc);
     void clearCanvas();
+    void reset();
     void penUp() { this->isPenDown = false; }
     void penDown() { this->isPenDown = true; }
 

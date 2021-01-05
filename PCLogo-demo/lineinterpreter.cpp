@@ -103,6 +103,9 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end, bool r
     } else if (wordList[begin] == "CLEAN") {
         reminder = "清屏（CLEAN）";
         return new command(CLEAN, 0, parse(wordList, begin+1, end));
+    } else if (wordList[begin] == "RESET") {
+        reminder = "复位（RESET）";
+        return new command(RESET, 0, parse(wordList, begin+1, end));
     } else if (wordList[begin] == "PU") {
         reminder = "提笔（PENUP）";
         return new command(PU, 0, parse(wordList, begin+1, end));

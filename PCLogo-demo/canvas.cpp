@@ -70,6 +70,7 @@ void Canvas::paintOval(int x, int y) {
 }
 
 void Canvas::setPos(int x, int y) {
+    x = x + 360; y = 360 - y;
     turtleX = x; turtleY = y;
     update();
 }
@@ -97,6 +98,8 @@ void Canvas::parseCommand(command *cmd) {
             this->setBackground(QColor(QRgb(cmd->getColor())));
         } else if (cmd->getType() == CLEAN) {
             this->clearCanvas();
+        } else if (cmd->getType() == RESET) {
+            this->reset();
         } else if (cmd->getType() == PU) {
             this->penUp();
         } else if (cmd->getType() == PD) {
@@ -125,5 +128,17 @@ void Canvas::clearCanvas()
     this->ovalList.clear();
     this->setBackground(this->defaultBgColor);
     this->setPenColor(this->defaultPenColor);
+    update();
+}
+
+void Canvas::reset()
+{
+    this->lineList.clear();
+    this->ovalList.clear();
+    this->setBackground(this->defaultBgColor);
+    this->setPenColor(this->defaultPenColor);
+    turtleX = 360;
+    turtleY = 360;
+    theta = 90;
     update();
 }
