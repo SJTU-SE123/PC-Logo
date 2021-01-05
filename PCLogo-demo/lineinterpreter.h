@@ -7,11 +7,12 @@
 
 class LineInterpreter {
 public:
+    LineInterpreter();
     command* parseLine(QString str);
     command* parse(QStringList wordList, int begin, int end, bool repeatFlag=true);
 
 private:
-    QMap<QString, Procedure> procedures;
+    QMap<QString, Procedure> *procedures;
 };
 
 #endif // LINEINTERPRETER_H

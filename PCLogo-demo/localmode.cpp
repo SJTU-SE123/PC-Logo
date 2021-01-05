@@ -25,6 +25,7 @@ LocalMode::LocalMode(QWidget *parent) :
     connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseCurrentLine()));     //运行
     connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
     connect(this->cmdLine, &CmdLine::sendNewLine, this, &LocalMode::receiveNewLine);  // receive new line from cmd-line
+    lineInterpreter = new LineInterpreter();
 }
 
 LocalMode::~LocalMode()
