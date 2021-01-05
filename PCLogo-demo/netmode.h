@@ -29,7 +29,8 @@ private:
     QWebSocket m_webSocket;
     QUrl m_url;
     bool m_debug;
-    QList<QString> users;
+    QList<QString> userList;
+    QList<bool>statusList;
     QString username;
     QString partner;
     Chat *chat;

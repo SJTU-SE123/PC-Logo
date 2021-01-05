@@ -31,10 +31,16 @@ void NetMode::onSendMessage(QString msg) {
 void NetMode::paintEvent(QPaintEvent*) {
     int rowCount = ui->tableWidget->rowCount();
     for (int i=0; i<rowCount; i++) ui->tableWidget->removeRow(0);
-    for (auto user : this->users) {
-        QTableWidgetItem *up = new QTableWidgetItem(user);
+    int size = this->userList.size();
+    for (int i=0; i<size; i++) {
+        QTableWidgetItem *t1 = new QTableWidgetItem(userList[i]);
+        QTableWidgetItem *t2;
+        if (statusList[i]) {
+            t2 = new QTableWidgetItem("在线");
+        } else t2 = new QTableWidgetItem("聊天中");
         ui->tableWidget->insertRow(0);
-        ui->tableWidget->setItem(0,0,up);
+        ui->tableWidget->setItem(0,0,t1);
+        ui->tableWidget->setItem(0,1,t2);
     }
 }
 
@@ -56,11 +62,16 @@ void NetMode::onTextMessageReceived(QString message) {
         if (it.key() == "onlineUsers") {
             QJsonArray users = it.value().toArray();
             QList<QString> usernames;
+            QList<bool> statuss;
             for (QJsonArray::Iterator user = users.begin(); user != users.end(); user++) {
-                QString username = (*user).toString();
-                usernames.append(username);
+                QJsonObject userInfo = (*user).toObject();
+                QString userName = userInfo.value("username").toString();
+                bool userStatus = userInfo.value("free").toBool();
+                usernames.append(userName);
+                statuss.append(userStatus);
             }
-            this->users = usernames;
+            this->userList = usernames;
+            this->statusList = statuss;
             update();
         }
 
