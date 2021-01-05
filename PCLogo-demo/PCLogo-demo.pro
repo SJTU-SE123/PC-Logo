@@ -29,7 +29,6 @@ CONFIG += c++11 \
 include(PCLogo-demo.pri)
 
 SOURCES += ./main/main.cpp \
-    advancedchat.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -43,9 +42,3 @@ RC_ICONS = logo.ico
 
 DISTFILES += \
     PCLogo-demo.pri
-
-FORMS += \
-    advancedchat.ui
-
-HEADERS += \
-    advancedchat.h

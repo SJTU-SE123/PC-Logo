@@ -10,6 +10,7 @@
 #include "codeeditor.h"
 #include "canvas.h"
 #include "chat.h"
+#include "advancedchat.h"
 
 namespace Ui {
 class NetMode;
@@ -34,6 +35,8 @@ private:
     QString username;
     QString partner;
     Chat *chat;
+    AdvancedChat *advChat;
+    QString type;
 
 signals:
     void closed();

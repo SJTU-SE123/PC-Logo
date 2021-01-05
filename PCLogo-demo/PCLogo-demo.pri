@@ -1,10 +1,10 @@
 SOURCES += \
         $$PWD/*.cpp \
-        $$PWD/speech/*.cpp
+        $$PWD/speech/*.cpp \
 
 HEADERS += \
         $$PWD/*.h \
-        $$PWD/speech/*.h
+        $$PWD/speech/*.h \
 
 FORMS += \
-        $$PWD/*.ui
+        $$PWD/*.ui \

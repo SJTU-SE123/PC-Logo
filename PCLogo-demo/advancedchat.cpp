@@ -1,43 +1,26 @@
 #include "advancedchat.h"
 #include "ui_advancedchat.h"
-#include <QToolButton>
 
 AdvancedChat::AdvancedChat(QString username) :
-    ui(new Ui::AdvancedChat) {
+    ui(new Ui::AdvancedChat)
+{
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 联网");
-    canvas = new Canvas(this);
-    canvas->setGeometry(420, 10, 370, 460);
-    canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
-    canvas->setPos(185, 230);
+    canvas1 = new Canvas(this);
+    canvas1->setGeometry(440, 5, 430, 300);
+    canvas1->setStyleSheet("background-color: white; border: 1px solid #555555;");
+    canvas1->setPos(215, 150);
     this->username = username;
+
+    canvas2 = new Canvas(this);
+    canvas2->setGeometry(440, 310, 430, 300);
+    canvas2->setStyleSheet("background-color: white; border: 1px solid #555555;");
+    canvas2->setPos(215, 150);
 }
 
-AdvancedChat::~AdvancedChat() {}
-
-//ui->textBrowser->setTextColor(Qt::red);
-//ui->textBrowser->setCurrentFont(QFont("Times New Roman",12));
-//ui->textBrowser->append("[ " +localHostName+" ] "+ time);//与主机名聊天中
-//ui->textBrowser->append(messagestr);
-
-void AdvancedChat::sendMsg(QJsonObject msg) {
-    QJsonDocument doc(msg);
-    QString str(doc.toJson(QJsonDocument::Compact));
-    sendMessage(str);
-}
-
-void AdvancedChat::appendMsg(QString fromUser, QString text, QString time) {
-    assert(this->partner == fromUser);
-    ui->textBrowser->setTextColor(Qt::red);
-    ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
-    ui->textBrowser->append("[ " + this->partner +" ] "+ time);
-    ui->textBrowser->append(text);
-    this->draw(text);
-    update();
-}
-
-void AdvancedChat::setPartner(QString fromUser) {
-    this->partner = fromUser;
+AdvancedChat::~AdvancedChat()
+{
+    delete ui;
 }
 
 void AdvancedChat::on_sendButton_clicked() {
@@ -51,15 +34,37 @@ void AdvancedChat::on_sendButton_clicked() {
     sendMsg(msg);
     ui->textEdit->clear();
     ui->textEdit->setFocus();
-    this->draw(text);
+    this->draw(true, text);
     update();
 }
 
-void AdvancedChat::on_exitButton_clicked() {
+void AdvancedChat::on_exitButton_clicked()
+{
 
 }
 
-void AdvancedChat::draw(QString str) {
+void AdvancedChat::sendMsg(QJsonObject msg) {
+    QJsonDocument doc(msg);
+    QString str(doc.toJson(QJsonDocument::Compact));
+    sendMessage(str);
+}
+
+void AdvancedChat::appendMsg(QString fromUser, QString text, QString time) {
+    assert(this->partner == fromUser);
+    ui->textBrowser->setTextColor(Qt::red);
+    ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
+    ui->textBrowser->append("[ " + this->partner +" ] "+ time);
+    ui->textBrowser->append(text);
+    this->draw(false, text);
+    update();
+}
+
+void AdvancedChat::setPartner(QString fromUser) {
+    this->partner = fromUser;
+}
+
+void AdvancedChat::draw(bool flag, QString str) {
     command* cmd = this->lineInterpreter->parseLine(str);
-    this->canvas->parseCommand(cmd);
+    if (flag) this->canvas1->parseCommand(cmd);
+    else this->canvas2->parseCommand(cmd);
 }

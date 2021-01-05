@@ -20,7 +20,9 @@ NetMode::NetMode(QString username, QWidget *parent) :
     connect(&m_webSocket, &QWebSocket::connected, this, &NetMode::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &NetMode::closed);
     this->chat = new Chat(this->username);
+    this->advChat = new AdvancedChat(this->username);
     connect(chat, &Chat::sendMessage, this, &NetMode::onSendMessage);
+    connect(advChat, &AdvancedChat::sendMessage, this, &NetMode::onSendMessage);
     m_webSocket.open(QUrl(m_url));
 }
 
@@ -59,7 +61,7 @@ void NetMode::onTextMessageReceived(QString message) {
         if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << endl;
 
         // 客户端接受到更新在线用户列表信息
-        if (it.key() == "onlineUsers") {
+        if (it.key() == "onlineUsers" || it.key() == "update") {
             QJsonArray users = it.value().toArray();
             QList<QString> usernames;
             QList<bool> statuss;
@@ -74,19 +76,45 @@ void NetMode::onTextMessageReceived(QString message) {
             this->statusList = statuss;
             update();
         }
-
+    } else if (msgCnt == 2) {
+        // 客户端收到对方对联机请求的回应
+        QJsonObject::Iterator it = jsonObject.begin();
+        assert(it.key() == "fromUser");
+        QString fromUser = it.value().toString();
+        it++;
+        if (it.key() == "status") {
+            QString status = it.value().toString();
+            if (status == "accept") {
+                this->partner = fromUser;
+                if (this->type == "single") {
+                    chat->setPartner(fromUser);
+                    chat->show();
+                } else {
+                    advChat->setPartner(fromUser);
+                    advChat->show();
+                }
+            }
+        }
         // 客户端接收到用户连接请求 若当前正在和别人聊天 直接忽略。 否则弹窗。
-        else if (it.key() == "fromUser") {
-            if (this->partner != nullptr) return;
-            QString fromUser = it.value().toString();
-            QMessageBox:: StandardButton result= QMessageBox::information(this, "确认", "是否接受" + fromUser + "的连接请求",QMessageBox::Yes|QMessageBox::No);
+        else if (it.key() == "type") {
+            QString type = it.value().toString();
+            QString info;
+            if (type == "single") info = "是否接受" + fromUser + "的双人单海龟作图邀请";
+            else if (type == "double") info = "是否接受" + fromUser + "的双人双海龟作图邀请";
+            QMessageBox:: StandardButton result= QMessageBox::information(this, "确认", info, QMessageBox::Yes|QMessageBox::No);
             switch (result) {
                 case QMessageBox::Yes: {
                     QJsonObject msg {{"toUser", fromUser}, {"status", "accept"}};
                     sendMsg(msg);
                     this->partner = fromUser;
-                    chat->setPartner(fromUser);
-                    chat->show();
+                    this->type = type;
+                    if (this->type == "single") {
+                        chat->setPartner(fromUser);
+                        chat->show();
+                    } else {
+                        advChat->setPartner(fromUser);
+                        advChat->show();
+                    }
                     break;
                 }
                 case QMessageBox::No: {
@@ -97,20 +125,8 @@ void NetMode::onTextMessageReceived(QString message) {
                 default:
                     break;
             }
-        } else assert(0);
-    } else if (msgCnt == 2) {
-        // 客户端收到对方对联机请求的回应
-        QJsonObject::Iterator it = jsonObject.begin();
-        assert(it.key() == "fromUser");
-        QString fromUser = it.value().toString();
-        it++;
-        assert(it.key() == "status");
-        QString status = it.value().toString();
-        if (status == "accept") {
-            this->partner = fromUser;
-            chat->setPartner(fromUser);
-            chat->show();
         }
+
     } else if (msgCnt == 3) {
         // 客户端之间通信，接收消息
         QJsonObject::Iterator it = jsonObject.begin();
@@ -123,7 +139,8 @@ void NetMode::onTextMessageReceived(QString message) {
         assert(it.key() == "timestamp");
         QString time = it.value().toString();
         if (this->partner != fromUser) return;
-        this->chat->appendMsg(fromUser, text, time);
+        if (this->type == "single") this->chat->appendMsg(fromUser, text, time);
+        else this->advChat->appendMsg(fromUser, text, time);
     } else assert(0);
 }
 
@@ -137,8 +154,25 @@ void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
     QString toUser = ui->tableWidget->item(index.row(),0)->text();
     if (m_debug) qDebug() << "toUser: " << toUser << endl;
     if (toUser == this->username) return;
-    QJsonObject msg {{"toUser", toUser}};
-    sendMsg(msg);
+    QMessageBox:: StandardButton result= QMessageBox::information(this, "确认", "是否选择双人双海龟模式，默认为双人单海龟", QMessageBox::Yes|QMessageBox::No);
+    switch (result) {
+        // 双人双海龟
+        case QMessageBox::Yes: {
+            this->type = "double";
+            QJsonObject msg {{"toUser", toUser}, {"type", "double"}};
+            sendMsg(msg);
+            break;
+        }
+        // 双人单海龟
+        case QMessageBox::No: {
+            this->type = "single";
+            QJsonObject msg {{"toUser", toUser}, {"type", "single"}};
+            sendMsg(msg);
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 NetMode::~NetMode() {

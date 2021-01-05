@@ -21,6 +21,8 @@ private slots:
     void on_NetMode_clicked();
     void on_Tutorial_clicked();
 
+    void on_NetMode2_clicked();
+
 private:
     Ui::ModeSelect *ui;
     QMainWindow *logoWindow;

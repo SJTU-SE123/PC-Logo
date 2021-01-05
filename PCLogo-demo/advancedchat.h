@@ -1,5 +1,5 @@
-#ifndef AdvancedChat_H
-#define AdvancedChat_H
+#ifndef ADVANCEDCHAT_H
+#define ADVANCEDCHAT_H
 
 #include <QMainWindow>
 #include <QTabWidget>
@@ -32,29 +32,30 @@ class AdvancedChat : public QMainWindow
     Q_OBJECT
 
 public:
-    AdvancedChat(QString username);
+    explicit AdvancedChat(QString username);
     ~AdvancedChat();
     QString getIp();
     QString getUsername();
-    void draw(QString str);
+    void draw(bool flag, QString str);
     void sendMsg(QJsonObject msg);
     void appendMsg(QString fromUser, QString text, QString time);
     void setPartner(QString fromUser);
 
-signals:
-    void sendMessage(QString msg);
+private slots:
+    void on_sendButton_clicked();
+    void on_exitButton_clicked();
 
 private:
     Ui::AdvancedChat *ui;
-    Canvas *canvas;
+    Canvas *canvas1;
+    Canvas *canvas2;
     LineInterpreter *lineInterpreter;
     QWebSocket m_webSocket;
     QString partner;
     QString username;
 
-private slots:
-    void on_sendButton_clicked();
-    void on_exitButton_clicked();
+signals:
+    void sendMessage(QString msg);
 };
 
-#endif // AdvancedChat_H
+#endif // ADVANCEDCHAT_H

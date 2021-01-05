@@ -1,0 +1,33 @@
+客户端建立连接后，服务端返回给客户端所有在线用户：
+{"onlineUsers":[{"username":"username1","free":true},{"username":"username2","free":true}]} done
+某个客户端断开连接后，也会广播如上信息以更新在线用户。
+
+
+客户端发起联机请求：
+{"toUser": "username2", "type": "single" / "double"}  done
+客户端收到联机请求：
+{"fromUser": "username1", "type": "single" / "double"} done
+客户端对联机请求回应：
+{"toUser": "username1", "status":"accept"} done
+客户端收到对方对联机请求的回应：
+{"fromUser": "username2", "status": "accept"} done
+在两个客户端建立连接后，会向所有在线客户端广播：
+{"update":[{"free":false,"username":"1"},{"free":false,"username":"2"}]} done
+
+
+客户端之间通信：
+发送消息：
+{"toUser":"username", "message": "FD 100"} done
+接收消息：
+{"fromUser":"username", "message": "FD 100", "timestamp": "2020-12-17 22:00"} done
+
+客户端退出联机时发送：
+{"toUser": "username2", "status": "exit"}
+对方退出连接时收到：
+{"fromUser": "username2", "status": "exit"}
+在两个客户端连接断开后，会向所有在线客户端广播：
+{"update":[{"free":true,"username":"1"},{"free":true,"username":"2"}]}
+
+添加退出逻辑
+
+ 
