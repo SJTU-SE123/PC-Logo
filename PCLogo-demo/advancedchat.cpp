@@ -6,6 +6,10 @@ AdvancedChat::AdvancedChat(QString username) :
 {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 联网");
+    QPalette palette;
+    QPixmap pixmap(":/image/online.gif");
+    palette.setBrush(QPalette::Window, QBrush(pixmap));
+    this->setPalette(palette);
     canvas1 = new Canvas(this, 430, 300);
     canvas1->setGeometry(440, 5, 430, 300);
     canvas1->setStyleSheet("background-color: white; border: 1px solid #555555;");
