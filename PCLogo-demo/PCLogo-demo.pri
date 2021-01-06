@@ -9,5 +9,4 @@ HEADERS += \
 FORMS += \
         $$PWD/*.ui
 
-RESOURCES += \
-    $$PWD/image.qrc
+RESOURCES += ./image.qrc

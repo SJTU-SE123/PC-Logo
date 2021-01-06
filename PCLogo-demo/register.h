@@ -20,8 +20,11 @@ public:
     ~Register();
 
 private slots:
-    void on_registerButton_clicked();
     void finishRequest(QNetworkReply *reply);
+
+    void on_pushButton_clicked();
+
+    void on_backButton_clicked();
 
 private:
     Ui::Register *ui;

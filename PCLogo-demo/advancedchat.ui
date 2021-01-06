@@ -17,20 +17,20 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>30</y>
-      <width>401</width>
-      <height>261</height>
+      <x>20</x>
+      <y>20</y>
+      <width>560</width>
+      <height>300</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="exitButton">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>474</y>
-      <width>75</width>
-      <height>23</height>
+      <x>430</x>
+      <y>710</y>
+      <width>100</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="text">
@@ -40,88 +40,23 @@
    <widget class="QPushButton" name="sendButton">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>474</y>
-      <width>75</width>
-      <height>23</height>
+      <x>70</x>
+      <y>710</y>
+      <width>100</width>
+      <height>50</height>
      </rect>
     </property>
     <property name="text">
      <string>发送</string>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>295</y>
-      <width>69</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>9</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>10</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>11</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>12</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>13</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>14</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>15</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>16</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>17</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QFontComboBox" name="fontComboBox">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>295</y>
-      <width>213</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>320</y>
-      <width>401</width>
-      <height>151</height>
+      <x>20</x>
+      <y>360</y>
+      <width>560</width>
+      <height>300</height>
      </rect>
     </property>
    </widget>

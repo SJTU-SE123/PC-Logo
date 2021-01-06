@@ -5,18 +5,19 @@ AdvancedChat::AdvancedChat(QString username) :
     ui(new Ui::AdvancedChat)
 {
     ui->setupUi(this);
-    this->setWindowTitle("PC Logo 联网");
     QPalette palette;
     QPixmap pixmap(":/image/online.gif");
     palette.setBrush(QPalette::Window, QBrush(pixmap));
     this->setPalette(palette);
-    canvas1 = new Canvas(this, 430, 300);
-    canvas1->setGeometry(440, 5, 430, 300);
+
+    this->setWindowTitle("PC Logo 联网");
+    canvas1 = new Canvas(this, 560, 300);
+    canvas1->setGeometry(620, 20, 560, 300);
     canvas1->setStyleSheet("background-color: white; border: 1px solid #555555;");
     this->username = username;
 
-    canvas2 = new Canvas(this, 430, 300);
-    canvas2->setGeometry(440, 310, 430, 300);
+    canvas2 = new Canvas(this, 560, 300);
+    canvas2->setGeometry(620, 360, 560, 300);
     canvas2->setStyleSheet("background-color: white; border: 1px solid #555555;");
 
     lineInterpreter = new LineInterpreter();

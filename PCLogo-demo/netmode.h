@@ -37,6 +37,8 @@ private:
     Chat *chat;
     AdvancedChat *advChat;
     QString type;
+    QGraphicsOpacityEffect *opacity;
+    const double OPACITY = 0.8;
 
 signals:
     void closed();
