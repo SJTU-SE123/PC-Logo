@@ -10,4 +10,4 @@ FORMS += \
         $$PWD/*.ui
 
 RESOURCES += \
-    $$PWD/image.qrc
+        $$PWD/image.qrc

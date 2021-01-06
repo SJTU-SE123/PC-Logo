@@ -6,8 +6,8 @@ Chat::Chat(QString username) :
     ui(new Ui::Chat) {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 联网");
-    canvas = new Canvas(this, 370, 460);
-    canvas->setGeometry(420, 10, 370, 460);
+    canvas = new Canvas(this, 560, 740);
+    canvas->setGeometry(620, 20, 560, 740);
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
     QPalette palette;
     QPixmap pixmap(":/image/online.gif");

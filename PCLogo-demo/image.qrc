@@ -21,7 +21,6 @@
         <file>image/speech-off.png</file>
         <file>image/speech-on.png</file>
         <file>image/bkgimg.png</file>
-        <file>image/login.png</file>
         <file>image/backbtn.png</file>
         <file>image/loginbtn.png</file>
         <file>image/openregisterbtn.png</file>
@@ -29,5 +28,12 @@
         <file>image/username.png</file>
         <file>image/online.gif</file>
         <file>image/speech.png</file>
+        <file>image/email.png</file>
+        <file>image/passwordAgain.png</file>
+        <file>image/regibtn.png</file>
+        <file>image/login.png</file>
+        <file>image/register.png</file>
+        <file>image/regibackbtn.png</file>
+        <file>image/netmodebkg.png</file>
     </qresource>
 </RCC>
