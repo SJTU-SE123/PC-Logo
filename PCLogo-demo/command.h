@@ -3,7 +3,8 @@
 
 #include "procedure.h"
 
-typedef enum {SETPC, SETBG, SETXY, SETANGLE, STRAIGHTMOVE, OVALMOVE, REPEAT, PROCEDURE, CLEAN, PU, PD} cmdType;
+typedef enum {SETPC, SETBG, SETXY, SETANGLE, STRAIGHTMOVE, OVALMOVE,
+              REPEAT, PROCEDURE, CLEAN, PU, PD, RESET} cmdType;
 
 class command
 {

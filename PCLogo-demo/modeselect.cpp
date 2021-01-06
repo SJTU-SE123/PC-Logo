@@ -17,6 +17,7 @@ ModeSelect::ModeSelect(QString username, QWidget *parent) :
     ui->LocalMode->setStyleSheet("background-image: url(:/image/localmode.png);");
     ui->NetMode->setStyleSheet("background-image: url(:/image/netmode.png);");
     ui->Tutorial->setStyleSheet("background-image: url(:/image/tutorial.png);");
+    this->setFixedSize(500, 500);
     this->username = username;
 }
 

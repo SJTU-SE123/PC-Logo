@@ -7,4 +7,7 @@ HEADERS += \
         $$PWD/speech/*.h \
 
 FORMS += \
-        $$PWD/*.ui \
+        $$PWD/*.ui
+
+RESOURCES += \
+    $$PWD/image.qrc
