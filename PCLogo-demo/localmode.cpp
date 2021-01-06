@@ -96,8 +96,8 @@ void LocalMode::initForm(){
     tabEditor->setGraphicsEffect(tabEditor_opacity);
     tabEditor_opacity->setOpacity(OPACITY);
 
-    canvas = new Canvas(this);
-    canvas->setGeometry(450, 70, 720, 515);
+    canvas = new Canvas(this, 720, 510);
+    canvas->setGeometry(450, 70, 720, 510);
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
     canvas_opacity = new QGraphicsOpacityEffect();
     canvas->setGraphicsEffect(canvas_opacity);
@@ -131,101 +131,100 @@ void LocalMode::parseAll(){
     QString str = this->editor->toPlainText();
      //    str.remove(QRegExp("^ +\\s*"));//去掉前面的空格
     qDebug()<<str;
-    if(str[0] == " " || str[0] == '\n'){
+//    if(str[0] == " " || str[0] == '\n'){
+//        QMessageBox::information(this,"错误","运行代码片段不能以空格和空行开头，请检查代码是否符合格式","确定");
+//        return;
+//    }
+    str = "";
+    QTextCursor cursor = this->editor->textCursor();
+    cursor.movePosition(QTextCursor::Start);
+    for (int i = 0; i < this->editor->lastBreakPoint; i++) cursor.movePosition(QTextCursor::Down);
+    this->editor->setTextCursor(cursor);
+    lineNumber = cursor.block().blockNumber();
 
-        QMessageBox::information(this,"错误","运行代码片段不能以空格和空行开头，请检查代码是否符合格式","确定");
-            return;
-        }
-        str = "";
-        QTextCursor cursor = this->editor->textCursor();
-        cursor.movePosition(QTextCursor::Start);
-        for (int i = 0; i < this->editor->lastBreakPoint; i++) cursor.movePosition(QTextCursor::Down);
-        this->editor->setTextCursor(cursor);
-        lineNumber = cursor.block().blockNumber();
-
-        while (cursor.block().blockNumber() < this->editor->blockCount()-1) {   //最后一行之前
-            if (cursor.block().blockNumber() != this->editor->lastBreakPoint
-                    && this->editor->breakPoints.contains(cursor.block().blockNumber())) {  //如果遇到断点
-                this->editor->lastBreakPoint = cursor.block().blockNumber();
-                command* cmd = this->lineInterpreter->parseLine(str);
-                qDebug()<<"step1";
-                if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
-                qDebug()<<"step2";
-                if(reminder != ""){
-                    reminder += "（错误发生在第";
-                    QString LN = QString::number(lineNumber+1, 10);
-                    reminder += LN;
-                    reminder += "行）";
-                    QString error_message = reminder;
-                    QMessageBox::information(this,"错误",error_message,"确定");
-                    reminder = "";
-                    return;
-                }else{
-                    qDebug()<<"step3";
-                    if(cmd == nullptr){
-                        qDebug()<<"step4";
-                                return;
-                            }
-                    this->canvas->parseCommand(cmd);
-                    return;
-                }
-//                this->canvas->parseCommand(cmd);
-//                return;
-            }
-            str += cursor.block().text() + "\n";
-            cursor.movePosition(QTextCursor::Down);
-            this->editor->setTextCursor(cursor);
-        }
-
-        //最后一行
+    while (cursor.block().blockNumber() < this->editor->blockCount()-1) {   //最后一行之前
         if (cursor.block().blockNumber() != this->editor->lastBreakPoint
-                && this->editor->breakPoints.contains(cursor.block().blockNumber())) {
+                && this->editor->breakPoints.contains(cursor.block().blockNumber())) {  //如果遇到断点
             this->editor->lastBreakPoint = cursor.block().blockNumber();
-
             command* cmd = this->lineInterpreter->parseLine(str);
-            qDebug()<<"step5";
+            qDebug()<<"step1";
             if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
-                if(reminder != ""){
-                    reminder += "（错误发生在第";
-                    QString LN = QString::number(lineNumber+1, 10);
-                    reminder += LN;
-                    reminder += "行）";
-                    QString error_message = reminder;
-                    QMessageBox::information(this,"错误",error_message,"确定");
-                    reminder = "";
-                }else{
-                    if(cmd == nullptr){
-                        qDebug()<<"step6";
-                        return;
-                    }
-                    this->canvas->parseCommand(cmd);
-                    return;
-                }
-        }
-        str += cursor.block().text() + "\n";
-
-        command* cmd = this->lineInterpreter->parseLine(str);
-
-        if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
-        if(reminder != ""){
-            reminder += "（错误发生在第";
-            QString LN = QString::number(lineNumber+1, 10);
-            reminder += LN;
-            reminder += "行）";
-            QString error_message = reminder;
-            QMessageBox::information(this,"错误",error_message,"确定");
-            reminder = "";
-        }else{
-            if(cmd == nullptr){
-                qDebug()<<"step7";
-                this->editor->lastBreakPoint = 0;
+            qDebug()<<"step2";
+            if(reminder != ""){
+                reminder += "（错误发生在第";
+                QString LN = QString::number(lineNumber+1, 10);
+                reminder += LN;
+                reminder += "行）";
+                QString error_message = reminder;
+                QMessageBox::information(this,"错误",error_message,"确定");
+                reminder = "";
+                return;
+            }else{
+                qDebug()<<"step3";
+                if(cmd == nullptr){
+                    qDebug()<<"step4";
+                            return;
+                        }
+                this->canvas->parseCommand(cmd);
                 return;
             }
-            this->canvas->parseCommand(cmd);
-            this->editor->lastBreakPoint = 0;
+//                this->canvas->parseCommand(cmd);
+//                return;
         }
-//        this->canvas->parseCommand(cmd);
+        str += cursor.block().text() + "\n";
+        cursor.movePosition(QTextCursor::Down);
+        this->editor->setTextCursor(cursor);
+    }
+
+    //最后一行
+    if (cursor.block().blockNumber() != this->editor->lastBreakPoint
+            && this->editor->breakPoints.contains(cursor.block().blockNumber())) {
+        this->editor->lastBreakPoint = cursor.block().blockNumber();
+
+        command* cmd = this->lineInterpreter->parseLine(str);
+        qDebug()<<"step5";
+        if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
+            if(reminder != ""){
+                reminder += "（错误发生在第";
+                QString LN = QString::number(lineNumber+1, 10);
+                reminder += LN;
+                reminder += "行）";
+                QString error_message = reminder;
+                QMessageBox::information(this,"错误",error_message,"确定");
+                reminder = "";
+            }else{
+                if(cmd == nullptr){
+                    qDebug()<<"step6";
+                    return;
+                }
+                this->canvas->parseCommand(cmd);
+                return;
+            }
+    }
+    str += cursor.block().text() + "\n";
+
+    command* cmd = this->lineInterpreter->parseLine(str);
+
+    if(reminder != "" && reminder.at(reminder.size() - 1) == "）")reminder = "";
+    if(reminder != ""){
+        reminder += "（错误发生在第";
+        QString LN = QString::number(lineNumber+1, 10);
+        reminder += LN;
+        reminder += "行）";
+        QString error_message = reminder;
+        QMessageBox::information(this,"错误",error_message,"确定");
+        reminder = "";
+    }else{
+        if(cmd == nullptr){
+            qDebug()<<"step7";
+            this->editor->lastBreakPoint = 0;
+            return;
+        }
+        this->canvas->parseCommand(cmd);
         this->editor->lastBreakPoint = 0;
+    }
+//        this->canvas->parseCommand(cmd);
+    this->editor->lastBreakPoint = 0;
 
 
     //分界线
@@ -266,6 +265,7 @@ void LocalMode::parseCurrentLine() {
     reset_editor();
     if(!editor)return;
 
+    qDebug()<<"hello";
     QTextCursor cursor = this->editor->textCursor();
     QString str = cursor.block().text();
     str.remove(QRegExp("^ +\\s*"));
@@ -287,16 +287,20 @@ void LocalMode::parseCurrentLine() {
 void LocalMode::parseLine(QString line)
 {
     command *cmd = this->lineInterpreter->parseLine(line);
+    if (reminder != "") {
+        if(reminder.at(reminder.size() - 1) == "）") {
+            reminder = "";
+        }
+        else {
+            QString error_message = "当前行 " + reminder;
+            QMessageBox::information(this, "错误", error_message, "确定");
+            reminder = "";
+            return;
+        }
+    }
     if (cmd == nullptr){
         QMessageBox::information(this, "错误", "输入为空", "确定");
         return;
-    }
-    if (reminder.at(reminder.size() - 1) == "）")
-        reminder = "";
-    if (reminder != ""){
-        QString error_message = "当前行 " + reminder;
-        QMessageBox::information(this, "错误", error_message, "确定");
-        reminder = "";
     } else {
         this->canvas->parseCommand(cmd);
     }

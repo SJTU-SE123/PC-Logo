@@ -19,7 +19,8 @@ public:
         this->name = wordList[begin];
         int i;
         for (i = begin+1; i <= end; i++){
-            if (CMD.contains(wordList[i]) || defined_procedures->contains(wordList[i])) break;
+            if (CMD.contains(wordList[i]) || defined_procedures->contains(wordList[i]) ||
+                    wordList[i] == "$") break;
             else this->varList.append(wordList[i]);
         }
         for (; i <= end; i++){

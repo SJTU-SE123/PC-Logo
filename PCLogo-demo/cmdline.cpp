@@ -20,6 +20,7 @@ void CmdLine::resizeEvent(QResizeEvent *event){
 void CmdLine::receiveNewLine(QString newLine)
 {
     this->append(QString(">> ").append(newLine));
+    newLine = newLine.trimmed();
     if (newLine.length() == 0) {
         return;
     }

@@ -93,8 +93,8 @@ void NetMode::onTextMessageReceived(QString message) {
                     advChat->setPartner(fromUser);
                     advChat->show();
                 }
-            } else if (status == "exit") {
-                QMessageBox:: StandardButton result= QMessageBox::information(this, "通知", "对方已断开连接", QMessageBox::Yes);
+            } else if (status == "exit" && (!this->chat->isHidden() || !this->advChat->isHidden())) {
+                QMessageBox::information(this, "通知", "对方已断开连接", QMessageBox::Yes);
                 if (this->type == "single") this->chat->close();
                 else if (this->type == "double") this->advChat->close();
             }
@@ -145,7 +145,7 @@ void NetMode::onTextMessageReceived(QString message) {
         if (this->partner != fromUser) return;
         if (this->type == "single") this->chat->appendMsg(fromUser, text, time);
         else this->advChat->appendMsg(fromUser, text, time);
-    } else assert(0);
+    } //else assert(0);
 }
 
 void NetMode::sendMsg(QJsonObject msg) {

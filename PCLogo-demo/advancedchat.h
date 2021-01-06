@@ -2,6 +2,7 @@
 #define ADVANCEDCHAT_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include <QTabWidget>
 #include <QLabel>
 #include <QPushButton>
@@ -40,6 +41,10 @@ public:
     void sendMsg(QJsonObject msg);
     void appendMsg(QString fromUser, QString text, QString time);
     void setPartner(QString fromUser);
+    void resetContent();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void on_sendButton_clicked();

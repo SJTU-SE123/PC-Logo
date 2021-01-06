@@ -6,16 +6,16 @@ AdvancedChat::AdvancedChat(QString username) :
 {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 联网");
-    canvas1 = new Canvas(this);
+    canvas1 = new Canvas(this, 430, 300);
     canvas1->setGeometry(440, 5, 430, 300);
     canvas1->setStyleSheet("background-color: white; border: 1px solid #555555;");
-    canvas1->setPos(215, 150);
     this->username = username;
 
-    canvas2 = new Canvas(this);
+    canvas2 = new Canvas(this, 430, 300);
     canvas2->setGeometry(440, 310, 430, 300);
     canvas2->setStyleSheet("background-color: white; border: 1px solid #555555;");
-    canvas2->setPos(215, 150);
+
+    lineInterpreter = new LineInterpreter();
 }
 
 AdvancedChat::~AdvancedChat()
@@ -40,10 +40,7 @@ void AdvancedChat::on_sendButton_clicked() {
 
 void AdvancedChat::on_exitButton_clicked()
 {
-    QJsonObject msg{{"toUser", this->partner}, {"status", "exit"}};
-    sendMsg(msg);
     this->close();
-
 }
 
 void AdvancedChat::sendMsg(QJsonObject msg) {
@@ -63,11 +60,27 @@ void AdvancedChat::appendMsg(QString fromUser, QString text, QString time) {
 }
 
 void AdvancedChat::setPartner(QString fromUser) {
-    this->partner = fromUser;
+    if(fromUser != this->partner) {
+        resetContent();
+        this->partner = fromUser;
+    }
 }
 
 void AdvancedChat::draw(bool flag, QString str) {
     command* cmd = this->lineInterpreter->parseLine(str);
     if (flag) this->canvas1->parseCommand(cmd);
     else this->canvas2->parseCommand(cmd);
+}
+
+void AdvancedChat::resetContent() {
+    this->ui->textBrowser->clear();
+    this->ui->textEdit->clear();
+    this->canvas1->reset();
+    this->canvas2->reset();
+}
+
+void AdvancedChat::closeEvent(QCloseEvent *event) {
+    QJsonObject msg{{"toUser", this->partner}, {"status", "exit"}};
+    sendMsg(msg);
+    event->accept();
 }

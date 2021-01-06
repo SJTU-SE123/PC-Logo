@@ -10,7 +10,7 @@ class Canvas : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Canvas(QWidget *parent = nullptr);
+    explicit Canvas(QWidget *parent = nullptr, int width = 720, int height = 720);
     //id activate();
     void paintLine(int distance);
     void parseCommand(command* cmd);
@@ -41,6 +41,9 @@ private:
 
     QColor defaultBgColor;
     QColor defaultPenColor;
+
+    int w;
+    int h;
 };
 
 #endif // STAGE_H

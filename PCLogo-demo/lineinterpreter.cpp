@@ -117,8 +117,13 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end, bool r
         reminder = "落笔（PENDOWN）";
         return new command(PD, 0, parse(wordList, begin+1, end));
     } else if (wordList[begin] == "TO") {
+        reminder = "子过程（TO）";
         int endpos;
         for (endpos = begin+1; endpos <= end; endpos++) if (wordList[endpos] == "END") break;   //可能要改进成计算TO和END的个数差进行判断。
+        if(endpos > end) {
+            reminder += " 指令需要END以结束声明";
+            return nullptr;
+        }
         procedures->insert(wordList[begin+1], Procedure(wordList, begin + 1, endpos - 1, procedures));   //同名procedure默认替换。
         return parse(wordList, endpos + 1, end);
     } else if (procedures->contains(wordList[begin])){   //调用子程序

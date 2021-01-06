@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMainWindow>
+#include "login.h"
 
 namespace Ui {
 class ModeSelect;
@@ -21,12 +22,14 @@ private slots:
     void on_NetMode_clicked();
     void on_Tutorial_clicked();
 
-    void on_NetMode2_clicked();
+    // void on_NetMode2_clicked();
 
 private:
     Ui::ModeSelect *ui;
     QMainWindow *logoWindow;
     QString username;
+    Login *loginWindow;
+    void onUserLogin(QString username);
 };
 
 #endif // MODESELECT_H

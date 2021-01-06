@@ -6,11 +6,24 @@ Chat::Chat(QString username) :
     ui(new Ui::Chat) {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 联网");
-    canvas = new Canvas(this);
+    canvas = new Canvas(this, 370, 460);
     canvas->setGeometry(420, 10, 370, 460);
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
-    canvas->setPos(185, 230);
+    QPalette palette;
+    QPixmap pixmap(":/image/online.gif");
+    palette.setBrush(QPalette::Window, QBrush(pixmap));
+    this->setPalette(palette);
+    canvas_opacity = new QGraphicsOpacityEffect();
+    canvas->setGraphicsEffect(canvas_opacity);
+    canvas_opacity->setOpacity(OPACITY);
+    browser_opacity = new QGraphicsOpacityEffect();
+    ui->textBrowser->setGraphicsEffect(browser_opacity);
+    browser_opacity->setOpacity(OPACITY);
+    editor_opacity = new QGraphicsOpacityEffect();
+    ui->textEdit->setGraphicsEffect(editor_opacity);
+    editor_opacity->setOpacity(OPACITY);
     this->username = username;
+    lineInterpreter = new LineInterpreter();
 }
 
 Chat::~Chat() {}
@@ -37,7 +50,10 @@ void Chat::appendMsg(QString fromUser, QString text, QString time) {
 }
 
 void Chat::setPartner(QString fromUser) {
-    this->partner = fromUser;
+    if(this->partner != fromUser) {
+        resetContent();
+        this->partner = fromUser;
+    }
 }
 
 void Chat::on_sendButton_clicked() {
@@ -56,12 +72,23 @@ void Chat::on_sendButton_clicked() {
 }
 
 void Chat::on_exitButton_clicked() {
-    QJsonObject msg{{"toUser", this->partner}, {"status", "exit"}};
-    sendMsg(msg);
     this->close();
 }
 
 void Chat::draw(QString str) {
     command* cmd = this->lineInterpreter->parseLine(str);
+    qDebug()<<"here";
     this->canvas->parseCommand(cmd);
+}
+
+void Chat::resetContent() {
+    this->ui->textBrowser->clear();
+    this->ui->textEdit->clear();
+    this->canvas->reset();
+}
+
+void Chat::closeEvent(QCloseEvent *event) {
+    QJsonObject msg{{"toUser", this->partner}, {"status", "exit"}};
+    sendMsg(msg);
+    event->accept();
 }

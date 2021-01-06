@@ -2,6 +2,8 @@
 #define Chat_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
+#include <QGraphicsOpacityEffect>
 #include <QTabWidget>
 #include <QLabel>
 #include <QPushButton>
@@ -40,6 +42,10 @@ public:
     void sendMsg(QJsonObject msg);
     void appendMsg(QString fromUser, QString text, QString time);
     void setPartner(QString fromUser);
+    void resetContent();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 signals:
     void sendMessage(QString msg);
@@ -51,6 +57,8 @@ private:
     QWebSocket m_webSocket;
     QString partner;
     QString username;
+    const double OPACITY = 0.8;
+    QGraphicsOpacityEffect *canvas_opacity, *browser_opacity, *editor_opacity;
 
 private slots:
     void on_sendButton_clicked();

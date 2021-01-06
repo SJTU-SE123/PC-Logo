@@ -6,13 +6,14 @@
 #include <QTime>
 #include <QRgb>
 
-Canvas::Canvas(QWidget *parent)
+Canvas::Canvas(QWidget *parent, int width, int height)
     : QWidget(parent), nextColor(QColor(Qt::black)), isPenDown(true),
       defaultBgColor(Qt::GlobalColor::white),
       defaultPenColor(Qt::GlobalColor::black)
 {
-    turtleX = 360;
-    turtleY = 360;
+    w = width; h = height;
+    turtleX = w/2;
+    turtleY = h/2;
     theta = 90;
     theLogo = new QLabel(this);
     theLogo->setStyleSheet("border: 0px;");
@@ -70,7 +71,7 @@ void Canvas::paintOval(int x, int y) {
 }
 
 void Canvas::setPos(int x, int y) {
-    x = x + 360; y = 360 - y;
+    x = x + w/2; y = h/2 - y;
     turtleX = x; turtleY = y;
     update();
 }
@@ -137,8 +138,9 @@ void Canvas::reset()
     this->ovalList.clear();
     this->setBackground(this->defaultBgColor);
     this->setPenColor(this->defaultPenColor);
-    turtleX = 360;
-    turtleY = 360;
+    turtleX = w/2;
+    turtleY = h/2;
     theta = 90;
+    this->penDown();
     update();
 }

@@ -19,6 +19,8 @@ ModeSelect::ModeSelect(QString username, QWidget *parent) :
     ui->Tutorial->setStyleSheet("background-image: url(:/image/tutorial.png);");
     this->setFixedSize(500, 500);
     this->username = username;
+    loginWindow = new Login();
+    connect(loginWindow, &Login::UserLogin, this, &ModeSelect::onUserLogin);
 }
 
 ModeSelect::~ModeSelect()
@@ -42,11 +44,26 @@ void ModeSelect::on_NetMode_clicked()
         delete logoWindow;
         logoWindow = nullptr;
     }
-    logoWindow = new NetMode(this->username);
-    logoWindow->show();
+    if(this->username == nullptr || this->username.isEmpty()) {
+        loginWindow->show();
+    } else {
+        logoWindow = new NetMode(this->username);
+        logoWindow->show();
+    }
 }
 
 void ModeSelect::on_Tutorial_clicked()
 {
 
+}
+
+void ModeSelect::onUserLogin(QString username)
+{
+    this->username = username;
+    if (logoWindow != nullptr){
+        delete logoWindow;
+        logoWindow = nullptr;
+    }
+    logoWindow = new NetMode(this->username);
+    logoWindow->show();
 }
