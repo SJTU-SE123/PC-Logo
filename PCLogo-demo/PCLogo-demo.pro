@@ -28,7 +28,7 @@ CONFIG += c++11 \
 
 include(PCLogo-demo.pri)
 
-SOURCES += ./main/main.cpp \
+SOURCES += ./main/main.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
