@@ -2,6 +2,9 @@
 #define LOGIN_H
 
 #include <QWidget>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
 
 namespace Ui {
 class Login;
@@ -23,6 +26,8 @@ private slots:
 
 private:
     Ui::Login *ui;
+    QNetworkAccessManager manager;   //manager  相关注意点见后文
+    QNetworkRequest request;    //request
 };
 
 #endif // LOGIN_H

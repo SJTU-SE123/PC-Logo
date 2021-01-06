@@ -40,6 +40,9 @@ void AdvancedChat::on_sendButton_clicked() {
 
 void AdvancedChat::on_exitButton_clicked()
 {
+    QJsonObject msg{{"toUser", this->partner}, {"status", "exit"}};
+    sendMsg(msg);
+    this->close();
 
 }
 

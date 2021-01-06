@@ -28,6 +28,10 @@
 在两个客户端连接断开后，会向所有在线客户端广播：
 {"update":[{"free":true,"username":"1"},{"free":true,"username":"2"}]}
 
-添加退出逻辑
 
- 
+登录注册
+界面美化
+debug（好像有时候不能画 pendown 问题？
+（未处理直接叉掉窗口情况。
+准备compiler 答辩
+

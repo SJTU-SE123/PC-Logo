@@ -56,7 +56,9 @@ void Chat::on_sendButton_clicked() {
 }
 
 void Chat::on_exitButton_clicked() {
-
+    QJsonObject msg{{"toUser", this->partner}, {"status", "exit"}};
+    sendMsg(msg);
+    this->close();
 }
 
 void Chat::draw(QString str) {

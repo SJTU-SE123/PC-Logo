@@ -93,6 +93,10 @@ void NetMode::onTextMessageReceived(QString message) {
                     advChat->setPartner(fromUser);
                     advChat->show();
                 }
+            } else if (status == "exit") {
+                QMessageBox:: StandardButton result= QMessageBox::information(this, "通知", "对方已断开连接", QMessageBox::Yes);
+                if (this->type == "single") this->chat->close();
+                else if (this->type == "double") this->advChat->close();
             }
         }
         // 客户端接收到用户连接请求 若当前正在和别人聊天 直接忽略。 否则弹窗。
