@@ -9,11 +9,13 @@ class TestLineInterpreter : public QObject
 
 public:
     TestLineInterpreter();
-    ~TestLineInterpreter();
+    ~TestLineInterpreter() override;
 
 private slots:
-    void test_case1();
-    void test_case2();
+    void testCmdTypes();
+    void testCmdTypes_data();
+    void testCmdParams();
+    void testNextCmd();
 };
 
 #endif // TESTLINEINTERPRETER_H
