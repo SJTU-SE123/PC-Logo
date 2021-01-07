@@ -19,7 +19,9 @@ SOURCES +=  \
     teststartwindow.cpp \
     testnetmode.cpp \
     testchat.cpp \
-    testadvancedchat.cpp
+    testadvancedchat.cpp \
+    testnewline.cpp \
+    testcmdline.cpp
 
 INCLUDEPATH += ../
 
@@ -33,4 +35,6 @@ HEADERS += \
     teststartwindow.h \
     testnetmode.h \
     testchat.h \
-    testadvancedchat.h
+    testadvancedchat.h \
+    testnewline.h \
+    testcmdline.h

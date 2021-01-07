@@ -15,6 +15,7 @@ public:
     void keyPressEvent(QKeyEvent *) override;
     // void mousePressEvent(QMouseEvent *) override;
     QString pureCmd();
+    int getLineHeadMarkLength() const { return this->lineHeadMark.length(); }
 
 signals:
     void sendNewLine(QString newLine);

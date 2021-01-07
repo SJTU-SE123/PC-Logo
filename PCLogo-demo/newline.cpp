@@ -6,6 +6,7 @@ NewLine::NewLine(QWidget *parent)
     : QLineEdit(parent), currentCmdIndex(0), lineHeadMark(QString(">> "))
 {
     this->resetLine();
+    this->setCursorPosition(this->lineHeadMark.length());
     this->cmdHistory.append("");
 }
 
@@ -56,6 +57,10 @@ void NewLine::handleReturn() {
 
 void NewLine::keyPressEvent(QKeyEvent *ke)
 {
+    if (this->cursorPosition() < this->lineHeadMark.length()) {
+        this->setCursorPosition(this->lineHeadMark.length());
+        return;
+    }
     switch (ke->key()) {
     case Qt::Key::Key_Return:
         this->handleReturn();
