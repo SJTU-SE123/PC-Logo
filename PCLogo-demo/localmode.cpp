@@ -335,6 +335,7 @@ void LocalMode::parseLine(QString line)
             }
             tutorial->setText(nextText);
             tutorBlock = true;
+            tutorButton->setDisabled(false);
         }
     }
     command *cmd = this->lineInterpreter->parseLine(line);
@@ -548,4 +549,5 @@ void LocalMode::tutorNextStep() {
     }
     tutorial->setText(nextText);
     tutorBlock = false;
+    tutorButton->setDisabled(true);
 }
