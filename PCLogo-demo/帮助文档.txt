@@ -1,0 +1,40 @@
+MY PC Logo帮助文档
+
+基于命令行的指令集：
+FD		控制小海龟前进
+BK		控制小海龟后退
+RT		控制小海龟左转
+LT		控制小海龟右转
+LT		清屏复位
+PU		提笔
+PD		落笔
+SETXT x y 		坐标定位
+SETPC n		设置画笔颜色，其中n为颜色号
+SETBG n		设置背景颜色，其中n为颜色号
+STAMPOVAL x y	画圆，x 表示横向半径，y表示纵向半径
+Repeat n [    ]	重复命令，即[]内的命令重复n次
+
+命令编辑窗口的指令集
+Home		移到行首
+End		移到行尾
+
+命令编辑功能的指令集
+复制		copy (Ctrl + C)
+剪切		Cut(Ctrl+X)
+粘贴		Paste(Ctrl+V) 
+
+常用颜色色号表
+黑色	000000
+白色	FFFFFF
+绿色	00FF00
+蓝色	0000FF
+天蓝色	00FFFF
+红色	FF0000
+黄色	FFFF00
+橙色	FF8000
+粉色	FF80FF
+更多颜色请见 https://wenku.baidu.com/view/6fe79e145f0e7cd1842536ff.html
+
+语音输入功能
+长按按钮，当按钮颜色变蓝后，说话，说完后松开按钮，所说的话会被识别并打印在输入框中
+

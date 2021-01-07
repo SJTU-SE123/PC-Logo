@@ -5,6 +5,7 @@
 //#include <QMovie>
 #include <QLabel>
 #include "login.h"
+#include "coursedialog.h"
 
 namespace Ui {
 class StartWindow;
@@ -26,6 +27,8 @@ private slots:
     void onTaskBoxContextMenuEvent();
     void onUserLogin(QString username);
 
+    void on_Help_clicked();
+
 private:
     Ui::StartWindow *ui;
     QWidget *t, *nextWidget;
@@ -33,6 +36,7 @@ private:
     QLabel *gifPlayer;
     Login * login;
     QString username = nullptr;
+    courseDialog *dialog;
 };
 
 #endif // STARTWINDOW_H
