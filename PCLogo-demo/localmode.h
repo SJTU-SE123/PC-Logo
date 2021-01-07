@@ -26,16 +26,20 @@ class LocalMode : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit LocalMode(QWidget *parent = nullptr);
+    explicit LocalMode(QWidget *parent = nullptr, bool isTutorial = false);
     ~LocalMode() override;
 
 private:
+    bool isTutorial, tutorBlock;
+    QLabel *tutorial;
+    QString tutorText;
+    int tutorStep;
     Ui::LocalMode *ui;
     QTabWidget *tabEditor;
     Canvas *canvas;
     CmdLine *cmdLine;
     CodeEditor *editor;
-    QPushButton *runAllButton, *runLineButton, *speechButton;
+    QPushButton *runAllButton, *runLineButton, *speechButton, *tutorButton;
     LineInterpreter *lineInterpreter;
     Audio *audio;
     QGraphicsOpacityEffect *tabEditor_opacity, *canvas_opacity, *cmdLine_opacity;
@@ -54,6 +58,7 @@ private slots:
     void removeTab(int n);
     void saveFile();
     void saveFileAs();
+    void tutorNextStep();
 
 public slots:
     void receiveNewLine(QString newLine);

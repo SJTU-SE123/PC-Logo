@@ -6,12 +6,13 @@
 
 QString reminder = "";
 int lineNumber = 1;
-LocalMode::LocalMode(QWidget *parent) :
+LocalMode::LocalMode(QWidget *parent, bool isTutorial) :
     QMainWindow(parent),
     ui(new Ui::LocalMode)
 {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 本地");
+    this->isTutorial = isTutorial;
     this->initForm();
     connect(runAllButton, SIGNAL(clicked()), this, SLOT(parseAll()));       //运行程序按钮
     connect(runLineButton, SIGNAL(clicked()), this, SLOT(parseCurrentLine()));     //单步运行按钮
@@ -26,6 +27,16 @@ LocalMode::LocalMode(QWidget *parent) :
     connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
     connect(this->cmdLine, &CmdLine::sendNewLine, this, &LocalMode::receiveNewLine);  // receive new line from cmd-line
     lineInterpreter = new LineInterpreter();
+    if(isTutorial) {
+        connect(tutorButton, SIGNAL(clicked()), this, SLOT(tutorNextStep()));
+        tutorStep = 0; tutorBlock = true;
+        ui->menu_file->setDisabled(true);
+        ui->menu_edit->setDisabled(true);
+        ui->menu_program->setDisabled(true);
+        runAllButton->setDisabled(true);
+        runLineButton->setDisabled(true);
+        speechButton->setDisabled(true);
+    }
 }
 
 LocalMode::~LocalMode()
@@ -110,6 +121,15 @@ void LocalMode::initForm(){
     cmdLine->setGraphicsEffect(cmdLine_opacity);
     cmdLine_opacity->setOpacity(OPACITY);
 
+    if(isTutorial) {
+        tutorial = new QLabel(this);
+        tutorial->setGeometry(30, 40, 390, 350);
+        tutorial->setText("欢迎来到PC LOGO的世界！点击下一步继续教程嗷<>");
+        tutorial->setWordWrap(true);
+        tutorButton = new QPushButton(this);
+        tutorButton->setGeometry(270, 360, 110, 31);
+        tutorButton->setText("下一步");
+    }
     reset_editor();
 }
 
@@ -286,6 +306,37 @@ void LocalMode::parseCurrentLine() {
 
 void LocalMode::parseLine(QString line)
 {
+    if(isTutorial) {
+        if(tutorBlock) return;
+        if(line != tutorText) {
+            tutorial->setText("请输入" + tutorText + ", 不要不听话哦小朋友！");
+            return;
+        }
+        else {
+            QString nextText;
+            switch (tutorStep) {
+            case 1: nextText = "太棒了，FD是前进的意思，后面的100指的是前进的距离。点击下一步继续教程";
+                break;
+            case 2: nextText = "太棒了，RT是前进的意思，后面的90指的是转动的角度。点击下一步继续教程";
+                break;
+            case 3: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+                break;
+            case 4: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+                break;
+            case 5: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+                break;
+            case 6: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+                break;
+            case 7: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+                break;
+            case 8: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+                break;
+            default: nextText = "你已经完成了测试，tql!";
+            }
+            tutorial->setText(nextText);
+            tutorBlock = true;
+        }
+    }
     command *cmd = this->lineInterpreter->parseLine(line);
     if (reminder != "") {
         if(reminder.at(reminder.size() - 1) == "）") {
@@ -470,4 +521,31 @@ void LocalMode::closeWindow() {
         default:
             break;
         }
+}
+
+void LocalMode::tutorNextStep() {
+    tutorStep++;
+    QString nextText;
+    switch (tutorStep) {
+    case 1: nextText = "在右下角输入框内输入FD 100就可以让小海龟画出一条直线哦";
+        tutorText = "FD 100"; break;
+    case 2: nextText = "继续输入RT 90可以让小海龟旋转哦，这里的90指的是转动的角度";
+        tutorText = "RT 90"; break;
+    case 3: nextText = "这样一点一点输入太慢了，让我们使用循环语句吧！输入REPEAT 3 [FD 100 RT 90]吧";
+        tutorText = "REPEAT 3 [FD 100 RT 90]"; break;
+    case 4: nextText = "现在小海龟只要移动就会留下痕迹，这样不好，让我们输入PU FD 50 RT 90 FD 50 LT 90吧";
+        tutorText = "PU FD 50 RT 90 FD 50 LT 90"; break;
+    case 5: nextText = "现在可以放下画笔了，输入PD吧";
+        tutorText = "PD"; break;
+    case 6: nextText = "除了直线，小海龟还可以发动神力画出圆形，让我们输入STAMPOVAL 50 50来画圆圈吧";
+        tutorText = "STAMPOVAL 50 50"; break;
+    case 7: nextText = "输入SETPC 0000FF可以改变画笔颜色哦";
+        tutorText = "SETPC 0000FF"; break;
+    case 8: nextText = "现在再画一个圆吧，STAMPOVAL 30 30,看看颜色有什么变化呢？";
+        tutorText = "STAMPOVAL 30 30"; break;
+    case 9: nextText = "你太棒了！"; break;
+    default: nextText = "你已经完成了测试，tql!";
+    }
+    tutorial->setText(nextText);
+    tutorBlock = false;
 }
