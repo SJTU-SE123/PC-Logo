@@ -127,19 +127,19 @@ void StartWindow::onTaskBoxContextMenuEvent(){
 
 void StartWindow::on_Help_clicked()
 {
-        QString FileName = "../PCLogo-demo/帮助文档.txt";
-        if(FileName.isEmpty() == false)
-           {
-               QFile file(FileName);
-               bool fileok = file.open(QIODevice::ReadOnly);
-               if(fileok == true)
-               {
-                   dialog = new courseDialog(this);
-                   QByteArray array = file.readAll();
-                   dialog->ui->textEdit->setText(array);
-                   dialog->show();
-               }
+    QString FileName = ":/helpDoc.txt";
+    if(FileName.isEmpty() == false)
+    {
+       QFile file(FileName);
+       bool fileok = file.open(QIODevice::ReadOnly);
+       if(fileok == true)
+       {
+           dialog = new courseDialog(this);
+           QByteArray array = file.readAll();
+           dialog->ui->textEdit->setText(array);
+           dialog->show();
+       }
 
-               file.close();
-           }
+       file.close();
+    }
 }

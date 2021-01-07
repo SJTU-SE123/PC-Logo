@@ -35,5 +35,6 @@
         <file>image/register.png</file>
         <file>image/regibackbtn.png</file>
         <file>image/netmodebkg.png</file>
+        <file>helpDoc.txt</file>
     </qresource>
 </RCC>

@@ -10,3 +10,6 @@ FORMS += \
 RESOURCES += \
         $$PWD/image.qrc
 
+DISTFILES += \
+    $$PWD/帮助文档.txt
+
