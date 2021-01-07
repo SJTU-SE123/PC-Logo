@@ -11,8 +11,10 @@ include(../PCLogo-demo.pri)
 
 SOURCES +=  \
     main.cpp \
+    testcanvas.cpp \
     testlineinterpreter.cpp \
     testlocalmode.cpp \
+    testlogin.cpp \
     testmodeselect.cpp \
     teststartwindow.cpp \
     testnetmode.cpp \
@@ -22,8 +24,10 @@ SOURCES +=  \
 INCLUDEPATH += ../
 
 HEADERS += \
+    testcanvas.h \
     testlineinterpreter.h \
     testlocalmode.h \
+    testlogin.h \
     testmodeselect.h \
     testrunner.h \
     teststartwindow.h \
