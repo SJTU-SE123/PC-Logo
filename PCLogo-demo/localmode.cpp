@@ -328,23 +328,25 @@ void LocalMode::parseLine(QString line)
         else {
             QString nextText;
             switch (tutorStep) {
-            case 1: nextText = "太棒了，FD是前进的意思，后面的100指的是前进的距离。点击下一步继续教程";
+            case 1: nextText = "太棒了，FD是前进的意思，后面的100指的是前进的距离。让我们点击下一步继续教程";
                 break;
-            case 2: nextText = "太棒了，RT是前进的意思，后面的90指的是转动的角度。点击下一步继续教程";
+            case 2: nextText = "太棒了，RT是向右旋转的意思，后面的90指的是转动的角度,相同的道理，LT则是向左转的意思。让我们点击下一步继续教程";
                 break;
-            case 3: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+            case 3: nextText = "太棒了，REPEATE是重复的意思，后面的3是重复的次数，被[]括起来的部分是重复执行的指令。让我们点击下一步继续教程";
                 break;
-            case 4: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+            case 4: nextText = "太棒了，PU是提笔指令，输入PU指令后，小海龟将不再继续画出线条，那么让我们猜一猜你刚才输入的PU后面的指令的意思吧，为什么小海龟会移动到现在的位置呢？让我们点击下一步继续教程";
                 break;
-            case 5: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+            case 5: nextText = "太棒了，PD是落笔指令，输入PD指令后，小海龟将重新画出线条。让我们点击下一步继续教程";
                 break;
-            case 6: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+            case 6: nextText = "太棒了，STAMPOVAL是画圆指令，后面的第一个50规定了圆的横向半径，而第二个50规定了圆的纵向半径，当横向半径和纵向半径相同时画出来的就是圆，如果不相同时画出来的就是椭圆。让我们点击下一步继续教程";
                 break;
-            case 7: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+            case 7: nextText = "太棒了，当圆的横向半径和纵向半径不相同时，画出来的图案叫做椭圆，小朋友们要牢记哦。让我们点击下一步继续教程";
                 break;
-            case 8: nextText = "太棒了，请你自己猜一猜你刚才输入的指令的意思吧。点击下一步继续教程";
+            case 8: nextText = "太棒了，SETPC是设置画笔颜色指令，后面的参数对应的是16进制颜色表，0000FF对应的颜色是蓝色，想知道更多常用颜色的颜色号请查看帮助文档。让我们点击下一步继续教程";
                 break;
-            default: nextText = "你已经完成了测试，tql!";
+            case 9: nextText = "太棒了，我们现在画的圆就是蓝色的了，这就是SETPC指令的作用。以上就是PC Logo的全部教程，点击下一步将退出教程模式。";
+
+            default: nextText = "恭喜你已经完成了教程模式！点击下一步将退出教程模式";
             }
             tutorial->setText(nextText);
             tutorBlock = true;
@@ -445,6 +447,7 @@ void LocalMode::newTab(){
  * 按叉关闭标签。
  */
 void LocalMode::removeTab(int n){
+
     QMessageBox messageBox(QMessageBox::NoIcon,
                                    "退出", "您确定要关闭当前文件吗？未保存的进度将丢失。",
                                    QMessageBox::No | QMessageBox::Yes , nullptr);
@@ -551,12 +554,15 @@ void LocalMode::tutorNextStep() {
         tutorText = "PD"; break;
     case 6: nextText = "除了直线，小海龟还可以发动神力画出圆形，让我们输入STAMPOVAL 50 50来画圆圈吧";
         tutorText = "STAMPOVAL 50 50"; break;
-    case 7: nextText = "输入SETPC 0000FF可以改变画笔颜色哦";
+    case 7: nextText = "接下来让我们画一个椭圆吧，让我们输入STAMPOVAL 40 60来画一个椭圆吧";
+        tutorText = "STAMPOVAL 40 60"; break;
+    case 8: nextText = "输入SETPC 0000FF可以改变画笔颜色哦";
         tutorText = "SETPC 0000FF"; break;
-    case 8: nextText = "现在再画一个圆吧，STAMPOVAL 30 30,看看颜色有什么变化呢？";
+    case 9: nextText = "现在再画一个圆吧，STAMPOVAL 30 30,看看颜色有什么变化呢？";
         tutorText = "STAMPOVAL 30 30"; break;
-    case 9: nextText = "你太棒了！"; break;
-    default: nextText = "你已经完成了测试，tql!";
+//    case 10: nextText = "恭喜你已经完成了教程模式！点击下一步将退出教程模式";break;
+    default: close();
+        //        nextText = "你已经完成了测试，tql!";
     }
     tutorial->setText(nextText);
     tutorBlock = false;
