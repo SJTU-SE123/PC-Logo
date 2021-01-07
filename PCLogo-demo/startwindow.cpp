@@ -1,12 +1,17 @@
 #include "startwindow.h"
 #include "ui_startwindow.h"
+#include "ui_coursedialog.h"
 #include <QMenu>
 #include "register.h"
 #include "login.h"
 #include "userinfo.h"
 #include "modeselect.h"
+#include <QProcess>
+#include <QDebug>
 
-//#include <QDebug>
+#include <QFile>
+#include <QFileDialog>
+#include <QMessageBox>
 
 StartWindow::StartWindow(QWidget *parent) :
     QWidget(parent),
@@ -118,4 +123,23 @@ void StartWindow::onTaskBoxContextMenuEvent(){
             break;
         default: break;
     }
+}
+
+void StartWindow::on_Help_clicked()
+{
+        QString FileName = "../PCLogo-demo/帮助文档.txt";
+        if(FileName.isEmpty() == false)
+           {
+               QFile file(FileName);
+               bool fileok = file.open(QIODevice::ReadOnly);
+               if(fileok == true)
+               {
+                   dialog = new courseDialog(this);
+                   QByteArray array = file.readAll();
+                   dialog->ui->textEdit->setText(array);
+                   dialog->show();
+               }
+
+               file.close();
+           }
 }
