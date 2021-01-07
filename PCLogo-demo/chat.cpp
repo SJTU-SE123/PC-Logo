@@ -40,13 +40,17 @@ void Chat::sendMsg(QJsonObject msg) {
 }
 
 void Chat::appendMsg(QString fromUser, QString text, QString time) {
-    assert(this->partner == fromUser);
+    //assert(this->partner == fromUser);
     ui->textBrowser->setTextColor(Qt::red);
     ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
-    ui->textBrowser->append("[ " + this->partner +" ] "+ time);
+    ui->textBrowser->append("[ " + fromUser +" ] "+ time);
     ui->textBrowser->append(text);
     this->draw(text);
     update();
+}
+
+QString Chat::getText() {
+    return ui->textBrowser->toPlainText();
 }
 
 void Chat::setPartner(QString fromUser) {
@@ -91,4 +95,8 @@ void Chat::closeEvent(QCloseEvent *event) {
     QJsonObject msg{{"toUser", this->partner}, {"status", "exit"}};
     sendMsg(msg);
     event->accept();
+}
+
+QString Chat::getPartner() {
+    return this->partner;
 }
