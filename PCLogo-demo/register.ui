@@ -10,17 +10,33 @@
     <height>668</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>14</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>270</y>
-     <width>120</width>
-     <height>20</height>
+     <x>370</x>
+     <y>255</y>
+     <width>150</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(255,255,255,51);border-width:0;border-style:outset</string>
    </property>
   </widget>
   <widget class="QPushButton" name="backButton">
@@ -31,6 +47,9 @@
      <width>160</width>
      <height>70</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-width:0;border-style:outset</string>
    </property>
    <property name="text">
     <string/>
@@ -58,6 +77,9 @@
      <height>70</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">border-width:0;border-style:outset</string>
+   </property>
    <property name="text">
     <string/>
    </property>
@@ -78,11 +100,19 @@
   <widget class="QLineEdit" name="lineEdit_2">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>350</y>
-     <width>120</width>
-     <height>20</height>
+     <x>370</x>
+     <y>335</y>
+     <width>150</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(255,255,255,51);border-width:0;border-style:outset</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -101,11 +131,19 @@
   <widget class="QLineEdit" name="lineEdit_3">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>430</y>
-     <width>120</width>
-     <height>20</height>
+     <x>370</x>
+     <y>415</y>
+     <width>150</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(255,255,255,51);border-width:0;border-style:outset</string>
    </property>
   </widget>
  </widget>

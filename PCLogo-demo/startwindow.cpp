@@ -31,6 +31,9 @@ StartWindow::StartWindow(QWidget *parent) :
     ui->ModeSelect->setStyleSheet("background-image: url(:/image/toselectmode.png);");
     ui->Help->setStyleSheet("background-image: url(:/image/help.png);");
     ui->Exit->setStyleSheet("background-image: url(:/image/exit.png);");
+    ui->ModeSelect->setFlat(true);
+    ui->Help->setFlat(true);
+    ui->Exit->setFlat(true);
     this->setFixedSize(500, 500);
     login = new Login();
     connect(login, &Login::UserLogin, this, &StartWindow::onUserLogin);

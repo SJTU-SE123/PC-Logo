@@ -11,15 +11,13 @@ AdvancedChat::AdvancedChat(QString username) :
     this->setPalette(palette);
 
     this->setWindowTitle("PC Logo 联网");
-    canvas1 = new Canvas(this, 560, 300);
-    canvas1->setGeometry(620, 20, 560, 300);
-    canvas1->setStyleSheet("background-color: white; border: 1px solid #555555;");
+    canvas = new Canvas(this, 560, 740, true);
+    canvas->setGeometry(620, 20, 560, 740);
+    canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
     this->username = username;
-
-    canvas2 = new Canvas(this, 560, 300);
-    canvas2->setGeometry(620, 360, 560, 300);
-    canvas2->setStyleSheet("background-color: white; border: 1px solid #555555;");
-
+    canvas_opacity = new QGraphicsOpacityEffect();
+    canvas->setGraphicsEffect(canvas_opacity);
+    canvas_opacity->setOpacity(OPACITY);
     lineInterpreter = new LineInterpreter();
 }
 
@@ -39,7 +37,7 @@ void AdvancedChat::on_sendButton_clicked() {
     sendMsg(msg);
     ui->textEdit->clear();
     ui->textEdit->setFocus();
-    this->draw(true, text);
+    this->draw(isP2, text);
     update();
 }
 
@@ -60,28 +58,28 @@ void AdvancedChat::appendMsg(QString fromUser, QString text, QString time) {
     ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
     ui->textBrowser->append("[ " + this->partner +" ] "+ time);
     ui->textBrowser->append(text);
-    this->draw(false, text);
+    this->draw(!isP2, text);
     update();
 }
 
-void AdvancedChat::setPartner(QString fromUser) {
+void AdvancedChat::setPartner(QString fromUser, bool isP2) {
     if(fromUser != this->partner) {
         resetContent();
         this->partner = fromUser;
+        this->isP2 = isP2;
     }
 }
 
 void AdvancedChat::draw(bool flag, QString str) {
+    qDebug() << "isP2: " << flag;
     command* cmd = this->lineInterpreter->parseLine(str);
-    if (flag) this->canvas1->parseCommand(cmd);
-    else this->canvas2->parseCommand(cmd);
+    this->canvas->parseCommand(cmd, flag);
 }
 
 void AdvancedChat::resetContent() {
     this->ui->textBrowser->clear();
     this->ui->textEdit->clear();
-    this->canvas1->reset();
-    this->canvas2->reset();
+    this->canvas->reset();
 }
 
 void AdvancedChat::closeEvent(QCloseEvent *event) {

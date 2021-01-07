@@ -58,7 +58,7 @@ private:
     QString partner;
     QString username;
     const double OPACITY = 0.8;
-    QGraphicsOpacityEffect *canvas_opacity, *browser_opacity, *editor_opacity;
+    QGraphicsOpacityEffect *canvas_opacity;
 
 private slots:
     void on_sendButton_clicked();

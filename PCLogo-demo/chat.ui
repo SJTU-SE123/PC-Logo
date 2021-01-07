@@ -23,6 +23,9 @@
       <height>360</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(255,255,255,51);border-width:0;border-style:outset</string>
+    </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
@@ -32,6 +35,9 @@
       <width>560</width>
       <height>260</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:rgb(255,255,255,51);border-width:0;border-style:outset</string>
     </property>
    </widget>
    <widget class="QPushButton" name="sendButton">

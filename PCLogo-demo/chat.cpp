@@ -16,12 +16,6 @@ Chat::Chat(QString username) :
     canvas_opacity = new QGraphicsOpacityEffect();
     canvas->setGraphicsEffect(canvas_opacity);
     canvas_opacity->setOpacity(OPACITY);
-    browser_opacity = new QGraphicsOpacityEffect();
-    ui->textBrowser->setGraphicsEffect(browser_opacity);
-    browser_opacity->setOpacity(OPACITY);
-    editor_opacity = new QGraphicsOpacityEffect();
-    ui->textEdit->setGraphicsEffect(editor_opacity);
-    editor_opacity->setOpacity(OPACITY);
     this->username = username;
     lineInterpreter = new LineInterpreter();
 }

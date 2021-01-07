@@ -2,6 +2,7 @@
 #define ADVANCEDCHAT_H
 
 #include <QMainWindow>
+#include <QGraphicsOpacityEffect>
 #include <QCloseEvent>
 #include <QTabWidget>
 #include <QLabel>
@@ -40,7 +41,7 @@ public:
     void draw(bool flag, QString str);
     void sendMsg(QJsonObject msg);
     void appendMsg(QString fromUser, QString text, QString time);
-    void setPartner(QString fromUser);
+    void setPartner(QString fromUser, bool isP2 = false);
     void resetContent();
 
 protected:
@@ -51,13 +52,15 @@ private slots:
     void on_exitButton_clicked();
 
 private:
+    bool isP2;
     Ui::AdvancedChat *ui;
-    Canvas *canvas1;
-    Canvas *canvas2;
+    Canvas *canvas;
     LineInterpreter *lineInterpreter;
     QWebSocket m_webSocket;
     QString partner;
     QString username;
+    const double OPACITY = 0.8;
+    QGraphicsOpacityEffect *canvas_opacity;
 
 signals:
     void sendMessage(QString msg);
