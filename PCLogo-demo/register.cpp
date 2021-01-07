@@ -21,6 +21,8 @@ Register::Register(QWidget *parent) :
     this->ui->label_3->setStyleSheet("background-image: url(:/image/passwordAgain.png);");
     this->ui->pushButton->setStyleSheet("background-image: url(:/image/regibtn.png);");
     this->ui->backButton->setStyleSheet("background-image: url(:/image/regibackbtn.png);");
+    this->ui->pushButton->setFlat(true);
+    this->ui->backButton->setFlat(true);
     connect(&manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(finishRequest(QNetworkReply*)));
 }
 

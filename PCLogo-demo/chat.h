@@ -43,6 +43,8 @@ public:
     void appendMsg(QString fromUser, QString text, QString time);
     void setPartner(QString fromUser);
     void resetContent();
+    QString getPartner();
+    QString getText();
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -58,7 +60,7 @@ private:
     QString partner;
     QString username;
     const double OPACITY = 0.8;
-    QGraphicsOpacityEffect *canvas_opacity, *browser_opacity, *editor_opacity;
+    QGraphicsOpacityEffect *canvas_opacity;
 
 private slots:
     void on_sendButton_clicked();

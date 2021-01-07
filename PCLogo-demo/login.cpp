@@ -18,11 +18,14 @@ Login::Login(QWidget *parent) :
     QPixmap pixmap(":/image/login.png");
     palette.setBrush(QPalette::Window, QBrush(pixmap));
     this->setPalette(palette);
-    this->ui->label->setStyleSheet("background-image: url(:/image/username.png);");
-    this->ui->label_2->setStyleSheet("background-image: url(:/image/password.png);");
-    this->ui->pushButton->setStyleSheet("background-image: url(:/image/loginbtn.png);");
-    this->ui->backButton->setStyleSheet("background-image: url(:/image/backbtn.png);");
-    this->ui->registerButton->setStyleSheet("background-image: url(:/image/openregisterbtn.png);");
+    ui->label->setStyleSheet("background-image: url(:/image/username.png);");
+    ui->label_2->setStyleSheet("background-image: url(:/image/password.png);");
+    ui->pushButton->setStyleSheet("background-image: url(:/image/loginbtn.png);");
+    ui->backButton->setStyleSheet("background-image: url(:/image/backbtn.png);");
+    ui->registerButton->setStyleSheet("background-image: url(:/image/openregisterbtn.png);");
+    ui->pushButton->setFlat(true);
+    ui->backButton->setFlat(true);
+    ui->registerButton->setFlat(true);
     connect(&manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(finishRequest(QNetworkReply*)));
 }
 

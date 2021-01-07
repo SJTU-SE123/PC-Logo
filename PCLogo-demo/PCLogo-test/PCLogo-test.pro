@@ -11,20 +11,30 @@ include(../PCLogo-demo.pri)
 
 SOURCES +=  \
     main.cpp \
-    testcmdline.cpp \
+    testcanvas.cpp \
     testlineinterpreter.cpp \
     testlocalmode.cpp \
+    testlogin.cpp \
     testmodeselect.cpp \
+    teststartwindow.cpp \
+    testnetmode.cpp \
+    testchat.cpp \
+    testadvancedchat.cpp \
     testnewline.cpp \
-    teststartwindow.cpp
+    testcmdline.cpp
 
 INCLUDEPATH += ../
 
 HEADERS += \
-    testcmdline.h \
+    testcanvas.h \
     testlineinterpreter.h \
     testlocalmode.h \
+    testlogin.h \
     testmodeselect.h \
-    testnewline.h \
     testrunner.h \
-    teststartwindow.h
+    teststartwindow.h \
+    testnetmode.h \
+    testchat.h \
+    testadvancedchat.h \
+    testnewline.h \
+    testcmdline.h

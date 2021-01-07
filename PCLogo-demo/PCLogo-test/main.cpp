@@ -5,6 +5,9 @@
 #include "testlocalmode.h"
 #include "testnewline.h"
 #include "testcmdline.h"
+#include "testadvancedchat.h"
+#include "testchat.h"
+#include "testnetmode.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +18,9 @@ int main(int argc, char *argv[])
     tr.addTest(new TestLocalMode);
     tr.addTest(new TestNewLine);
     tr.addTest(new TestCmdLine);
+    tr.addTest(new TestAdvancedChat);
+    tr.addTest(new TestChat);
+    tr.addTest(new TestNetMode);
 
     bool pass = tr.runTests(argc, argv);
     qDebug() << "Overall result: " << (pass ? "PASS" : "FAIL");

@@ -98,7 +98,7 @@ void NetMode::onTextMessageReceived(QString message) {
                     chat->setPartner(fromUser);
                     chat->show();
                 } else {
-                    advChat->setPartner(fromUser);
+                    advChat->setPartner(fromUser, false);
                     advChat->show();
                 }
             } else if (status == "exit" && (!this->chat->isHidden() || !this->advChat->isHidden())) {
@@ -124,7 +124,7 @@ void NetMode::onTextMessageReceived(QString message) {
                         chat->setPartner(fromUser);
                         chat->show();
                     } else {
-                        advChat->setPartner(fromUser);
+                        advChat->setPartner(fromUser, true);
                         advChat->show();
                     }
                     break;

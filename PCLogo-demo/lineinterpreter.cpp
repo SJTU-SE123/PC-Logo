@@ -27,13 +27,21 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end, bool r
         return parse(wordList, begin+1, end);
     }
     if(repeatFlag) {
+        if(wordList[begin].count('[') > 1) {
+            reminder += " 指令参数错误,请重新输入";
+            return nullptr;
+        }
         wordList[begin].remove('[');
+        if(wordList[end].count(']') > 1) {
+            reminder += " 指令参数错误,请重新输入";
+            return nullptr;
+        }
         wordList[end].remove(']');
     }
     if (wordList[begin] == ""){
         return parse(wordList, begin+1, end);
     }
-    bool flag = true;
+    bool flag = true, flagTmp = true;
     if (wordList[begin] == "FD") {
         reminder = "前进（FD）";
         int param = wordList[begin + 1].toInt(&flag);
@@ -45,12 +53,12 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end, bool r
         if (!flag) reminder += " 指令参数错误,请重新输入";
         return new command(STRAIGHTMOVE, -param, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "RT") {
-        reminder = "左转（RT）";
+        reminder = "右转（RT）";
         int param = wordList[begin + 1].toInt(&flag);
         if (!flag) reminder += " 指令参数错误,请重新输入";
         return new command(SETANGLE, param, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "LT") {
-        reminder = "右转（LT）";
+        reminder = "左转（LT）";
         int param = wordList[begin + 1].toInt(&flag);
         if (!flag) reminder += " 指令参数错误,请重新输入";
         return new command(SETANGLE, -param, parse(wordList, begin+2, end));
@@ -66,15 +74,23 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end, bool r
         return new command(SETBG, color_16, parse(wordList, begin+2, end));
     } else if (wordList[begin] == "SETXY") {
         reminder = "坐标定位（SETXY）";
+        if(begin + 2 > end) {
+            reminder += " 指令参数错误,请重新输入";
+            return nullptr;
+        }
         int x = wordList[begin + 1].toInt(&flag);
-        int y = wordList[begin + 2].toInt(&flag);
-        if (!flag) reminder += " 指令参数错误,请重新输入";
+        int y = wordList[begin + 2].toInt(&flagTmp);
+        if (!flag || !flagTmp) reminder += " 指令参数错误,请重新输入";
         return new command(SETXY, x, y, parse(wordList, begin+3, end));
     } else if (wordList[begin] == "STAMPOVAL") {
         reminder = "画圆（STAMPOVAL）";
+        if(begin + 2 > end) {
+            reminder += " 指令参数错误,请重新输入";
+            return nullptr;
+        }
         int a = wordList[begin + 1].toInt(&flag);
-        int b = wordList[begin + 2].toInt(&flag);
-        if(!flag)reminder += " 指令参数错误,请重新输入";
+        int b = wordList[begin + 2].toInt(&flagTmp);
+        if(!flag || !flagTmp) reminder += " 指令参数错误,请重新输入";
         return new command(OVALMOVE, a, b, parse(wordList, begin+3, end));
     } else if (wordList[begin] == "REPEAT") {
         reminder = "重复命令（REPEAT）";
@@ -85,6 +101,7 @@ command* LineInterpreter::parse(QStringList wordList, int begin, int end, bool r
         }
         int cnt = 0, i;
         for (i = begin + 2; i <= end; i++) {
+            if (wordList[i] == "$") continue;
             if (wordList[i].contains('[') && wordList[i].contains(']')) {
                 int leftPos = wordList[i].indexOf('[');
                 int rightPos = wordList[i].indexOf(']');
