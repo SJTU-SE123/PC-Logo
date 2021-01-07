@@ -14,7 +14,10 @@ SOURCES +=  \
     testlineinterpreter.cpp \
     testlocalmode.cpp \
     testmodeselect.cpp \
-    teststartwindow.cpp
+    teststartwindow.cpp \
+    testnetmode.cpp \
+    testchat.cpp \
+    testadvancedchat.cpp
 
 INCLUDEPATH += ../
 
@@ -23,4 +26,7 @@ HEADERS += \
     testlocalmode.h \
     testmodeselect.h \
     testrunner.h \
-    teststartwindow.h
+    teststartwindow.h \
+    testnetmode.h \
+    testchat.h \
+    testadvancedchat.h
