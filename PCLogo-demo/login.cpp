@@ -56,7 +56,7 @@ void Login::on_pushButton_clicked()
         document.setObject(json);
 
         QByteArray data = document.toJson(QJsonDocument::Compact);
-        QString URL = "http://localhost:8080/login?";
+        QString URL = "http://121.4.198.32:8080/login?";
         URL = URL + "username=" + username + "&" + "password=" + password;
 
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");  //上面语句固定这么写，要不然会报错“contest—type is missing”

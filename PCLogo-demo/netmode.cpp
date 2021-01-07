@@ -19,7 +19,7 @@ NetMode::NetMode(QString username, QWidget *parent) :
     this->setPalette(palette);
 
     this->username = username;
-    this->m_url = "ws://localhost:8080/online/" + this->username;
+    this->m_url = "ws://121.4.198.32:8080/online/" + this->username;
     this->m_debug = true;
     connect(&m_webSocket, &QWebSocket::connected, this, &NetMode::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &NetMode::closed);

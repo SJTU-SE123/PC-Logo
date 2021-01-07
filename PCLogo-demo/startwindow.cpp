@@ -135,6 +135,7 @@ void StartWindow::on_Help_clicked()
        if(fileok == true)
        {
            dialog = new courseDialog(this);
+           dialog->setWindowTitle("帮助文档");
            QByteArray array = file.readAll();
            dialog->ui->textEdit->setText(array);
            dialog->show();

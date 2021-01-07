@@ -69,7 +69,7 @@ void Register::on_pushButton_clicked()
         document.setObject(json);
 
         QByteArray data = document.toJson(QJsonDocument::Compact);
-        QString URL = "http://localhost:8080/user/register";
+        QString URL = "http://121.4.198.32:8080/user/register";
 
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
         request.setRawHeader("Accept", "*/*");
