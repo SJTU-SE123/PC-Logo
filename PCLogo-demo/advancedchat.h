@@ -42,7 +42,9 @@ public:
     void sendMsg(QJsonObject msg);
     void appendMsg(QString fromUser, QString text, QString time);
     void setPartner(QString fromUser, bool isP2 = false);
+    QString getPartner();
     void resetContent();
+    QString getText();
 
 protected:
     void closeEvent(QCloseEvent *event);

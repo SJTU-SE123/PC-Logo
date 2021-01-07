@@ -46,6 +46,10 @@ void AdvancedChat::on_exitButton_clicked()
     this->close();
 }
 
+QString AdvancedChat::getText() {
+    return ui->textBrowser->toPlainText();
+}
+
 void AdvancedChat::sendMsg(QJsonObject msg) {
     QJsonDocument doc(msg);
     QString str(doc.toJson(QJsonDocument::Compact));
@@ -53,10 +57,9 @@ void AdvancedChat::sendMsg(QJsonObject msg) {
 }
 
 void AdvancedChat::appendMsg(QString fromUser, QString text, QString time) {
-    assert(this->partner == fromUser);
     ui->textBrowser->setTextColor(Qt::red);
     ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
-    ui->textBrowser->append("[ " + this->partner +" ] "+ time);
+    ui->textBrowser->append("[ " + fromUser +" ] "+ time);
     ui->textBrowser->append(text);
     this->draw(!isP2, text);
     update();
@@ -68,6 +71,10 @@ void AdvancedChat::setPartner(QString fromUser, bool isP2) {
         this->partner = fromUser;
         this->isP2 = isP2;
     }
+}
+
+QString AdvancedChat::getPartner() {
+    return this->partner;
 }
 
 void AdvancedChat::draw(bool flag, QString str) {

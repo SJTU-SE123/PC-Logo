@@ -43,6 +43,8 @@ public:
     void appendMsg(QString fromUser, QString text, QString time);
     void setPartner(QString fromUser);
     void resetContent();
+    QString getPartner();
+    QString getText();
 
 protected:
     void closeEvent(QCloseEvent *event);
