@@ -66,7 +66,7 @@ void NetMode::onTextMessageReceived(QString message) {
     int msgCnt = jsonObject.size();
     if (msgCnt == 1){
         QJsonObject::Iterator it = jsonObject.begin();
-        if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << endl;
+        if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << Qt::endl;
 
         // 客户端接受到更新在线用户列表信息
         if (it.key() == "onlineUsers" || it.key() == "update") {
@@ -164,7 +164,7 @@ void NetMode::sendMsg(QJsonObject msg) {
 
 void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
     QString toUser = ui->tableWidget->item(index.row(),0)->text();
-    if (m_debug) qDebug() << "toUser: " << toUser << endl;
+    if (m_debug) qDebug() << "toUser: " << toUser << Qt::endl;
     if (toUser == this->username) return;
     QMessageBox:: StandardButton result= QMessageBox::information(this, "确认", "是否选择双人双海龟模式，默认为双人单海龟", QMessageBox::Yes|QMessageBox::No);
     switch (result) {
