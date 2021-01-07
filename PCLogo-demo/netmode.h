@@ -2,6 +2,7 @@
 #define NETMODE_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include <QTabWidget>
 #include <QLabel>
 #include <QPushButton>
@@ -24,6 +25,9 @@ public:
     explicit NetMode(QString username, QWidget *parent = nullptr);
     ~NetMode();
     void sendMsg(QJsonObject msg);
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::NetMode *ui;

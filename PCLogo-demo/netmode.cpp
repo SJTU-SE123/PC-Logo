@@ -2,7 +2,6 @@
 #include "ui_netmode.h"
 #include <QToolButton>
 #include "codeeditor.h"
-#include "connect.h"
 #include <QtCore/QDebug>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -66,10 +65,10 @@ void NetMode::onTextMessageReceived(QString message) {
     int msgCnt = jsonObject.size();
     if (msgCnt == 1){
         QJsonObject::Iterator it = jsonObject.begin();
-        if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << Qt::endl;
+        if (m_debug) qDebug() << "key: " << it.key() << ", value: " << it.value() << endl;
 
         // 客户端接受到更新在线用户列表信息
-        if (it.key() == "onlineUsers" || it.key() == "update") {
+        if (it.key() == "onlineUsers") {
             QJsonArray users = it.value().toArray();
             QList<QString> usernames;
             QList<bool> statuss;
@@ -83,6 +82,18 @@ void NetMode::onTextMessageReceived(QString message) {
             this->userList = usernames;
             this->statusList = statuss;
             update();
+        } else if (it.key() == "update") {
+            QJsonArray users = it.value().toArray();
+            QList<QString> usernames;
+            QList<bool> statuss;
+            for (QJsonArray::Iterator user = users.begin(); user != users.end(); user++) {
+                QJsonObject userInfo = (*user).toObject();
+                QString userName = userInfo.value("username").toString();
+                bool userStatus = userInfo.value("free").toBool();
+                for(int i = 0; i < this->userList.size(); i++) {
+                    if(userName == userList[i]) this->statusList[i] = userStatus;
+                }
+            }
         }
     } else if (msgCnt == 2) {
         // 客户端收到对方对联机请求的回应
@@ -164,7 +175,7 @@ void NetMode::sendMsg(QJsonObject msg) {
 
 void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
     QString toUser = ui->tableWidget->item(index.row(),0)->text();
-    if (m_debug) qDebug() << "toUser: " << toUser << Qt::endl;
+    if (m_debug) qDebug() << "toUser: " << toUser << endl;
     if (toUser == this->username) return;
     QMessageBox:: StandardButton result= QMessageBox::information(this, "确认", "是否选择双人双海龟模式，默认为双人单海龟", QMessageBox::Yes|QMessageBox::No);
     switch (result) {
@@ -185,6 +196,11 @@ void NetMode::on_tableWidget_doubleClicked(QModelIndex index) {
         default:
             break;
     }
+}
+
+void NetMode::closeEvent(QCloseEvent *event) {
+    m_webSocket.close();
+    event->accept();
 }
 
 NetMode::~NetMode() {
