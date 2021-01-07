@@ -32,8 +32,6 @@
     <addaction name="action_save"/>
     <addaction name="action_save_as"/>
     <addaction name="action_exit"/>
-    <addaction name="separator"/>
-    <addaction name="action_upload"/>
    </widget>
    <widget class="QMenu" name="menu_edit">
     <property name="title">
@@ -42,6 +40,8 @@
     <addaction name="action_copy"/>
     <addaction name="action_cut"/>
     <addaction name="action_paste"/>
+    <addaction name="action_undo"/>
+    <addaction name="action_redo"/>
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
@@ -54,8 +54,6 @@
      <string>程序</string>
     </property>
     <addaction name="action_run"/>
-    <addaction name="action_procedures"/>
-    <addaction name="action_debug"/>
    </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_edit"/>
@@ -131,6 +129,16 @@
   <action name="action_build">
    <property name="text">
     <string>构建</string>
+   </property>
+  </action>
+  <action name="action_undo">
+   <property name="text">
+    <string>撤销</string>
+   </property>
+  </action>
+  <action name="action_redo">
+   <property name="text">
+    <string>重做</string>
    </property>
   </action>
  </widget>

@@ -17,9 +17,6 @@ NetMode::NetMode(QString username, QWidget *parent) :
     QPixmap pixmap(":/image/netmodebkg.png");
     palette.setBrush(QPalette::Window, QBrush(pixmap));
     this->setPalette(palette);
-//    opacity = new QGraphicsOpacityEffect();
-//    ui->tableWidget->setGraphicsEffect(opacity);
-//    opacity->setOpacity(OPACITY);
 
     this->username = username;
     this->m_url = "ws://localhost:8080/online/" + this->username;

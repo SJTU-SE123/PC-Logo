@@ -14,6 +14,9 @@
    <string>双击选择伙伴</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
@@ -22,6 +25,9 @@
       <width>600</width>
       <height>450</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
      <number>120</number>

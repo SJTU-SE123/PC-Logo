@@ -59,6 +59,7 @@ private slots:
     void saveFile();
     void saveFileAs();
     void tutorNextStep();
+    void onTabChanged(int);
 
 public slots:
     void receiveNewLine(QString newLine);

@@ -25,6 +25,7 @@ LocalMode::LocalMode(QWidget *parent, bool isTutorial) :
     connect(ui->action_exit, SIGNAL(triggered()), this, SLOT(closeWindow()));     //关闭窗口
     connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseCurrentLine()));     //运行
     connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
+    connect(tabEditor, SIGNAL(currentChanged(int)), this, SLOT(onTabChanged(int)));
     connect(this->cmdLine, &CmdLine::sendNewLine, this, &LocalMode::receiveNewLine);  // receive new line from cmd-line
     lineInterpreter = new LineInterpreter();
     if(isTutorial) {
@@ -138,6 +139,18 @@ void LocalMode::initForm(){
  */
 void LocalMode::reset_editor(){
     editor = static_cast<CodeEditor*>(tabEditor->currentWidget());
+    if(editor != nullptr) {
+        ui->action_copy->disconnect();
+        ui->action_paste->disconnect();
+        ui->action_cut->disconnect();
+        ui->action_undo->disconnect();
+        ui->action_redo->disconnect();
+        connect(ui->action_copy, SIGNAL(triggered()), editor, SLOT(copy()));
+        connect(ui->action_paste, SIGNAL(triggered()), editor, SLOT(paste()));
+        connect(ui->action_cut, SIGNAL(triggered()), editor, SLOT(cut()));
+        connect(ui->action_undo, SIGNAL(triggered()), editor, SLOT(undo()));
+        connect(ui->action_redo, SIGNAL(triggered()), editor, SLOT(redo()));
+    }
 }
 
 /**
@@ -433,26 +446,24 @@ void LocalMode::newTab(){
  */
 void LocalMode::removeTab(int n){
     QMessageBox messageBox(QMessageBox::NoIcon,
-                                   "退出", "你确定要关闭该文件吗? ps:请先确认文件是否保存！",
+                                   "退出", "您确定要关闭当前文件吗？未保存的进度将丢失。",
                                    QMessageBox::No | QMessageBox::Yes , nullptr);
-            int result=messageBox.exec();
+    int result=messageBox.exec();
 
 
-            switch (result)
-            {
-            case QMessageBox::Yes:
-                qDebug()<<"Yes";
-                editor = static_cast<CodeEditor*>(tabEditor->widget(n));
-                tabEditor->removeTab(n);
-                delete editor;
-                reset_editor();
-                break;
-            case QMessageBox::No:
-                qDebug()<<"NO";
-                break;
-            default:
-                break;
-            }
+    switch (result)
+    {
+    case QMessageBox::Yes:
+        editor = static_cast<CodeEditor*>(tabEditor->widget(n));
+        // tabEditor->removeTab(n); 加上这行会导致删除两个窗口
+        delete editor;
+        reset_editor();
+        break;
+    case QMessageBox::No:
+        break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -506,22 +517,22 @@ void LocalMode::receiveNewLine(QString newLine)
 
 void LocalMode::closeWindow() {
     QMessageBox messageBox(QMessageBox::NoIcon,
-                               "退出", "你确定要退出吗? ps:请先确认文件是否保存！",
+                               "退出", "你确定要退出吗？未保存的进度将丢失。",
                                QMessageBox::No | QMessageBox::Yes, nullptr);
-        int result=messageBox.exec();
+    int result=messageBox.exec();
 
-        switch (result)
-        {
-        case QMessageBox::Yes:
-            qDebug()<<"Yes";
-            close();
-            break;
-        case QMessageBox::No:
-            qDebug()<<"NO";
-            break;
-        default:
-            break;
-        }
+    switch (result)
+    {
+    case QMessageBox::Yes:
+        qDebug()<<"Yes";
+        close();
+        break;
+    case QMessageBox::No:
+        qDebug()<<"NO";
+        break;
+    default:
+        break;
+    }
 }
 
 void LocalMode::tutorNextStep() {
@@ -550,4 +561,8 @@ void LocalMode::tutorNextStep() {
     tutorial->setText(nextText);
     tutorBlock = false;
     tutorButton->setDisabled(true);
+}
+
+void LocalMode::onTabChanged(int) {
+    reset_editor();
 }
