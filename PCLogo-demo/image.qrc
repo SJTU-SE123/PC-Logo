@@ -1,0 +1,45 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/run.png</file>
+        <file>image/debug.png</file>
+        <file>image/build.png</file>
+        <file>image/crawling.gif</file>
+        <file>logo.ico</file>
+        <file>image/logo.png</file>
+        <file>image/littlelogo.png</file>
+        <file>image/logojpg.jpg</file>
+        <file>image/startwindow.png</file>
+        <file>image/exit.png</file>
+        <file>image/help.png</file>
+        <file>image/localmode.png</file>
+        <file>image/netmode.png</file>
+        <file>image/tutorial.png</file>
+        <file>image/toselectmode.png</file>
+        <file>image/selectmode.png</file>
+        <file>image/runall.png</file>
+        <file>image/runline.png</file>
+        <file>image/speech-off.png</file>
+        <file>image/speech-on.png</file>
+        <file>image/bkgimg.png</file>
+        <file>image/backbtn.png</file>
+        <file>image/loginbtn.png</file>
+        <file>image/openregisterbtn.png</file>
+        <file>image/password.png</file>
+        <file>image/username.png</file>
+        <file>image/online.gif</file>
+        <file>image/speech.png</file>
+        <file>image/email.png</file>
+        <file>image/passwordAgain.png</file>
+        <file>image/regibtn.png</file>
+        <file>image/login.png</file>
+        <file>image/register.png</file>
+        <file>image/regibackbtn.png</file>
+        <file>image/netmodebkg.png</file>
+        <file>helpDoc.txt</file>
+        <file>image/sendMessage.png</file>
+        <file>image/quitNet.png</file>
+        <file>image/nextStep.png</file>
+        <file>image/openFile.png</file>
+        <file>image/makeFile.png</file>
+    </qresource>
+</RCC>
