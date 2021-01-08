@@ -14,6 +14,7 @@ Login::Login(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 登录");
+    this->setFixedSize(668, 668);
     QPalette palette;
     QPixmap pixmap(":/image/login.png");
     palette.setBrush(QPalette::Window, QBrush(pixmap));
@@ -26,6 +27,7 @@ Login::Login(QWidget *parent) :
     ui->pushButton->setFlat(true);
     ui->backButton->setFlat(true);
     ui->registerButton->setFlat(true);
+    ui->lineEdit_2->setEchoMode(QLineEdit::Password);
     connect(&manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(finishRequest(QNetworkReply*)));
 }
 

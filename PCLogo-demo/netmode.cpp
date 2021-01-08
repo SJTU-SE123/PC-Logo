@@ -13,11 +13,11 @@ NetMode::NetMode(QString username, QWidget *parent) :
     ui(new Ui::NetMode)
 {
     ui->setupUi(this);
-    QPalette palette;
-    QPixmap pixmap(":/image/netmodebkg.png");
-    palette.setBrush(QPalette::Window, QBrush(pixmap));
-    this->setPalette(palette);
-
+//    QPixmap pixmap(":/image/netmodebkg.png");
+//    QPalette pll = ui->tableWidget->palette();
+//    pll.setBrush(QPalette::Background, QBrush(pixmap));
+//    ui->tableWidget->setPalette(pll);
+    this->setFixedSize(300, 400);
     this->username = username;
     this->m_url = "ws://121.4.198.32:8080/online/" + this->username;
     this->m_debug = true;
@@ -48,6 +48,7 @@ void NetMode::paintEvent(QPaintEvent*) {
         ui->tableWidget->setItem(0,0,t1);
         ui->tableWidget->setItem(0,1,t2);
     }
+    // ui->tableWidget->setStyleSheet("background-color: rgb(255, 255, 255, 51)");
 }
 
 void NetMode::onConnected() {

@@ -12,6 +12,7 @@ Register::Register(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 注册");
+    this->setFixedSize(668, 668);
     QPalette palette;
     QPixmap pixmap(":/image/register.png");
     palette.setBrush(QPalette::Window, QBrush(pixmap));
@@ -23,6 +24,8 @@ Register::Register(QWidget *parent) :
     this->ui->backButton->setStyleSheet("background-image: url(:/image/regibackbtn.png);");
     this->ui->pushButton->setFlat(true);
     this->ui->backButton->setFlat(true);
+    this->ui->lineEdit_2->setEchoMode(QLineEdit::Password);
+    this->ui->lineEdit_3->setEchoMode(QLineEdit::Password);
     connect(&manager,SIGNAL(finished(QNetworkReply*)),this,SLOT(finishRequest(QNetworkReply*)));
 }
 
@@ -57,7 +60,12 @@ void Register::on_pushButton_clicked()
     QString password = ui->lineEdit_2->text();
     QString repeatPass = ui->lineEdit_3->text();
     if(username.isEmpty() || password.isEmpty() || repeatPass.isEmpty()) {
-        QMessageBox::warning(this,"Warning","请输入完整信息！",QMessageBox::Yes);
+        QMessageBox::information(this, "错误", "请输入完整信息！", "确定");
+        return;
+    }
+    if(password != repeatPass) {
+        QMessageBox::information(this, "错误", "两次密码不一致！", "确定");
+        return;
     }
     else{
         QJsonObject json;

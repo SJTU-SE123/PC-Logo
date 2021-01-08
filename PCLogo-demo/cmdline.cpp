@@ -2,7 +2,7 @@
 
 CmdLine::CmdLine(QWidget *parent) : QTextBrowser(parent)
 {
-    this->setFont(QFont("Helvetica"));
+    this->setFont(QFont("Microsoft Yahei"));
     this->setText(">> 这里是命令行，请在下面的输入框中输入指令");
     newline = new NewLine(this);
     connect(this->newline, &NewLine::sendNewLine, this, &CmdLine::receiveNewLine);

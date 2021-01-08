@@ -8,6 +8,7 @@ NewLine::NewLine(QWidget *parent)
     this->resetLine();
     this->setCursorPosition(this->lineHeadMark.length());
     this->cmdHistory.append("");
+    this->setFont(QFont("Microsoft Yahei"));
 }
 
 void NewLine::resetLine()

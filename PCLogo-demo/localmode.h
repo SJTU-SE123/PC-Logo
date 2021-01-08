@@ -14,6 +14,7 @@
 #include "speech/audio.h"
 #include "speech/speech.h"
 #include "cmdline.h"
+#include "coursedialog.h"
 
 namespace Ui {
 class LocalMode;
@@ -40,9 +41,11 @@ private:
     CmdLine *cmdLine;
     CodeEditor *editor;
     QPushButton *runAllButton, *runLineButton, *speechButton, *tutorButton;
+    QPushButton *openButton, *makeButton;
     LineInterpreter *lineInterpreter;
     Audio *audio;
     QGraphicsOpacityEffect *tabEditor_opacity, *canvas_opacity, *cmdLine_opacity;
+    courseDialog *dialog;
     const double OPACITY = 0.8;
     void initForm();
     void reset_editor();   //使editor指向当前现实的标签
@@ -60,6 +63,7 @@ private slots:
     void saveFileAs();
     void tutorNextStep();
     void onTabChanged(int);
+    void showHelp();
 
 public slots:
     void receiveNewLine(QString newLine);

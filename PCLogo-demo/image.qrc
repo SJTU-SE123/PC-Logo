@@ -36,5 +36,10 @@
         <file>image/regibackbtn.png</file>
         <file>image/netmodebkg.png</file>
         <file>helpDoc.txt</file>
+        <file>image/sendMessage.png</file>
+        <file>image/quitNet.png</file>
+        <file>image/nextStep.png</file>
+        <file>image/openFile.png</file>
+        <file>image/makeFile.png</file>
     </qresource>
 </RCC>

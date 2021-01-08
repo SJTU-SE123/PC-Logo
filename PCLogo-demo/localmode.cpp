@@ -2,6 +2,8 @@
 #include "ui_localmode.h"
 #include <QDebug>
 #include "command.h"
+#include "ui_coursedialog.h"
+#include "coursedialog.h"
 #include <QTextBlock>
 
 QString reminder = "";
@@ -12,6 +14,7 @@ LocalMode::LocalMode(QWidget *parent, bool isTutorial) :
 {
     ui->setupUi(this);
     this->setWindowTitle("PC Logo 本地");
+    this->setFixedSize(1200, 800);
     this->isTutorial = isTutorial;
     this->initForm();
     connect(runAllButton, SIGNAL(clicked()), this, SLOT(parseAll()));       //运行程序按钮
@@ -24,6 +27,7 @@ LocalMode::LocalMode(QWidget *parent, bool isTutorial) :
     connect(ui->action_save_as, SIGNAL(triggered()), this, SLOT(saveFileAs()));     //文件另存为
     connect(ui->action_exit, SIGNAL(triggered()), this, SLOT(closeWindow()));     //关闭窗口
     connect(ui->action_run, SIGNAL(triggered()), this, SLOT(parseCurrentLine()));     //运行
+    connect(ui->action_help, SIGNAL(triggered()), this, SLOT(showHelp()));
     connect(tabEditor, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int))); //关闭标签页
     connect(tabEditor, SIGNAL(currentChanged(int)), this, SLOT(onTabChanged(int)));
     connect(this->cmdLine, &CmdLine::sendNewLine, this, &LocalMode::receiveNewLine);  // receive new line from cmd-line
@@ -37,6 +41,18 @@ LocalMode::LocalMode(QWidget *parent, bool isTutorial) :
         runAllButton->setDisabled(true);
         runLineButton->setDisabled(true);
         speechButton->setDisabled(true);
+    }
+    else if (this->tabEditor->count() < 1){
+        makeButton = new QPushButton(this);
+        makeButton->setFlat(true);
+        makeButton->setGeometry(40, 50, 120, 30);
+        makeButton->setStyleSheet("background-image: url(:/image/makeFile.png)");
+        openButton = new QPushButton(this);
+        openButton->setFlat(true);
+        openButton->setGeometry(40, 90, 120, 30);
+        openButton->setStyleSheet("background-image: url(:/image/openFile.png)");
+        connect(openButton, SIGNAL(clicked()), this, SLOT(openFile()));
+        connect(makeButton, SIGNAL(clicked()), this, SLOT(newTab()));
     }
 }
 
@@ -91,12 +107,15 @@ void LocalMode::initForm(){
 
     runAllButton = new QPushButton(this);
     runAllButton->setGeometry(1030, 35, 110, 31);
+    runAllButton->setFlat(true);
     runAllButton->setStyleSheet("background-image: url(:/image/runall.png)");
     runLineButton = new QPushButton(this);
+    runLineButton->setFlat(true);
     runLineButton->setGeometry(900, 35, 110, 31);
     runLineButton->setStyleSheet("background-image: url(:/image/runline.png)");
     speechButton = new QPushButton(this);
     speechButton->setGeometry(770, 35, 110, 31);
+    speechButton->setFlat(true);
     speechButton->setStyleSheet("background-image: url(:/image/speech-off.png)");
 
     tabEditor = new QTabWidget(this);
@@ -125,11 +144,13 @@ void LocalMode::initForm(){
     if(isTutorial) {
         tutorial = new QLabel(this);
         tutorial->setGeometry(30, 40, 390, 350);
-        tutorial->setText("欢迎来到PC LOGO的世界！点击下一步继续教程嗷<>");
+        tutorial->setFont(QFont("幼圆", 18));
+        tutorial->setStyleSheet("color: orange");
+        tutorial->setText("欢迎来到PC LOGO的世界！点击下一步继续教程嗷");
         tutorial->setWordWrap(true);
         tutorButton = new QPushButton(this);
-        tutorButton->setGeometry(270, 360, 110, 31);
-        tutorButton->setText("下一步");
+        tutorButton->setGeometry(270, 360, 105, 35);
+        tutorButton->setStyleSheet("background-image: url(:/image/nextStep.png)");
     }
     reset_editor();
 }
@@ -332,7 +353,7 @@ void LocalMode::parseLine(QString line)
                 break;
             case 2: nextText = "太棒了，RT是向右旋转的意思，后面的90指的是转动的角度,相同的道理，LT则是向左转的意思。让我们点击下一步继续教程";
                 break;
-            case 3: nextText = "太棒了，REPEATE是重复的意思，后面的3是重复的次数，被[]括起来的部分是重复执行的指令。让我们点击下一步继续教程";
+            case 3: nextText = "太棒了，REPEAT是重复的意思，后面的3是重复的次数，被[]括起来的部分是重复执行的指令。让我们点击下一步继续教程";
                 break;
             case 4: nextText = "太棒了，PU是提笔指令，输入PU指令后，小海龟将不再继续画出线条，那么让我们猜一猜你刚才输入的PU后面的指令的意思吧，为什么小海龟会移动到现在的位置呢？让我们点击下一步继续教程";
                 break;
@@ -345,7 +366,7 @@ void LocalMode::parseLine(QString line)
             case 8: nextText = "太棒了，SETPC是设置画笔颜色指令，后面的参数对应的是16进制颜色表，0000FF对应的颜色是蓝色，想知道更多常用颜色的颜色号请查看帮助文档。让我们点击下一步继续教程";
                 break;
             case 9: nextText = "太棒了，我们现在画的圆就是蓝色的了，这就是SETPC指令的作用。以上就是PC Logo的全部教程，点击下一步将退出教程模式。";
-
+                break;
             default: nextText = "恭喜你已经完成了教程模式！点击下一步将退出教程模式";
             }
             tutorial->setText(nextText);
@@ -431,6 +452,12 @@ void LocalMode::openFile(){
     }
     file.close();
     tabEditor->addTab(editor, editor->fileName.mid(editor->fileName.lastIndexOf('/')+1));
+    if(openButton != nullptr) {
+        openButton->hide();
+    }
+    if(makeButton != nullptr) {
+        makeButton->hide();
+    }
     reset_editor();
 }
 
@@ -440,6 +467,12 @@ void LocalMode::openFile(){
 void LocalMode::newTab(){
     editor = new CodeEditor();
     tabEditor->addTab(editor, "未命名"+QString::number(tabEditor->count()+1));
+    if(openButton != nullptr) {
+        openButton->hide();
+    }
+    if(makeButton != nullptr) {
+        makeButton->hide();
+    }
     reset_editor();
 }
 
@@ -458,14 +491,23 @@ void LocalMode::removeTab(int n){
     {
     case QMessageBox::Yes:
         editor = static_cast<CodeEditor*>(tabEditor->widget(n));
-        // tabEditor->removeTab(n); 加上这行会导致删除两个窗口
-        delete editor;
+        tabEditor->removeTab(n);
+        // delete editor; 加上这行会导致删除两个窗口
         reset_editor();
         break;
     case QMessageBox::No:
         break;
     default:
         break;
+    }
+
+    if(tabEditor->count() < 1) {
+        if(openButton != nullptr) {
+            openButton->show();
+        }
+        if(makeButton != nullptr) {
+            makeButton->show();
+        }
     }
 }
 
@@ -571,4 +613,24 @@ void LocalMode::tutorNextStep() {
 
 void LocalMode::onTabChanged(int) {
     reset_editor();
+}
+
+void LocalMode::showHelp() {
+    QString FileName = ":/helpDoc.txt";
+    if(FileName.isEmpty() == false)
+    {
+       QFile file(FileName);
+       bool fileok = file.open(QIODevice::ReadOnly);
+       if(fileok == true)
+       {
+           dialog = new courseDialog(this);
+           dialog->setWindowTitle("帮助文档");
+           QByteArray array = file.readAll();
+           dialog->ui->textEdit->setReadOnly(true);
+           dialog->ui->textEdit->setText(array);
+           dialog->show();
+       }
+
+       file.close();
+    }
 }

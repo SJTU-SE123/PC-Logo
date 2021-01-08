@@ -23,6 +23,12 @@
       <height>300</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(255,255,255,51);border-width:0;border-style:outset</string>
     </property>
@@ -32,12 +38,12 @@
      <rect>
       <x>430</x>
       <y>710</y>
-      <width>100</width>
+      <width>138</width>
       <height>50</height>
      </rect>
     </property>
     <property name="text">
-     <string>退出</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="sendButton">
@@ -45,12 +51,12 @@
      <rect>
       <x>70</x>
       <y>710</y>
-      <width>100</width>
+      <width>142</width>
       <height>50</height>
      </rect>
     </property>
     <property name="text">
-     <string>发送</string>
+     <string/>
     </property>
    </widget>
    <widget class="QTextEdit" name="textEdit">
@@ -61,6 +67,12 @@
       <width>560</width>
       <height>300</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Microsoft YaHei</family>
+      <pointsize>18</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color:rgb(255,255,255,51);border-width:0;border-style:outset</string>

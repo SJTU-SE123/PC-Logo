@@ -73,18 +73,18 @@ void StartWindow::on_otherButton_clicked()
     QMenu *pMenu = new QMenu(this);
     QAction *pRegiTask = new QAction(tr("注册"), this);
     QAction *pLoginTask = new QAction(tr("登录"), this);
-    QAction *pInfoTask = new QAction(tr("用户信息"), this);
+    // QAction *pInfoTask = new QAction(tr("用户信息"), this);
 
     pRegiTask->setData(1);
     pLoginTask->setData(2);
-    pInfoTask->setData(3);
+    // pInfoTask->setData(3);
     pMenu->addAction(pRegiTask);
     pMenu->addAction(pLoginTask);
-    pMenu->addAction(pInfoTask);
+    // pMenu->addAction(pInfoTask);
 
     connect(pRegiTask, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
     connect(pLoginTask, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
-    connect(pInfoTask, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
+    // connect(pInfoTask, SIGNAL(triggered()), this, SLOT(onTaskBoxContextMenuEvent()));
 
     pMenu->exec(cursor().pos());
 
@@ -137,6 +137,7 @@ void StartWindow::on_Help_clicked()
            dialog = new courseDialog(this);
            dialog->setWindowTitle("帮助文档");
            QByteArray array = file.readAll();
+           dialog->ui->textEdit->setReadOnly(true);
            dialog->ui->textEdit->setText(array);
            dialog->show();
        }

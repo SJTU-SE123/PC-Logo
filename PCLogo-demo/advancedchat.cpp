@@ -11,6 +11,7 @@ AdvancedChat::AdvancedChat(QString username) :
     this->setPalette(palette);
 
     this->setWindowTitle("PC Logo 联网");
+    this->setFixedSize(1200, 800);
     canvas = new Canvas(this, 560, 740, true);
     canvas->setGeometry(620, 20, 560, 740);
     canvas->setStyleSheet("background-color: white; border: 1px solid #555555;");
@@ -18,6 +19,9 @@ AdvancedChat::AdvancedChat(QString username) :
     canvas_opacity = new QGraphicsOpacityEffect();
     canvas->setGraphicsEffect(canvas_opacity);
     canvas_opacity->setOpacity(OPACITY);
+    ui->sendButton->setStyleSheet("background-image: url(:/image/sendMessage.png);");
+    ui->exitButton->setStyleSheet("background-image: url(:/image/quitNet.png);");
+    ui->sendButton->setFlat(true); ui->exitButton->setFlat(true);
     lineInterpreter = new LineInterpreter();
 }
 
@@ -29,7 +33,7 @@ AdvancedChat::~AdvancedChat()
 void AdvancedChat::on_sendButton_clicked() {
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     ui->textBrowser->setTextColor(Qt::blue);
-    ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
+    ui->textBrowser->setCurrentFont(QFont("Times New Roman", 18));
     ui->textBrowser->append("[ " + this->username +" ] "+ time);
     QString text = ui->textEdit->toPlainText();
     ui->textBrowser->append(text);
@@ -58,7 +62,7 @@ void AdvancedChat::sendMsg(QJsonObject msg) {
 
 void AdvancedChat::appendMsg(QString fromUser, QString text, QString time) {
     ui->textBrowser->setTextColor(Qt::red);
-    ui->textBrowser->setCurrentFont(QFont("Times New Roman",8));
+    ui->textBrowser->setCurrentFont(QFont("Times New Roman", 18));
     ui->textBrowser->append("[ " + fromUser +" ] "+ time);
     ui->textBrowser->append(text);
     this->draw(!isP2, text);
