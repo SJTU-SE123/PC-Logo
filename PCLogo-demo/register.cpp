@@ -49,6 +49,7 @@ void Register::finishRequest(QNetworkReply *reply)
         }
     } else {
         qDebug( "found error .... code: %d\n", static_cast<int>(reply->error()));
+        QMessageBox::information(this, "错误", "无法连接到服务器，请联系管理员或稍后再试。", "确定");
     }
     reply->deleteLater();
 }
